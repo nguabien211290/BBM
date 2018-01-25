@@ -1,0 +1,132 @@
+﻿<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
+<script src=@Url.Content("~/Scripts/module/Suppliers/m.Suppliers.js")></script>
+<script src=@Url.Content("~/Scripts/module/Suppliers/mv.Suppliers.js")></script>
+@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
+<script>
+    var suppliers = new Suppliers.mvSuppliers();
+    $(document).ready(function () {
+        suppliers.Start();
+    });
+</script>
+<div id="SuppliersViewId" class="row-fluid">
+    <div class="span12">
+
+        <div class="text-right padding5px">
+            <button class="btn btn-success" data-bind="click : AddSuppliers">Thêm NPP</button>
+            <button class="btn btn-primary" data-bind="click: function() {  suppliers.Start() }"><i class="icon-refresh"></i></button>
+        </div>
+
+        <div class="row-fluid">
+            <div class="table-header">
+                Nhà phân phối
+            </div>
+            <!--ko template: {name: 'dataTables', data:suppliers.TmpTable } --><!--/ko-->
+        </div>
+    </div>
+    <div id="AddSuppliers" class="modal fade hide">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" data-bind="with: mSuppliers">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="span12">
+                        <span class="span4 text-right">Tên NPP: </span>
+                        <div class="span8"> <input type="text" data-bind="value: Name" /></div>
+                    </div>
+                    <div class="span12">
+                        <span class="span4 text-right">Địa chỉ: </span>
+                        <div class="span8"> <input type="text" data-bind="value: Address" /></div>
+                    </div>
+                    <div class="span12">
+                        <span class="span4 text-right">Phone: </span>
+                        <div class="span8"> <input type="text" data-bind="value: Phone" /></div>
+                    </div>
+                    <div class="span12">
+                        <span class="span4 text-right">Email: </span>
+                        <div class="span8"> <input type="text" data-bind="value: Email" /></div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- dialog buttons -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btnCancel">Hủy</button>
+                <button type="button" class="btn btn-primary btnOk">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="table_Suppliers" type="text/html">
+    <thead>
+        <tr>
+
+            <th class="sorting" data-bind="click: function(){ Sortby('SuppliersId'),SortbyDesc(SortbyDesc()?false:true)}">Id</th>
+            <th class="sorting" data-bind="click: function(){ Sortby('Name'); SortbyDesc(SortbyDesc()?false:true)}">Name</th>
+
+            <th class="sorting" data-bind="click: function(){ Sortby('Email'); SortbyDesc(SortbyDesc()?false:true)}">Email</th>
+            <th class="sorting" data-bind="click: function(){ Sortby('Address'),SortbyDesc(SortbyDesc()?false:true)}">Address</th>
+            <th class="sorting" data-bind="click: function(){ Sortby('Phone'); SortbyDesc(SortbyDesc()?false:true)}">Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--ko foreach: listData() -->
+        <tr data-bind="click: $parents[1].GetDetail, attr:{class: IsViewDetail()?'headDetail cursor-pointer':'cursor-pointer'}">
+            <td>
+                <span data-bind="text: SuppliersId"></span>
+            </td>
+            <td>
+                <span data-bind="text: Name"></span>
+            </td>
+            <td>
+                <span data-bind="text: Email"></span>
+            </td>
+            <td>
+                <span data-bind="text: Address"></span>
+            </td>
+            <td>
+                <span data-bind="text: Phone"></span>
+            </td>
+        </tr>
+        <!--ko if: IsViewDetail-->
+        <tr class="footerDetail">
+            <td colspan="7">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active">
+                            <a data-toggle="tab" href="#info">
+                                Thông tin
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="info" class="tab-pane in active">
+                            <div>
+                                <div class="span4 text-right">Name: </div>
+                                <div class="span8 text-left"> <input type="text" data-bind="value: Name" /></div>
+                            </div>
+                            <div>
+                                <span class="span4 text-right">Email: </span>
+                                <div class="span8 text-left"> <input type="text" data-bind="value: Email" /></div>
+                            </div>
+                            <div>
+                                <div class="span4 text-right">Phone: </div>
+                                <div class="span8 text-left"> <input type="text" data-bind="value: Phone" /></div>
+                            </div>
+                            <div>
+                                <div class="span4 text-right">Address: </div>
+                                <div class="span8 text-left"> <input type="text" data-bind="value: Address" /></div>
+                            </div>
+                            <div class="right">
+                                <button class="btn btn-danger" data-bind="click: $parents[1].DeleteSuppliers">Xóa</button>
+                                <button class="btn btn-success" data-bind="click: $parents[1].UpdateSuppliers">Cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <!--/ko-->
+        <!--/ko-->
+    </tbody>
+</script>
+
+

@@ -1,0 +1,37 @@
+﻿<script id="_branchesCtrol" type="text/html">
+    <select class="branch_select input-medium m-t-5" data-bind="options: mvBranches().Channel, optionsText: 'Channel',value:  mvBranches().SelectChannel"></select>
+    <select class="branch_select input-medium m-t-5" data-bind="options: mvBranches().Option, optionsText: 'BranchesName',value:  mvBranches().SelectBranches"></select>
+ </script>
+<script id="_notificationCtrol" type="text/html">
+    <li class="purple">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#" data-bind="click: ClickReview">
+            <i class="icon-bell-alt icon-animated-bell"></i>
+            <!--ko if: lstNotification().length >0-->
+            <span class="badge badge-important" data-bind="text: NotifiCount"></span>
+            <!--/ko-->
+        </a>
+
+        <ul class="pull-right dropdown-navbar navbar-blue dropdown-menu dropdown-caret dropdown-closer">
+            <li class="nav-header">
+                <i class="icon-warning-sign"></i>
+                <!--ko if: lstNotification().length >0-->  <span data-bind="text: NotifiCount"></span>  <!--/ko--> Thông báo
+            </li>
+            <!--ko foreach: lstNotification -->
+            <li  data-bind="attr:{'class':IsReview? 'notication' :'notication reviewNotificaion'}, click: $parents[1].ReturnLink">
+                <div class="lineNoticaion">
+                    <i class="btn btn-mini no-hover btn-success icon-shopping-cart"></i>
+                    <span data-bind="text: Contents"></span>
+                    <p class="font10px text-right" data-bind="datelong: DateCreate"></p>
+                </div>
+            </li>
+            <!-- /ko -->
+            @*<li>
+                <a href="#">
+                    See all notifications
+                    <i class="icon-arrow-right"></i>
+                </a>
+            </li>*@
+        </ul>
+    </li>
+
+</script>

@@ -1,0 +1,78 @@
+﻿<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
+<script src=@Url.Content("~/Scripts/module/Order/ProductsSwitch/mv.ProductsSwitch_Add.js")></script>
+<script>
+    var productsSwitchAdd = new Order.mvProductsSwitchAdd();
+    $(document).ready(function () {
+        productsSwitchAdd.Start();
+    });
+</script>
+<div id="ProductsSwitchAddViewId" class="row-fluid" style="min-height:400px">
+    <div class="span3">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>Tìm kiếm</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <!--ko template: {name: 'Filter_Search', data: FilterProduct } --><!--/ko-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span9">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>Chi tiết</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div class="dataTables_wrapper text-center">
+                        <!--ko if: mProductsSwitch().Detail().length <=0-->
+                        <span>Chưa có sản phẩm nào</span>
+                        <!--/ko-->
+                        <!--ko if: mProductsSwitch().Detail().length >0-->
+                        <table class="table table-striped table-bordered table-hover dataTable">
+                            <thead>
+                                <tr>
+                                    <td>Mã hàng hóa</td>
+                                    <td>Tên hàng</td>
+                                    <td>Số lượng</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--ko foreach: mProductsSwitch().Detail() -->
+                                <tr class="odd">
+                                    <td class="text-center">
+                                        <span data-bind="text: Code"></span>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: ProductName"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <input data-bind="value: Total, valueUpdate: 'afterkeydown'" class="input-mini" />
+                                    </td>
+                                    <td>
+                                        <span class="btn btn-danger btn-small" data-bind="click: $parent.RemoveItem"><i class="icon-remove"></i></span>
+                                    </td>
+                                </tr>
+                                <!--/ko-->
+                                <tr>
+                                    <td class="text-right">Lý do</td>
+                                    <td colspan="3">
+                                        <textarea data-bind="value: mProductsSwitch().Note" class="span12"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="m-t-5">
+                            <button class="btn btn-success" data-bind="click: CreatProductSwitch">Xác nhận</button>
+                        </p>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

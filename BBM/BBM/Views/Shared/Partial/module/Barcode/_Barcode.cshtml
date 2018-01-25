@@ -1,0 +1,268 @@
+﻿<script id="_Setting" type="text/html">
+    <div class="tabbable">
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active">
+                <a data-toggle="tab" href="#print">
+                    <i class="green icon-print bigger-110"></i>
+                    In Tem
+                </a>
+            </li>
+
+            <li class="">
+                <a data-toggle="tab" href="#config">
+                    <i class="green icon-cogs bigger-110"></i>
+                    Cấu hình
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="print" class="tab-pane active">
+                <!--ko if: ShowType() === "Setting"-->
+                <!--ko if: mlstBarcode().length <=0-->
+                <div class="text-center">Chưa có sản phẩm nào</div>
+                <!--/ko-->
+                <!--ko if: mlstBarcode().length >0-->
+                <table class="table table-striped table-bordered table-hover dataTable">
+                    <thead>
+                        <tr>
+                            <td>Mã hàng hóa</td>
+                            <td>Tên hàng</td>
+                            <td>Số lượng tem</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--ko foreach: mlstBarcode() -->
+                        <tr>
+                            <td class="text-center">
+                                <!--ko if: masp -->
+                                <span data-bind="text: masp"></span>
+                                <!--/ko-->
+                                <!--ko if: !masp() -->
+                                <span class="text-danger">---</span>
+                                <!--/ko-->
+                            </td>
+                            <td>
+                                <span data-bind="text: tensp"></span>
+                            </td>
+                            <td class="with100px">
+                                <input type="text" data-bind="value: totalTem" />
+                            </td>
+                            <td>
+                                <button class="btn btn-danger btn-mini" data-bind="click: $parents[0].removeItem"><i class="icon-remove"></i></button>
+                            </td>
+                        </tr>
+                        <!--/ko-->
+                        <tr>
+                            <td colspan="3"></td>
+                            <td>
+                                <button class="btn btn-primary btn-mini" data-bind="click: printBarcode"><i class="icon-print"></i></button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <!-- /ko -->
+                <!--/ko-->
+                <!--ko if: ShowType() === "Standard"-->
+                <h3 class="row-fluid header smaller lighter">
+                    <span class="span7">
+                        <i class="icon-eye-open"></i>
+                        Xem trước
+                    </span>
+                    <span class="span5">
+                        <button class="btn btn-primary pull-right inline btn-small" data-bind="click: PrintBarcode">
+                            <i class="icon-print"></i>
+                        </button>
+                        <button class="btn btn-default pull-right inline btn-small" data-bind="click: function(){renderStyleStandard()}">
+                            <i class="icon-refresh"></i>
+                        </button>
+                        <button class="btn btn-warning pull-right inline btn-small" data-bind="click: function(){ShowType('Setting')}">
+                            <i class="icon-backward"></i>
+                        </button>
+                    </span><!--/span-->
+                </h3>
+                <div id="printbarcode" data-bind="template: {name: '_StandardPrint', afterRender: afterRenderPrintReviewPage}" style="background: #ebebeb"></div>
+                <!--/ko-->
+            </div>
+            <div id="config" class="tab-pane" data-bind="with :mConfig">
+                <div class="span6">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Khổ In</legend>
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label">Khổ In</label>
+                                <div class="controls">
+                                    <select data-bind="options: ListStandardPage, optionsText: 'name', value: SelectedStandard"></select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Độ rộng tùy chỉnh</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: PageSize">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Padding Top Khổ In:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: PaddingTopPage">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Padding Bottom Khổ In:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: PaddingBotPage">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Padding Left Khổ In:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: PaddingLeftPage">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Padding Right Khổ In:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: PaddingRightPage">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Khoảng cách lề trái các Tem:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: MarginLeftPage">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Khoảng cách lề dưới các Tem:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: MarginBottomItem">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="span6">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Barcode</legend>
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label">Độ rộng Barcode</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: WidthItem">
+                                        <span class="add-on">px</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Độ cao Barcode</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: HeightItem">
+                                        <span class="add-on">px</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Tem In</legend>
+                        <div class="form-horizontal">
+                            <div class="control-group">
+                                <label class="control-label">Chiều dài tem:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: WidthFlag">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Chiều cao tem:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: HeightFlag">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="control-group">
+                                <label class="control-label">Canh lề trái Tem</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: MarginLeftItem">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Số tem trên 1 dòng</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: ItemInLine">
+                                        <span class="add-on">tem</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Số tem trên 1 trang</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: ItemInbreak">
+                                        <span class="add-on">tem</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Padding:</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: PaddingItem">
+                                        <span class="add-on">mm</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Font size</label>
+                                <div class="controls">
+                                    <div class="input-prepend">
+                                        <input class="input-medium input-mask-product" type="text" data-bind="value: FontSize">
+                                        <span class="add-on">px</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="span12">
+                    <button class="btn btn-primary" data-bind="click: $parents[0].SaveConfig">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,18 @@
+﻿<script src=@Url.Content("~/Scripts/module/Order/OrderChannel/m.Order.js")></script>
+<script src=@Url.Content("~/Scripts/module/Order/OrderChannel/mv.OrderSale.js")></script>
+<script>
+    var valueDiscountFormember = 5;
+    var orderSale_@Html.Raw(ViewBag.OrderId) = new Order.mvOrderSale(@Html.Raw(ViewBag.OrderId));
+    $(document).ready(function () {
+        (orderSale_@Html.Raw(ViewBag.OrderId)).Start();
+    });
+</script>
+<div id="OrderSaleViewId-@Html.Raw(ViewBag.OrderId)" class="row-fluid">
+    <!--ko with: orderSale_@Html.Raw(ViewBag.OrderId)-->
+    <!--ko template: {name: '_InfoOrder', data: $data } --><!--/ko-->
+    <!--ko template: {name: '_TableDetail', data: $data } --><!--/ko-->
+    <div id="printordersales_@Html.Raw(ViewBag.OrderId)">
+        <!--ko template: {name: '_PrintOrder', data: $data } --><!--/ko-->
+    </div>
+    <!--/ko-->
+</div>

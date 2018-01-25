@@ -1,0 +1,97 @@
+﻿<script id="_StandardPrint" type="text/html">
+    <style type="text/css">
+        @@media print {
+            .page-break {
+                display: block;
+                page-break-after: always;
+            }
+
+            .barcode-group {
+                border: none !important;
+            }
+        }
+
+        .cpage {
+            background-color: white;
+            margin: auto;
+        }
+
+        body {
+            background-color: gainsboro;
+        }
+
+        .barcode-row {
+            margin-top: 20px;
+        }
+
+        .barcode-group {
+            float: left;
+            min-height: 75px;
+            border: 0.5px dotted;
+            page-break-inside: avoid;
+        }
+
+            .barcode-group .headerbarcode {
+                text-align: center;
+                margin: auto;
+            }
+
+                .barcode-group .headerbarcode div {
+                    white-space: normal;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                }
+
+            .barcode-group .print_barcode_img {
+                text-align: center;
+                margin: 1px 0;
+            }
+
+        .print_barcode {
+            margin: auto;
+        }
+
+        .barcode-group .footerbarcode {
+            max-width: 100px;
+            text-align: center;
+            margin: auto;
+        }
+
+        .view-print .footerbarcode {
+            line-height: 1;
+        }
+
+        .clearfix:before, .clearfix:after {
+            display: table;
+            content: "";
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+    </style>
+    <div class='cpage clearfix review'>
+        <!--ko foreach: NeedPrint()-->
+        <!--ko foreach: $data -->
+        <div class='barcode-group view-print'>
+            <div class='headerbarcode'>
+                <div data-bind="text: tensp"></div>
+            </div>
+            <div class='print_barcode_img'>
+                <div data-bind="barcode: masp,settings: $parents[1].settingsBarcode() "></div>
+            </div>
+            <div class='footerbarcode'>
+                Giá:  <span data-bind="textMoneyDefaultSymbol: price()"></span>
+            </div>
+        </div>
+        <!--ko if: ($index()+1) % $parents[1].mConfig().ItemInLine() === 0 -->
+        <span class="clearfix"></span>
+        <!--/ko-->
+        <!--/ko-->
+        <div class="page-break"></div>
+        <!--/ko-->
+    </div>
+</script>

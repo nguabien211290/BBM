@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard - Ace Admin</title>
+
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--basic styles-->
+
+    <link href=@Url.Content("~/Content/css/bootstrap.min.css") rel="stylesheet" />
+    <link href=@Url.Content("~/Content/css/bootstrap-responsive.min.css") rel="stylesheet" />
+    <link href=@Url.Content("~/Content/css/font-awesome.min.css") rel="stylesheet" />
+    <link href=@Url.Content("~/Content/css/jquery.gritter.css") rel="stylesheet" />
+    <link href=@Url.Content("~/Content/css/me/me.css") rel="stylesheet" />
+    <!--[if IE 7]>
+      <link rel="stylesheet" href=@Url.Content("~/Content/css/font-awesome-ie7.min.css")/>
+    <![endif]-->
+    <!--page specific plugin styles-->
+    <!--fonts-->
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+    <!--ace styles-->
+
+    <link rel="stylesheet" href=@Url.Content("~/Content/css/ace.min.css") />
+    <link rel="stylesheet" href=@Url.Content("~/Content/css/ace-responsive.min.css") />
+    <link rel="stylesheet" href=@Url.Content("~/Content/css/ace-skins.min.css") />
+
+    <link rel="stylesheet" type="text/css" href=@Url.Content("~/Content/css/tabs_dynamic.css") />
+    <!--[if lte IE 8]>
+      <link rel="stylesheet" href=@Url.Content("~/Content/css/ace-ie.min.css") />
+    <![endif]-->
+    <!--inline styles related to this page-->
+    <link href=@Url.Content("~/Content/css/me/me.css") rel="stylesheet" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+    @{Html.RenderAction("_navbar", "Partial");}
+    <div class="main-container container-fluid">
+        <a class="menu-toggler" id="menu-toggler" href="#">
+            <span class="menu-text"></span>
+        </a>
+        <div class="page-content">
+            @RenderBody()
+        </div>
+    </div><!--/.main-container-->
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
+        <i class="icon-double-angle-up icon-only bigger-110"></i>
+    </a>
+
+    <!--basic scripts-->
+    <!--[if !IE]>-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!--<![endif]-->
+    <!--[if IE]>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <![endif]-->
+    <!--[if !IE]>-->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='Scripts/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    </script>
+    <!--<![endif]-->
+    <!--[if IE]>
+    <script type="text/javascript">
+     window.jQuery || document.write("<script src='Scripts/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+    </script>
+    <![endif]-->
+
+    <script type="text/javascript">
+        if ("ontouchend" in document) document.write("<script src='Scripts/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src=@Url.Content("~/Scripts/js/bootstrap.min.js")></script>
+    <!--page specific plugin scripts-->
+    <!--[if lte IE 8]>
+      <script src=@Url.Content("~/Scripts/js/excanvas.min.js")></script>
+    <![endif]-->
+    <script src=@Url.Content("~/Scripts/js/jquery-ui-1.10.3.custom.min.js")></script>
+    <!--ace scripts-->
+    <script src=@Url.Content("~/Scripts/js/ace-elements.min.js")></script>
+    <script src=@Url.Content("~/Scripts/js/ace.min.js")></script>
+    <!--inline scripts related to this page-->
+    <script src=@Url.Content("~/Scripts/lib/knockout-2.2.0.js")></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.2.1/knockout-min.js")></script>
+    <script src=@Url.Content("~/Scripts/lib/knockout.mapping-latest.js")></script>
+    <script type="text/javascript" src=@Url.Content("~/Scripts/lib/tabs_dynamic.js")></script>
+    <!-- Plugins -->
+    <script src=@Url.Content("~/Scripts/lib/plugin/knockout_datatables.js")></script>
+    <script src=@Url.Content("~/Scripts/lib/plugin/md5/md5.min.js")></script>
+    <script src=@Url.Content("~/Scripts/js/jquery.gritter.min.js")></script>
+    <script src=@Url.Content("~/Scripts/js/bootbox.min.js")></script>
+    <script src=@Url.Content("~/Scripts/lib/plugin/datepicker/bootstrap-datepicker.js")></script>
+    <script src=@Url.Content("~/Scripts/lib/plugin/jquery.globalize/globalize.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/globalize/globalize.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/globalize/globalize.culture.vi-VN.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/globalize/globalize.culture.en-US.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/Common.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/CommonUtils.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/ko.BBM.js")></script>
+    <script src=@Url.Content("~/Scripts/lib/plugin/jquery.barcode/jquery-barcode.js")></script>
+
+    <script src=@Url.Content("~/Scripts/module/Product/m.Product.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/Filter_Search.js")></script>
+    @Html.Partial("~/Views/Shared/Partial/module/Partial/_Fiter_Search.cshtml")
+
+    @Html.Partial("~/Views/Shared/Partial/module/Order/OrderChannel/_InfoOrder.cshtml")
+    @Html.Partial("~/Views/Shared/Partial/module/Order/OrderChannel/_PrintOrder.cshtml")
+    @Html.Partial("~/Views/Shared/Partial/module/Order/OrderChannel/_TableDetail.cshtml")
+    <script type="text/javascript">
+        var statusProducts = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusProduct>.ToJson(typeof(BBM.Business.Models.Enum.StatusProduct)))');
+        var lstStatusVAT = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusVATProduct>.ToJson(typeof(BBM.Business.Models.Enum.StatusVATProduct)))');
+        var statusOrder_Sale = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Sale>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Sale)))');
+        var statusOrder_Input = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Input>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Input)))');
+        var statusOrder_Output = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Output>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Output)))');
+        var statusOrder_Suppliers = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Suppliers>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Suppliers)))');
+        var statusProducts_Switch = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusProductsSwitch>.ToJson(typeof(BBM.Business.Models.Enum.StatusProductsSwitch)))');
+
+
+        var common = new Common.mvCommon();
+        $(document).ready(function () {
+
+            var currencypattern = "-n $;n $";
+            Globalize.culture('vi-VN');
+            Globalize.culture().numberFormat.currency.symbol = 'đ';
+            Globalize.culture().numberFormat.currency.pattern = currencypattern.split(";");
+
+            common.Start();
+            $('#seletc_Channel').change(function () {
+                var optionSelected = $(this).find("option:selected");
+                var valueSelected = optionSelected.val();
+                var textSelected = optionSelected.text();
+
+            });
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+    <!-- Plugins -->
+    @Html.Partial("~/Views/Shared/Partial/module/Partial/_template.cshtml");
+
+    <div id="confirmModal" class="modal fade confirmModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body over-hide">
+                    <p></p>
+                </div>
+                <div class="modal-footer mt10">
+                    <button class="btn btn-default btnCancel">Hủy</button>
+                    <button class="btn btn-primary btnOk">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

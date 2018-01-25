@@ -1,0 +1,131 @@
+﻿<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
+<script src=@Url.Content("~/Scripts/module/Order/OrderInput/mv.OrderInput_Add.js")></script>
+<script>
+    var products = '@Html.Raw(ViewBag.Products)';
+    var orderSuppliersId = '@Html.Raw(ViewBag.OrderSuppliersId)';
+    var orderInsideAdd = new Order.mvOrderInputAdd(products, orderSuppliersId);
+    $(document).ready(function () {
+        orderInsideAdd.Start();
+    });
+</script>
+<div id="OrderInputAddViewId" class="row-fluid" style="min-height:400px">
+    <div class="span3">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>Tìm kiếm</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <!--ko template: {name: 'Filter_Search', data: FilterProduct } --><!--/ko-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span9">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>Đơn hàng</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div class="dataTables_wrapper text-center">
+                        <!--ko if: mOrderInput().Detail().length <=0-->
+                        <span>Chưa có đơn hàng nào</span>
+                        <!--/ko-->
+                        <!--ko if: mOrderInput().Detail().length >0-->
+                        <table class="table table-striped table-bordered table-hover dataTable">
+                            <thead>
+                                <tr>
+                                    <td>Mã hàng hóa</td>
+                                    <td>Tên hàng</td>
+                                    <td>Tên nhà PP</td>
+                                    <td>Tồn</td>
+                                    <td>Giá cơ bản</td>
+                                    <td>Số lượng nhập</td>
+                                    <td>Giá mới</td>
+                                    <td>Giá tham chiếu</td>
+                                    <!--ko if: NameChannels().length > 0 -->
+                                    <!--ko foreach: NameChannels -->
+                                    <td data-bind="text: $data"></td>
+                                    <!--/ko-->
+                                    <!--/ko-->
+                                    <td>Thành tiền</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--ko foreach: mOrderInput().Detail -->
+                                <tr class="odd">
+                                    <td class="text-center">
+                                        <span data-bind="text: Code"></span>
+                                    </td>
+                                    <td>
+                                        <span data-bind="text: ProductName"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span data-bind="text: SuppliersName"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span data-bind="text: Stock_Total"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span data-bind="textMoneyDefaultSymbol: PriceBase"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <input data-bind="value: Total, valueUpdate: 'afterkeydown'" class="input-mini" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input data-bind="moneyMaskWithSymbol: Price, valueUpdate: 'afterkeydown'" class="input-mini" />
+                                    </td>
+                                    <td class="text-center">
+                                        <input data-bind="moneyMaskWithSymbol: PriceCompare, valueUpdate: 'afterkeydown'" class="input-mini" />
+                                    </td>
+                                    <!--ko if: $parents[0].NameChannels().length>0 -->
+                                    <!--ko foreach:  $parents[0].NameChannels -->
+                                    <td>
+                                        <!--ko foreach:  $parent.PriceChannels -->
+                                        <!--ko if: $parentContext.$data == Channel() -->
+                                        <input data-bind="moneyMaskWithSymbol: Price" class="input-mini" />
+                                        <!-- /ko -->
+                                        <!-- /ko -->
+                                    </td>
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                    <td>
+                                        <span data-bind="textMoneyDefaultSymbol: TotalMoney"></span>
+                                    </td>
+                                    <td>
+                                        <span class="btn btn-danger btn-small" data-bind="click: $parent.RemoveItem"><i class="icon-remove"></i></span>
+                                    </td>
+                                </tr>
+                                <!--/ko-->
+                                <tr>
+                                    <td data-bind="attr:{'colspan':(NameChannels().length + 8)}" class="text-right">
+                                        <strong>Tổng tiền</strong>
+                                    </td>
+                                    <td colspan="2">
+                                        <span data-bind="textMoneyDefaultSymbol: mOrderInput().Total"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" class="text-right">
+                                        <strong>Ghi chú</strong>
+                                    </td>
+                                    <td data-bind="attr:{'colspan':(NameChannels().length + 8)}">
+                                        <textarea data-bind="value: mOrderInput().Note" class="span12" style="height:70px"></textarea>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p class="p-t10">
+                            <button class="btn btn-success btn-small" data-bind="click:function(){ CreatOrderInput(true) }">Hoàn thành</button>
+                            <button class="btn btn-warning btn-small" data-bind="click: function(){ CreatOrderInput(false) }">Tạm Lưu</button>
+                        </p>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

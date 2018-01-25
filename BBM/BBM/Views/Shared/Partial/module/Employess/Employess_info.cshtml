@@ -1,0 +1,65 @@
+﻿<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
+<script src=@Url.Content("~/Scripts/module/Employess/m.Employess.js")></script>
+<script src=@Url.Content("~/Scripts/module/Employess/mv.Employess.js")></script>
+<script>
+    var employess = new Employess.mvEmployess();
+    $(document).ready(function () {
+        employess.StartEmpinfo();
+    });
+</script>
+<div id="EmployessInfoViewId" class="row-fluid">
+    <div data-bind="with: mEmployInfo" class="tab-pane in active">
+        <div class="span12 border-right m-b-30">
+            <div>
+                <div class="span4 text-right">Email: </div>
+                <div class="span8 text-left"> <input type="text" data-bind="value: Email"  disabled/></div>
+            </div>
+              <div>
+                <div class="span4 text-right">Name: </div>
+                <div class="span8 text-left"> <input type="text" data-bind="value: Name" class="form-control" /></div>
+            </div>
+          
+            <div>
+                <div class="span4 text-right">Phone: </div>
+                <div class="span8 text-left"> <input type="text" data-bind="value: Phone" /></div>
+            </div>
+            <div>
+                <div class="span4 text-right">Địa chỉ: </div>
+                <div class="span8 text-left"> <input type="text" data-bind="value: Address" /></div>
+            </div>
+            <div>
+                <div class="span4 text-right"></div>
+                <div class="span8 text-left">
+                    <label>
+                        <input type="checkbox" data-bind="checked: isUpdatePwd">
+                        <span class="lbl">Đổi mật khẩu</span>
+                    </label>
+                </div>
+            </div>
+            <!--ko if: isUpdatePwd -->
+            <div>
+                <div class="span4 text-right">Mật khẩu hiện tại</div>
+                <div class="span8 text-left">
+                    <input type="password" data-bind="value: Pwd" />
+                </div>
+            </div>
+            <div>
+                <div class="span4 text-right">Mật khẩu mới</div>    
+                <div class="span8 text-left">
+                    <input type="password" data-bind="value: PwdNew" />
+                </div>
+            </div>
+            <div>
+                <div class="span4 text-right">Nhập lại Mật khẩu </div>
+                <div class="span8 text-left"> <input type="password" data-bind="value: PwdRep" /></div>
+            </div>
+            <!--/ko-->
+            <div class="right">
+                <button class="btn btn-success" data-bind="click: $parents[0].UpdateEmloyessInfo ">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

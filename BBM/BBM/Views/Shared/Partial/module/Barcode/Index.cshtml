@@ -1,0 +1,39 @@
+﻿<script src=@Url.Content("~/Scripts/module/Barcode/m.printproductbarcode.js")></script>
+<script src=@Url.Content("~/Scripts/module/Barcode/mvbarcode.js")></script>
+@Html.Partial("~/Views/Shared/Partial/module/Barcode/_Barcode.cshtml")
+@Html.Partial("~/Views/Shared/Partial/module/Barcode/_Standard.cshtml")
+<script>
+
+    var listId = "@ViewBag.listId";
+    var barcode = new PrintProductBarcode.mvBarcode();
+    $(document).ready(function () {
+        barcode.Start();
+    });
+</script>
+
+<div id="BarcodeViewId" class="row-fluid"  style="min-height:400px">
+    <div class="span3">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>Tìm kiếm</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <!--ko template: {name: 'Filter_Search', data: FilterProduct } --><!--/ko-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="span9">
+        <div class="widget-box">
+            <div class="widget-header">
+                <h4>In Tem</h4>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div data-bind="template: {name: '_Setting'}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

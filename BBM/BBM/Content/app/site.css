@@ -1,0 +1,48 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    font-family: sans-serif;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.empty-allpolicy {
+    width: 100%;
+    text-align: center;
+    padding-top: 40px;
+}
+
+.table-price-policy td,
+.table-price-policy th {
+    padding: 5px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    /*max-width: 280px;*/
+}
+
+.nav-tabs {
+    background: #f5f6f7;
+    -webkit-border-top-left-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom: 1px solid #e0e6ec !important;
+    padding-top: 20px;
+    padding-left: 15px;
+}
+
+.toast-bottom-full-width, #toast-container, #toast-main {
+    left: 0;
+}

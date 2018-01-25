@@ -1,0 +1,128 @@
+﻿<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
+<script src=@Url.Content("~/Scripts/module/Discount/m.Discount.js")></script>
+<script src=@Url.Content("~/Scripts/module/Discount/mv.Discount.js")></script>
+@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
+<script>
+    var discount = new Discount.mvDiscount();
+    $(document).ready(function () {
+        discount.Start();
+    });
+</script>
+<div id="DiscountViewId" class="row-fluid">
+    <div class="span12">
+        <div class="text-right padding5px">
+            <button class="btn btn-success" data-bind="click : function(){  CommonUtils.showModal('#AddDiscount')}">Tạo Khuyến mãi</button>
+            <button class="btn btn-primary" data-bind="click: function() {  discount.Start() }"><i class="icon-refresh"></i></button>
+        </div>
+        <div class="row-fluid">
+            <div class="table-header">
+                Chương trình khuyến mãi
+            </div>
+            <!--ko template: {name: 'dataTables', data:discount.TmpTable } --><!--/ko-->
+        </div>
+    </div>
+    <div id="AddDiscount" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" data-bind="with: mDisscount">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="span12">
+                        <span class="span4 text-right">Tên chương trình KM: </span>
+                        <div class="span8"> <input type="text" data-bind="value: Name" /></div>
+                    </div>
+                    <div class="span12">
+                        <span class="span4 text-right">Giảm: </span>
+                        <div class="span8">
+                            <input type="text" class="width-100-px" data-bind="value: Value" />
+                            <select class="width-100-px" data-bind="options: $parents[0].lstTypeDiscount(), optionsText: 'name',optionsValue:'value', value: Type"></select>
+                        </div>
+                        <!-- /ko-->
+                    </div>
+                    <div class="span12">
+                        <span class="span4 text-right">Ngày bắt đầu: </span>
+                        <div class="span8">
+                            <input type="text" readonly="readonly" data-bind="datepicker: Startdate" class="input datepicker" data-date-format="dd-mm-yyyy" />
+                        </div>
+                        <!-- /ko-->
+                    </div>
+                    <div class="span12">
+                        <span class="span4 text-right"></span>
+                        <div class="span8">
+                            <label>
+                                <input name="form-field-checkbox" type="checkbox" data-bind="checked: IsNotExp">
+                                <span class="lbl"> Không hết hạn</span>
+                            </label>
+                        </div>
+                        <!-- /ko-->
+                    </div>
+                    <!--ko if: !IsNotExp() -->
+                    <div class="span12">
+                        <span class="span4 text-right">Ngày kết thúc: </span>
+                        <div class="span8">
+                            <input type="text" readonly="readonly" data-bind="datepicker: Enddate" class="input datepicker" data-date-format="dd-mm-yyyy" />
+                        </div>
+                        <!-- /ko-->
+                    </div>
+                    <!-- /ko -->
+
+                </div>
+                <!-- dialog buttons -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bind="click: AddDiscount">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="table_Discount" type="text/html">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Tên chương trình</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kết thúc</th>
+            <th>Người tạo</th>
+            <th>Nội dung</th>
+            <th>Số lượt</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!--ko foreach: listData() -->
+        <tr data-bind="attr:{class:Disable() ?'text_decoration_line_through':''}">
+            <td>
+                <span data-bind="text: Code"></span>
+            </td>
+            <td>
+                <span data-bind="text: Name"></span>
+            </td>
+            <td>
+                <span data-bind="datelong: Startdate"></span>
+            </td>
+            <td>
+                <!--ko if: Enddate -->
+                <span data-bind="datelong: Enddate"></span>
+                <!-- /ko -->
+                <!--ko if: !Enddate() -->
+                <span>----</span>
+                <!-- /ko -->
+            </td>
+            <td>
+                <span data-bind="textEmployeeName:  EmployeeCreate"></span>
+                (<span data-bind="datelong: DateCreate"></span>)
+            </td>
+            <td>
+                Giảm  <!--ko if: Type() == 1 --> <span data-bind="textMoneyDefaultSymbol: Value"></span><!--/ko--><!--ko if: Type() == 2 --> <span data-bind="text: Value"></span> %<!--/ko-->
+            </td>
+            <td>
+                <span data-bind="text: Total"></span>
+            </td>
+            <td>
+                <button class="btn btn-success btn-small" data-bind="'enable': !Disable(), click: $parents[1].Dissable_Discount">Tắt khuyến mãi</button>
+            </td>
+        </tr>
+        <!--/ko-->
+    </tbody>
+</script>
+
+

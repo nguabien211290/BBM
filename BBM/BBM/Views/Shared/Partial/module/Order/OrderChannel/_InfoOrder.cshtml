@@ -1,0 +1,240 @@
+﻿<script type="text/html" id="_InfoOrder">
+    <div class="span12">
+        <div class="span3">
+            <div class="profile-user-info-striped">
+                <div class="headOrder">
+                    Thông tin xuất
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Ngày xuất </div>
+
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="datelong:  mOrderSale().DateCreate"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Kênh bán hàng</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="text: mOrderSale().ChannelName"></span>
+                    </div>
+                </div>
+                <!--ko if: mOrderSale().Code -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Số hóa đơn</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="text: mOrderSale().Code() +'-'+ mOrderSale().Id() "></span>
+                    </div>
+                </div>
+                <!--/ko-->
+                <!--ko if: !mOrderSale().Code() -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Số hóa đơn</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="text: 'DH - XXX'"></span>
+                    </div>
+                </div>
+                <!--/ko-->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">NV bán hàng</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="textEmployeeName: mOrderSale().EmployeeCreate"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Người giao hàng</div>
+                    <div class="profile-info-value">
+                        <select data-bind="options: lstEmployShip, optionsText: 'Name',optionsValue:'Id', value: mOrderSale().EmployeeShip" style="width:90%!important"></select>
+                    </div>
+                </div>
+                <!--ko if: mOrderSale().Id() > 0 -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Trạng thái</div>
+                    <div class="profile-info-value">
+                        <span data-bind="renderStatus:mOrderSale().Status, typeStatus:'Order_Channel'"></span>                       
+                    </div>
+                </div>
+                <!--ko if: mOrderSale().EmployeeUpdate() > 0 -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">NV Cập nhật</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="textEmployeeName: mOrderSale().EmployeeUpdate"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Ngày Cập nhật</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="datelong:  mOrderSale().DateUpdate"></span>
+                    </div>
+                </div>
+                <!--/ko-->
+                <!--/ko-->
+                <div class="profile-info-row">
+                    <textarea data-bind="value: mOrderSale().Note" rows="3" style="width: 90%;margin: 6px;height: 37px;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="span3">
+            <div class="profile-user-info-striped">
+                <div class="headOrder">
+                    Thông tin khách hàng
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Số điện thoại</div>
+
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <input type="text" class="span12" placeholder="Điện thoại người nhận" data-bind="value: mOrderSale().Customer().Phone,event: { change: EventChangePhoneCustomer }">
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Tên khách</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <input type="text" class="span12" placeholder="Tên người nhận" data-bind="value: mOrderSale().Customer().Name">
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Địa chỉ</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <textarea class="span12" placeholder="Địa chỉ người nhận" data-bind="value: mOrderSale().Customer().Address"></textarea>
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Điểm tích lũy cũ</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="text:mOrderSale().Customer().Mark() +' điểm'"></span>
+                        <!--ko if: mOrderSale().Customer().Mark()>1000 -->
+                        <label class="text-left">
+                            <input type="checkbox" data-bind="checked: IsDisscountbyMark, value:true">
+                            <span class="lbl">Giảm <span data-bind="text: valueDiscountForMember"></span> %</span>
+                        </label>
+                        <!-- /ko -->
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Điểm tích lũy mới</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="text:mOrderSale().Customer().MarkTmp() +' điểm'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span3">
+            <div class="profile-user-info-striped">
+                <div class="headOrder">
+                    Thông tin giảm giá
+                </div>
+                <div data-bind="attr:{'class': DisscountType() == 'Money'  ?'profile-info-row' : 'profile-info-row bg-disible'}">
+                    <div class="profile-info-name">
+                        <label>
+                            <input type="radio" name="disscountType" value="Money" data-bind="checked: DisscountType">
+                            <span class="lbl">Số tiền giảm</span>
+                        </label>
+                    </div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <!-- ko if: DisscountType() == 'Money'-->
+                            <input type="text" class="input-small" data-bind="moneyMaskWithSymbol: InputDisscount,enable: DisscountType()=='Money' ? true : false" /> đ
+                            <!--/ko-->
+                            <!-- ko if: DisscountType() != 'Money'-->
+                            <input type="text" class="input-small" disabled /> đ
+                            <!--/ko-->
+                        </span>
+                    </div>
+                </div>
+                <div data-bind="attr:{'class': DisscountType() == 'Percent'  ?'profile-info-row' : 'profile-info-row bg-disible'}">
+                    <div class="profile-info-name">
+                        <label>
+                            <input type="radio" name="disscountType" value="Percent" data-bind="checked: DisscountType">
+                            <span class="lbl"> % Giảm</span>
+                        </label>
+                    </div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <!-- ko if: DisscountType() ==  'Percent'-->
+                            <input type="text" class="input-small" data-bind="enable: DisscountType()=='Percent' ? true : false,value: InputDisscount"> %
+                            <!--/ko-->
+                            <!-- ko if: DisscountType() != 'Percent'-->
+                            <input type="text" class="input-small" disabled /> %
+                            <!--/ko-->
+                        </span>
+                    </div>
+                </div>
+                <div data-bind="attr:{'class': DisscountType() == 'Code'  ?'profile-info-row' : 'profile-info-row bg-disible'}">
+                    <div class="profile-info-name">
+                        <label>
+                            <input type="radio" name="disscountType" value="Code" data-bind="checked: DisscountType">
+                            <span class="lbl">Mã giảm giá</span>
+                        </label>
+                    </div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <!-- ko if: DisscountType() == 'Code'-->
+                            <input type="text" class="span12" placeholder="Nhập mã giảm giá" data-bind="enable: DisscountType()=='Code' ? true : false,value: InputDisscount">
+                            <!--/ko-->
+                            <!-- ko if: DisscountType() != 'Code'-->
+                            <input type="text" class="span12" placeholder="Nhập mã giảm giá" disabled />
+                            <!--/ko-->
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row" style="height:85px">
+                    <div class="profile-info-name">Tổng giảm</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <span class="editable editable-click" data-bind="textMoneyDefaultSymbol:  mOrderSale().DisscountValue"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="span3">
+            <div class="profile-user-info-striped">
+                <div class="headOrder">
+                    Thông tin thanh toán
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Thanh toán</div>
+
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="textMoneyDefaultSymbol: mOrderSale().TotalMoney()"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Phí khác</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <input type="text" class="input-small" data-bind="moneyMaskWithSymbol:  mOrderSale().TotalOrther" />
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Tổng thanh toán</div>
+                    <div class="profile-info-value totalmoney">
+                        <span class="editable editable-click" data-bind="textMoneyDefaultSymbol: CustommerMoneyTake"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Khách đưa</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <input type="text" class="input-small" data-bind="moneyMaskWithSymbol: CustommerofMoney" />
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row" style="height:70px">
+                    <div class="profile-info-name">Tiền thừa</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="textMoneyDefaultSymbol: CustommerMoneyGive"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>

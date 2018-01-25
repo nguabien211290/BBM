@@ -1,0 +1,83 @@
+﻿<script id="_Setting" type="text/html">
+    <div class="panel app-register">
+        <div class="panel-heading">
+            <i class="fa fa-barcode"></i><span class="p-l5">In Barcode sản phẩm: <label data-bind="text:Product().title"></label></span>
+        </div>
+        <div class="panel-body">
+            <div id="panel-config">
+                <div data-bind="template: {name: 'Setting_share', data: $data}"></div>
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <label for="extcount" class="bold-light pull-right">Thuộc tính: </label>
+                    </div>
+                    <div class="col-md-10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="border-none-b">Tên thuộc tính</th>
+                                    <th class="border-none-b text-center">Mã barcode</th>
+                                    <th class="border-none-b text-center">Mẫu barcode</th>
+                                    <th class="border-none-b text-center">Số lần in</th>
+                                    <th class="border-none-b text-center">In</th>
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach: {data: ListVariant, afterRender: GenerateBarcodeSetting()}">
+                                <tr>
+                                    <td>
+                                        <span data-bind="text: title"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- ko if:barcode -->
+                                        <span data-bind="text: barcode"></span>
+                                        <!-- /ko -->
+                                        <!-- ko if:!barcode() -->
+                                        <span>Chưa có barcode</span>
+                                        <!-- /ko -->
+                                    </td>
+                                    <td class="text-center">
+                                        <div class='barcode-group'>
+                                            <!--ko if: $parent.mBarcodeConfig_Displayname() -->
+                                            <div class='header'>
+                                                <p data-bind="text: $parent.Product().title()"></p>
+                                                <p data-bind="text: title()"></p>
+                                            </div>
+                                            <!--/ko-->
+                                            <div class='print_barcode_img'>
+                                                <div class='print_barcode' data-bind="attr: {id: 'print_barcode_' + $index(), val: barcode}"></div>
+                                            </div>
+                                            <div class='footer'>
+                                                <!--ko if: $parent.mBarcodeConfig_Displaycode() -->
+                                                <p data-bind="text:barcode"></p>
+                                                <!--/ko-->
+                                                <!--ko if: $parent.mBarcodeConfig_Displayprice() -->
+                                                <p data-bind="textMoneyWithSymbol: price"></p>
+                                                <!--/ko-->
+                                            </div>
+                                            <!--/ko-->
+                                        </div>
+
+
+
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="number" min="0" max="200" class="form-control input-small text-center m-auto" data-bind="value: countPrint, valueUpdate:'afterkeydown', iChecked: countPrint" />
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-primary btn-small" data-bind="click:$parent.PrintOneVariant, disable: errorPrintBarcode">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-right" style="margin-right:20px">
+                        <button class="btn btn-primary btn-small" data-bind="enable: NeedPrint().length>0, click: PrintAllVariant">
+                            <i class="fa fa-print"></i> In tất cả
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

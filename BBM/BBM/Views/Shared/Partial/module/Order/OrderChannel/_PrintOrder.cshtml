@@ -1,0 +1,100 @@
+﻿<script type="text/html" id="_PrintOrder">
+    <div class="printable">
+        <h4 class="text-center" style="font-weight:bold">Babymart.vn - Nơi bố mẹ gửi trọn niềm tin.</h4>
+        <p class="text-center" style="line-height:1">Điện thoại: (028) 7309.3479 – Hotline: 0918.644643.</p>
+        <h4 class="text-center m-t-20"> HÓA ĐƠN BÁN HÀNG</h4>
+        <table class="m-auto">
+            <tbody>
+                <tr>
+                    <td class="text-right">Ngày : </td>
+                    <td data-bind="datelongfull:  mOrderSale().DateCreate" class="text-left"></td>
+                </tr>
+                <tr>
+                    <td class="text-right">Số hóa đơn : </td>
+                    <td data-bind="text: mOrderSale().Code() +'-'+ mOrderSale().Id()" class="text-left"></td>
+                </tr>
+                <tr>
+                    <td class="text-right">Tên KH: </td>
+                    <td data-bind="text: mOrderSale().Customer().Name() ? mOrderSale().Customer().Name() : '---'" class="text-left"></td>
+                </tr>
+                <tr>
+                    <td class="text-right">SĐT: </td>
+                    <td data-bind="text: mOrderSale().Customer().Phone() ? mOrderSale().Customer().Phone() : '---'" class="text-left"></td>
+                </tr>
+                <!--ko if: mOrderSale().isChannelOnline() -->
+                <tr>
+                    <td class="text-right">Địa chỉ: </td>
+                    <td data-bind="text: mOrderSale().Customer().Address() ? mOrderSale().Customer().Address() : '---'" class="text-left"></td>
+                </tr>
+                <!--/ko-->
+                <tr>
+                    <td class="text-right">NV bán hàng: </td>
+                    <td data-bind="textEmployeeName: mOrderSale().EmployeeCreate" class="text-left"></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-striped table-bordered table-hover dataTable">
+            <thead>
+                <tr>
+                    <td>Stt</td>
+                    <td>Tên sản phẩm</td>
+                    <td>SL</td>
+                    <td>Giá</td>
+                    <td>Thành tiền</td>
+                </tr>
+            </thead>
+            <tbody>
+                <!--ko foreach:  mOrderSale().Detail() -->
+                <!--ko if: ProductId() >0 -->
+                <tr class="odd">
+                    <td class="text-center">
+                        <span data-bind="text: ($index() + 1)"></span>
+                    </td>
+                    <td>
+                        <span data-bind="text: ProductName"></span>
+                    </td>
+                    <td>
+                        <span data-bind="text: Total"></span>
+                    </td>
+                    <td class="text-center">
+                        <span data-bind="textMoneyDefaultSymbol: Price"></span>
+                    </td>
+                    <td>
+                        <span data-bind="textMoneyDefaultSymbol: TotalMoney"></span>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <!-- /ko -->
+                <tr>
+                    <td colspan="3" class="text-right">Tổng thành tiền</td>
+                    <td colspan="2">
+                        <span data-bind="textMoneyDefaultSymbol: mOrderSale().TotalMoney()"></span>
+                    </td>
+                </tr>
+                <!--ko if: mOrderSale().DisscountValue() >0 -->
+                <tr>
+                    <td colspan="3" class="text-right">Giảm giá chung</td>
+                    <td colspan="2">
+                        <span data-bind="textMoneyDefaultSymbol:  mOrderSale().DisscountValue"></span>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <!--ko if: mOrderSale().TotalOrther() >0 -->
+                <tr>
+                    <td colspan="3" class="text-right">Phí khác</td>
+                    <td colspan="2">
+                        <span data-bind="textMoneyDefaultSymbol:  mOrderSale().TotalOrther"></span>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <tr>
+                    <td colspan="3" class="text-right"><b>Thanh toán</b></td>
+                    <td colspan="2">
+                        <span data-bind="textMoneyDefaultSymbol: CustommerMoneyTake"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h5 style="text-align:right">Cám ơn và hẹn gặp lại !</h5>
+    </div>
+</script>

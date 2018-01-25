@@ -1,0 +1,303 @@
+﻿<script id="Setting_share" type="text/html">
+    <div class="box-recommend clearfix">
+        <div class="ico-1">
+            <i class="fa fa-barcode"></i>
+        </div>
+        <div>
+            <div class="note">
+               Cấu hình barcode
+            </div>
+
+            <div class="box-detail">
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <label for="extcount" class="bold-light pull-right">Kiểu barcode: </label>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="col-md-7 p-none">
+                            <div class="col-md-4 pull-left">
+                                <label>
+                                    <input type="radio" name="Barcode_Type" data-bind="checked: Config().barcodeType, checkedValue: 1">
+                                    CODE128
+                                </label>
+                            </div>
+                            <div class="col-md-4 pull-left">
+                                <label>
+                                    <input type="radio" name="Barcode_Type" data-bind="checked: Config().barcodeType, checkedValue: 2">
+                                    EAN13
+                                </label>
+                            </div>
+                            <div class="col-md-4 pull-right">
+                                <label>
+                                    <input type="radio" name="Barcode_Type" data-bind="checked: Config().barcodeType, checkedValue: 3">
+                                    UPC
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <label for="extcount" class="bold-light pull-right">Tùy chỉnh Barcode: </label>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="col-md-7 p-none">
+                            <div class="col-md-4 p-none pull-left">
+                                <label>
+                                    <input type="checkbox" data-bind="checked: mBarcodeConfig_Displayname,checkedValue: true">
+                                    Hiển thị tên sản phẩm
+                                </label>
+                            </div>
+                            <div class="col-md-4 p-none  pull-left">
+                                <label>
+                                    <input type="checkbox" data-bind="checked:mBarcodeConfig_Displaycode,checkedValue: true">
+                                    Hiển thị mã barcode
+                                </label>
+                            </div>
+                            <div class="col-md-4 p-none pull-right">
+                                <label>
+                                    <input type="checkbox" data-bind="checked:mBarcodeConfig_Displayprice,checkedValue: true">
+                                    Hiển thị giá
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Khổ In</legend>
+                        <div class="control-group">
+                            <div class="col-md-12">
+                                <div class="col-md-2">
+                                    <label for="extcount" class="bold-light pull-right">Khổ in: </label>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="col-md-12 p-none">
+                                        <select data-bind="options: listStandard, optionsText: 'name', value: selectedPrintType, optionsValue: 'id'" class="form-control mr15" style="float:left;"></select>
+                                        <label class="inline_block vertical-align-t bold-light">Width: </label>
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: pageSize" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Padding Top Khổ In: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6 p-none">
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: paddingTopPage" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Padding Bottom Khổ In: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6 p-none">
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: paddingBotPage" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Padding Left Khổ In: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6 p-none">
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: paddingLeftPage" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Padding Right Khổ In: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6 p-none">
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: paddingRightPage" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-6">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Tem In</legend>
+                        <div class="control-group">
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Kích thước Barcode: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-12 p-none">
+                                        <div class="col-md-12">
+                                            <label class="inline_block vertical-align-t bold-light">Width: </label>
+                                            <div class="inline_block mr10">
+                                                <div class="input-group input-small">
+                                                    <input type="text" class="form-control text-center" data-bind="value: WidthItem" />
+                                                    <span class="input-group-addon" id="basic-addon2">px</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="inline_block vertical-align-t bold-light">Height: </label>
+                                            <div class="inline_block">
+                                                <div class="input-group input-small">
+                                                    <input type="text" class="form-control text-center" data-bind="value: HeightItem" />
+                                                    <span class="input-group-addon" id="basic-addon2">px</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Canh lề trái Barcode: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6 p-none">
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: MarginLeftItem" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Canh lề trái Tem: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6 p-none">
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: MarginLeftPage" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Canh lề dưới Tem: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-6 p-none">
+                                        <div class="inline_block mr10">
+                                            <div class="input-group input-small">
+                                                <input type="text" class="form-control text-center" data-bind="value: marginBottomItem" />
+                                                <span class="input-group-addon" id="basic-addon2">mm</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Kích thước Tem: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-12 p-none">
+                                        <div class="col-md-12">
+                                            <label class="inline_block vertical-align-t bold-light">Width: </label>
+                                            <div class="inline_block mr10">
+                                                <div class="input-group input-small">
+                                                    <input type="text" class="form-control text-center" data-bind="value: WidthFlag" />
+                                                    <span class="input-group-addon" id="basic-addon2">mm</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="inline_block vertical-align-t bold-light">Height: </label>
+                                            <div class="inline_block">
+                                                <div class="input-group input-small">
+                                                    <input type="text" class="form-control text-center" data-bind="value: HeightFlag" />
+                                                    <span class="input-group-addon" id="basic-addon2">mm</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Số Tem trên 1 dòng : </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-4 p-none">
+                                        <input type="text" class="form-control input-small text-center" data-bind="value: itemInLine" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Padding: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-4 p-none">
+                                        <div class="input-group input-small">
+                                            <input type="text" class="form-control text-center" data-bind="value: paddingItem" />
+                                            <span class="input-group-addon" id="basic-addon2">mm</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-4 mr10">
+                                    <label class="bold-light pull-right">Font Size: </label>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-4 p-none">
+                                        <div class="input-group input-small">
+                                            <input type="text" class="form-control text-center" data-bind="value: fontSize" />
+                                            <span class="input-group-addon" id="basic-addon2">px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-md-12 text-center">
+                    <input type="button" class="btn btn-primary" value="Mặc định" data-bind="click: SetConfigDefault" />
+                    <input type="button" class="btn btn-primary" value="Lưu khổ in" data-bind="click: SavePrintType" />
+                </div>
+            </div>
+        </div>
+        <a class="detail" data-bind="click:VisibleConfigBarCode"><i class="fa fa-angle-right fa-2"></i></a>
+    </div>
+</script>
+  
+
