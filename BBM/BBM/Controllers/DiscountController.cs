@@ -38,7 +38,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var lstTmp = from disc in _context.soft_Discount orderby disc.Id descending select disc;
@@ -64,7 +64,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách khuyến mãi không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -100,7 +100,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách khuyến mãi không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -158,7 +158,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tạo khuyến mãi không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

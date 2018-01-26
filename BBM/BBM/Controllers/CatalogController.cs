@@ -41,7 +41,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var lstTmp = from supplier in _context.soft_Catalog select supplier;
@@ -92,7 +92,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị Nhóm sản phẩm có lỗi!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -114,7 +114,7 @@ namespace BBM.Controllers
                 if (string.IsNullOrEmpty(model.Name))
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Dữ liệu không hợp lệ vui lòng thử lại.";
+                    Messaging.messaging = "Tên nhóm không được trống.";
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
 
@@ -136,12 +136,12 @@ namespace BBM.Controllers
                 }
 
                 _crud.SaveChanges();
-                Messaging.messaging = "Cập nhật thành công!";
+                Messaging.messaging = "Cập nhật nhóm thành công!";
             }
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Cập nhật nhóm không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -183,7 +183,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Nhóm hàng này đang sử dụng không xóa được, vui lòng thử lại !";
+                Messaging.messaging = "Nhóm hàng này đang sử dụng không xóa được, vui lòng thử lại!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

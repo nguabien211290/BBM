@@ -52,7 +52,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var employ = _context.sys_Employee.Find(User.UserId);
@@ -60,7 +60,7 @@ namespace BBM.Controllers
                 if (employ == null)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var result = Mapper.Map<EmployeeModel>(employ);
@@ -70,7 +70,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị nhân viên không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -83,7 +83,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var lstTmp = from employ in _context.sys_Employee
@@ -207,7 +207,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách nhân viên không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -263,12 +263,12 @@ namespace BBM.Controllers
                 }
 
                 _crud.SaveChanges();
-                Messaging.messaging = "Cập nhật thành công!";
+                Messaging.messaging = "Cập nhật nhân viên thành công!";
             }
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Cập nhật nhân viên không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -325,7 +325,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Cập nhật thông tin cá nhân không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -352,7 +352,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Cập nhật chức danh không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -382,7 +382,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Xóa nhân viên không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

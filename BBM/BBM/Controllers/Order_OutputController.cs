@@ -51,7 +51,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
                 //var lstTmp = from order in _context.soft_Order where order.TypeOrder == (int)TypeOrder.Output && order.Id_From == User.BranchesId orderby order.DateCreate descending select order;
 
@@ -200,7 +200,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách phiếu xuất không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -299,7 +299,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tạo phiếu xuất không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

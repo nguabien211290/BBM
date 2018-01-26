@@ -89,7 +89,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 Channel_Paging<OrderModel> lstInfo = new Channel_Paging<OrderModel>();
@@ -136,7 +136,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị đơn hàng nhập không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -164,44 +164,13 @@ namespace BBM.Controllers
                 var user = Mapper.Map<UserCurrent>(User);
 
                 Messaging.isError = !_IOrderBus.AddOrder_Input(model, user, isDone, OrderSuppliersId);
-
-                //var objOrder = Mapper.Map<soft_Order>(model);
-                //if (OrderSuppliersId > 0)
-                //    objOrder.Id_From = OrderSuppliersId;
-                //objOrder.Id_To = User.BranchesId;
-                //objOrder.DateCreate = DateTime.Now;
-                //objOrder.EmployeeCreate = User.UserId;
-                //objOrder.TypeOrder = (int)TypeOrder.Input;
-                //objOrder.Status = isDone ? (int)StatusOrder_Input.Done : (int)StatusOrder_Input.Process;
-
-                //_crud.Add<soft_Order>(objOrder);
-
-                //if (OrderSuppliersId > 0 && isDone)
-                //    UpdateOrderSuppliers(model, OrderSuppliersId);
-
-
-
-                //model.Id_To = User.BranchesId;
-                //model.TypeOrder = (int)TypeOrder.Input;
-
-                //if (isDone)
-                //{
-                //    UpdateStockByBranches(model);
-                //}
-                //else
-                //{
-                //    UpdatePriceCompare(model);
-                //}
-
-                //UpdatePrice_Channel(model);
-
-                //_crud.SaveChanges();
-                Messaging.messaging = "Đã Nhập hàng thành công !";
+                
+                Messaging.messaging = "Đã Nhập hàng thành công!";
             }
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Nhập hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -252,7 +221,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Cập nhật đơn hàng nhập không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

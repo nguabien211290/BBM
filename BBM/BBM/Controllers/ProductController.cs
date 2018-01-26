@@ -44,7 +44,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị sản phẩm không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -314,7 +314,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách sản phẩm không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -371,12 +371,12 @@ namespace BBM.Controllers
                     }
                 }
                 _crud.SaveChanges();
-                Messaging.messaging = "Đã thay đổi giá thành công !";
+                Messaging.messaging = "Đã thay đổi giá thành công!";
             }
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Thay đổi giá không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -430,7 +430,7 @@ namespace BBM.Controllers
                     _crud.SaveChanges();
 
                     Messaging.isError = false;
-                    Messaging.messaging = "Cập nhật dữ liệu thành công!";
+                    Messaging.messaging = "Cập nhật sản phẩm thành công!";
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -443,7 +443,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Cập nhật sản phẩm không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -493,7 +493,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tạo sản phẩm không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -538,7 +538,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Sản phẩm này hiện đang sử dụng không xóa được, vui lòng kiểm tra các ràng buộc !";
+                Messaging.messaging = "Sản phẩm này hiện đang sử dụng không xóa được, vui lòng kiểm tra các ràng buộc!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -559,7 +559,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị giá theo kênh không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -637,7 +637,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tìm kiếm sản phẩm có lỗi!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -697,12 +697,12 @@ namespace BBM.Controllers
                     }
                 }
                 _crud.SaveChanges();
-                Messaging.messaging = "Đã thay đổi giá khuyến mãi thành công !";
+                Messaging.messaging = "Đã thay đổi giá khuyến mãi thành công!";
             }
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Thay đổi giá khuyến mãi không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

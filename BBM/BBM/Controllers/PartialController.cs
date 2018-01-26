@@ -534,7 +534,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tìm kiếm sản phẩm có lỗi!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -636,7 +636,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tìm kiếm sản phẩm có lỗi!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

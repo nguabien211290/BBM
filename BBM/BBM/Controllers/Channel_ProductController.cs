@@ -39,7 +39,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var lstTmp = _context.soft_Channel_Product_Price.Where(o => o.ChannelId.Equals(User.ChannelId)).ToList();
@@ -118,7 +118,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách Kênh - Sản phẩm không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -139,12 +139,12 @@ namespace BBM.Controllers
                     _crud.Update<soft_Channel_Product_Price>(data, o => o.Price);
                 }
                 _crud.SaveChanges();
-                Messaging.messaging = "Đã thay đổi giá thành công !";
+                Messaging.messaging = "Đã thay đổi giá thành công!";
             }
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Thay đổi giá không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -160,7 +160,7 @@ namespace BBM.Controllers
                 {
                     _context.soft_Channel_Product_Price.Remove(hasIts);
                     _context.SaveChanges();
-                    Messaging.messaging = "Đã xóa sản phẩm này ra khỏi Kênh thành công !";
+                    Messaging.messaging = "Đã xóa sản phẩm này ra khỏi Kênh thành công!";
 
                 }
                 else
@@ -172,7 +172,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Xóa sản phẩm này ra khỏi Kênh không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -186,7 +186,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId > 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
                 var product = _context.shop_sanpham.Find(ProductId);
                 if (product != null)
@@ -203,63 +203,14 @@ namespace BBM.Controllers
 
                 }
                 _crud.SaveChanges();
-                Messaging.messaging = "Đã thêm sản phẩm vào kênh thành công !";
+                Messaging.messaging = "Đã thêm sản phẩm vào kênh thành công!";
             }
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Thêm sản phẩm vào kênh không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
-        //[HttpPost]
-        //public JsonResult LoadListKenh_product(List<int> groupTeam, List<int> groupNPP)
-        //{
-        //    var result = from s in _context.soft_Channel_Product select s;
-        //    int ispass = 0;
-        //    if (groupTeam != null && groupTeam.Count > 0)
-        //    {
-        //        result = result.Where(o => groupTeam.Contains(o.shop_sanpham.soft_IdGroupProduct.Value));
-        //        ispass++;
-        //    }
-        //    if (groupNPP != null && groupNPP.Count > 0)
-        //    {
-        //        result = result.Where(o => groupNPP.Contains(o.shop_sanpham.soft_IdNPP.Value));
-        //        ispass++;
-        //    }
-        //    if (ispass > 0)
-        //    {
-        //        var list = Mapper.Map<List<Channel_ProductModel>>(result.ToList());
-        //        foreach (var item in list)
-        //        {
-        //            //item.masp = item.shop_sanpham.tensp;
-        //            //item.barcode = item.shop_sanpham.soft_Barcode;
-        //            //item.tensp = item.shop_sanpham.tensp;
-        //        }
-        //        return Json(list, JsonRequestBehavior.AllowGet);
-        //    }
-        //    else
-        //        return Json(new List<Channel_ProductModel>(), JsonRequestBehavior.AllowGet);
-        //}
-
-        //[HttpPut]
-        //public JsonResult Edit(soft_Channel_Product model)
-        //{
-        //    var Messaging = new RenderMessaging();
-        //    try
-        //    {
-        //        var data = _context.soft_Channel_Product.Find(model.Id);
-        //        _context.Entry(data).CurrentValues.SetValues(model);
-        //        _context.SaveChanges();
-        //        Messaging.success = true;
-        //        Messaging.messaging = "Cập nhật giá bán thành công";
-        //    }
-        //    catch
-        //    {
-        //        Messaging.isError = true;
-        //        Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
-        //    }
-        //    return Json(Messaging, JsonRequestBehavior.AllowGet);
-        //}
     }
 }

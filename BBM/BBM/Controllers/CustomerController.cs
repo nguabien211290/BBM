@@ -42,7 +42,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var lstTmp = from customers in _context.khachhangs orderby customers.MaKH descending select customers;
@@ -140,7 +140,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách khách hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -181,12 +181,12 @@ namespace BBM.Controllers
                 }
 
                 _crud.SaveChanges();
-                Messaging.messaging = "Cập nhật thành công!";
+                Messaging.messaging = "Cập nhật khách hàng thành công!";
             }
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Cập nhật khách hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -207,7 +207,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tìm kiếm khách hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

@@ -45,7 +45,7 @@ namespace BBM.Controllers
                 if (User == null)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var config = new ConfigModel();
@@ -79,7 +79,7 @@ namespace BBM.Controllers
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Lấy Cấu hình không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -138,14 +138,14 @@ namespace BBM.Controllers
                         if (rs == null)
                         {
                             Messaging.isError = true;
-                            Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                            Messaging.messaging = "Do sự cố mạng, vui lòng thử lại!";
                         }
                         else
                         {
                             if (rs.Count > 0)
                             {
                                 Messaging.isError = true;
-                                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại!";
                                 Messaging.Data = rs;
                             }
                             else
@@ -160,7 +160,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại!";
             }
 
             return Json(Messaging, JsonRequestBehavior.AllowGet);

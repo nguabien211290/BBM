@@ -52,7 +52,7 @@ namespace BBM.Controllers
                 if (User == null || User.ChannelId <= 0)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = "Vui lòng đăng nhập lại !";
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
                 var clientMatters = _context.soft_Order.Where(o =>
@@ -142,7 +142,7 @@ namespace BBM.Controllers
             catch(Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Hiển thị danh sách phiếu điều chỉnh không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
@@ -182,12 +182,12 @@ namespace BBM.Controllers
                 UpdateStockByBranches(objOrder);
 
                 _crud.SaveChanges();
-                Messaging.messaging = "Đã tạo phiếu điều chỉnh thành công !";
+                Messaging.messaging = "Đã tạo phiếu điều chỉnh thành công!";
             }
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại !";
+                Messaging.messaging = "Tạo phiếu điều chỉnh không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
