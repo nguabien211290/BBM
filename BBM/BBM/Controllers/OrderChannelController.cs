@@ -14,6 +14,7 @@ using BBM.Infractstructure.Security;
 using BBM.Business.Logic;
 using BBM.Business.Model.Module;
 using BBM.Business.Repository;
+using System.Threading.Tasks;
 
 namespace BBM.Controllers
 {
@@ -65,7 +66,7 @@ namespace BBM.Controllers
 
                 int count, min = 0;
 
-                var lstOrder = _IOrderBus.GetOrder_Sale(pageinfo, User.BranchesId, out count, out min);
+                var lstOrder = _IOrderBus.GetOrder_Sale(pageinfo, User.ChannelId, out count, out min);
 
                 lstInfo.totalItems = count;
 
@@ -78,7 +79,7 @@ namespace BBM.Controllers
                 var soft_Branches = _unitOW.BrachesRepository.GetAll().ToList();
 
                 var soft_Channel = _unitOW.ChannelRepository.GetAll().ToList();
-                
+
                 foreach (var item in lstInfo.listTable)
                 {
                     if (item.Id_From > 0)
@@ -199,7 +200,7 @@ namespace BBM.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateStatus_Order_Sale(OrderModel model)
+        public async Task<JsonResult> UpdateStatus_Order_Sale(OrderModel model)
         {
             var Messaging = new RenderMessaging();
             try
@@ -213,20 +214,18 @@ namespace BBM.Controllers
 
                 var user = Mapper.Map<UserCurrent>(User);
 
-                string errorMsg = string.Empty;
+                var result = await _IOrderBus.UpdateOrder_Sale(model, user);
 
-                var isSuccess = _IOrderBus.UpdateOrder_Sale(model, user, out errorMsg);
-
-                if (!isSuccess)
+                if (!result.Item1)
                 {
                     Messaging.isError = true;
-                    Messaging.messaging = !string.IsNullOrEmpty(errorMsg) ? errorMsg : "Cập nhât đơn hàng không thành công.";
+                    Messaging.messaging = !string.IsNullOrEmpty(result.Item2) ? result.Item2 : "Cập nhât đơn hàng không thành công.";
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
 
                 var isPrint = User.IsPrimary;
                 Messaging.isError = false;
-                Messaging.messaging = "Cập nhât đơn hàng thành công.";
+                Messaging.messaging = "Cập nhật đơn hàng thành công.";
                 Messaging.Data = new { isPrint = isPrint };
             }
             catch
@@ -239,7 +238,7 @@ namespace BBM.Controllers
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_Sales })]
         [HttpPost]
-        public JsonResult CreatOrderSale(OrderModel model, bool isDone)
+        public async Task<JsonResult> CreatOrderSale(OrderModel model, bool isDone)
         {
             var Messaging = new RenderMessaging();
             try
@@ -270,9 +269,19 @@ namespace BBM.Controllers
 
                 var user = Mapper.Map<UserCurrent>(User);
 
-                var order = _IOrderBus.CreatOrder_Sale(model, isDone, user);
+                var order = await _IOrderBus.CreatOrder_Sale(model, isDone, user);
+                var isPrint = false;
 
-                var isPrint = User.IsPrimary;
+                if (User.IsPrimary)
+                {
+                    if (model.Status == (int)StatusOrder_Sale.Done)
+                        isPrint = true;
+                }
+                else
+                {
+                    isPrint = true;
+                }
+
                 Messaging.Data = new { Code = order.Code + "-" + order.Id, isPrint = isPrint };
                 Messaging.messaging = "Đã tạo đơn hàng thành công.";
             }

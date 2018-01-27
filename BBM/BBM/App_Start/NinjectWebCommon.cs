@@ -69,8 +69,16 @@ namespace BBM.App_Start
 
             #region Business
             kernel.Bind<IOrderBusiness>().To<OrderBusiness>();
+            kernel.Bind<IBrachesBusiness>().To<BrachesBusiness>();
+            kernel.Bind<ICatalogBusiness>().To<CatalogBusiness>();
+            kernel.Bind<IChannelBusiness>().To<ChannelBusiness>();
+            kernel.Bind<ICustomerBusiness>().To<CustomerBusiness>();
+            kernel.Bind<IDiscountBusiness>().To<DiscountBusiness>();
             kernel.Bind<IImportBusiness>().To<ImportBusiness>();
-            
+            kernel.Bind<ISuppliersBusiness>().To<SuppliersBusiness>();
+            kernel.Bind<IProductBusiness>().To<ProductBusiness>();
+            kernel.Bind<INotificaitonBusiness>().To<NotificaitonBusiness>();
+
             #endregion
 
         }

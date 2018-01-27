@@ -38,7 +38,7 @@ PrintProductBarcode.mConfig = function () {
     self.SelectedStandard = ko.observable();
     self.PageSize = ko.observable();
     self.isInit = ko.observable(false);
-    self.ItemInbreak = ko.observable(0);
+    self.ItemInbreak = ko.observable(1);
     self.SelectedStandard.subscribe(function (val) {
         if (self.isInit())
             self.PageSize(val.width);

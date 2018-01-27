@@ -78,7 +78,8 @@ namespace BBM.Controllers
                     Status = o.Status.HasValue ? o.Status.Value : 0,
                     StatusVAT = o.StatusVAT.HasValue ? o.StatusVAT.Value : 0,
                     DateCreate = o.DateCreate,
-                    PriceWholesale = o.PriceWholesale.HasValue ? o.PriceWholesale.Value : 0
+                    PriceWholesale = o.PriceWholesale.HasValue ? o.PriceWholesale.Value : 0,
+                    Stock_Sum = o.soft_Branches_Product_Stock.Any() ? o.soft_Branches_Product_Stock.Sum(p => p.Stock_Total) : 0
                 });
 
                 // IQueryable<shop_sanpham> lstTmp = _context.shop_sanpham;

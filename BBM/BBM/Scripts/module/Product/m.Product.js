@@ -30,6 +30,8 @@ Product.mProductSample = function () {
     self.Note = ko.observable();
     self.Status = ko.observable();
     self.StatusVAT = ko.observable();
+
+    self.Stock_Sum = ko.observable(0);
 };
 Product.mProduct_Price = function () {
     var self = this;
@@ -79,6 +81,7 @@ Product.mDisplayProductSample = function () {
     self.IsImg = ko.observable(true);
     self.IsStatus = ko.observable(true);
     self.IsStock = ko.observable(true);
+    self.IsStock_Sum = ko.observable(true);
     self.IsPrice_Discount = ko.observable(true);
     self.IsPrice_Channel = ko.observable(true);
     self.IsVAT = ko.observable(true);

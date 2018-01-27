@@ -3,6 +3,8 @@
 <script>
     var valueDiscountFormember = 5;
     var orderSale_@Html.Raw(ViewBag.OrderId) = new Order.mvOrderSale(@Html.Raw(ViewBag.OrderId));
+
+    var OrderId = "@Html.Raw(ViewBag.OrderId)";
     $(document).ready(function () {
         (orderSale_@Html.Raw(ViewBag.OrderId)).Start();
     });

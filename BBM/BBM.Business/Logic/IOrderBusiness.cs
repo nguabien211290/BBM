@@ -16,11 +16,11 @@ namespace BBM.Business.Logic
 
         List<OrderModel> GetOrder_Inside(PagingInfo pageinfo, int BranchesId, out int count, out int min);
 
-        bool AddOrder_Input(OrderModel model, UserCurrent User, bool isDone = true, int OrderSuppliersId = 0);
+        Task<bool> AddOrder_Input(OrderModel model, UserCurrent User, bool isDone = true, int OrderSuppliersId = 0);
 
-        OrderModel CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User);
+        Task<OrderModel> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User);
 
-        bool UpdateOrder_Sale(OrderModel model, UserCurrent User, out string error);
+        Task<Tuple<bool, string>> UpdateOrder_Sale(OrderModel model, UserCurrent User);
 
         OrderModel GetInfoOrder(int Id);
     }

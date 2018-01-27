@@ -18,22 +18,11 @@ namespace BBM.Business.Logic
         {
             var channel = unitOfWork.ChannelRepository.GetById(BranchesId);
 
-            if (channel.Type == (int)TypeChannel.IsChannelOnline)
-            {
-                if (pageinfo.filterby == null)
-                    pageinfo.filterby = new List<FilterModel>();
-
-                pageinfo.filterby.Add(new FilterModel
-                {
-                    Fiter = "ChannelOnline",
-                });
-            }
-
             var result = unitOfWork.OrderSaleRepository.SearchBy(pageinfo, BranchesId, out count, out min);
             return Mapper.Map<List<donhang>>(result);
         }
 
-        public OrderModel CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User)
+        public async Task<OrderModel> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User)
         {
             #region Customer
             if (model.Customer.Id > 0)
@@ -126,28 +115,28 @@ namespace BBM.Business.Logic
 
             UpdateStockByBranches(model, User);
 
-            unitOfWork.SaveChanges();
+            await unitOfWork.SaveChanges();
 
             return Mapper.Map<OrderModel>(objOrder);
         }
 
-        public bool UpdateOrder_Sale(OrderModel model, UserCurrent User, out string error)
+        public async Task<Tuple<bool, string>> UpdateOrder_Sale(OrderModel model, UserCurrent User)
         {
-            error = string.Empty;
+            var error = string.Empty;
 
             var order = unitOfWork.OrderSaleRepository.GetById(model.Id);
 
             if (order == null)
             {
                 error = "Không tìm thấy đơn hàng này.";
-                return false;
+                return new Tuple<bool, string>(false, error);
             }
 
             if (order.Status == (int)StatusOrder_Sale.Cancel
                 || order.Status == (int)StatusOrder_Sale.Done)
             {
                 error = "Đơn hàng này đã được xử lý.";
-                return false;
+                return new Tuple<bool, string>(false, error);
             }
 
             #region Order
@@ -239,9 +228,9 @@ namespace BBM.Business.Logic
                 UpdateStockByBranches(model, User);
 
 
-            unitOfWork.SaveChanges();
+            await unitOfWork.SaveChanges();
 
-            return true;
+            return new Tuple<bool, string>(true, string.Empty);
         }
 
         public OrderModel GetInfoOrder(int Id)
@@ -255,11 +244,21 @@ namespace BBM.Business.Logic
                 return null;
             }
 
-            var channel = unitOfWork.ChannelRepository.GetById(rs.Channeld);
+            if (rs.Channeld != null)
+            {
 
-            order.ChannelName = channel.Channel;
+                var channel = unitOfWork.ChannelRepository.GetById(rs.Channeld);
 
-            order.isChannelOnline = channel.Type == (int)TypeChannel.IsChannelOnline ? true : false;
+                order.ChannelName = channel.Channel;
+
+                order.isChannelOnline = channel.Type == (int)TypeChannel.IsChannelOnline ? true : false;
+
+            }
+            else
+            {
+                order.isChannelOnline = true;
+                order.ChannelName = "Kênh Online";
+            }
 
             if (order.Detail.Count > 0)
             {

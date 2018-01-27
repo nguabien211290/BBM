@@ -1,5 +1,6 @@
 ﻿using BBM.Business.Infractstructure;
 using BBM.Business.Model.Entity;
+using BBM.Business.Model.Enum;
 using BBM.Business.Models.Enum;
 using System;
 using System.Collections.Generic;
@@ -65,12 +66,16 @@ namespace BBM.Business.Logic
 
                             var value = row[col.ColumnName].ToString();
 
-                            if (string.IsNullOrEmpty(value))
-                                continue;
-
                             if (columnName.Equals("Code"))
                             {
                                 masp = value.Trim();
+
+                                if (string.IsNullOrEmpty(masp))
+                                {
+                                    isError = true;
+                                    break;
+                                }
+
 
                                 product = unitOfWork.ProductRepository.FindBy(o => o.masp.Equals(masp)).FirstOrDefault();
 
@@ -80,6 +85,9 @@ namespace BBM.Business.Logic
                                     product.masp = value.Trim();
                                 }
                             }
+
+                            if (string.IsNullOrEmpty(value))
+                                continue;
 
                             switch (columnName)
                             {
@@ -261,7 +269,7 @@ namespace BBM.Business.Logic
                                             BranchesId = barches.BranchesId,
                                             Stock_Total = double.Parse(value),
                                             DateCreate = DateTime.Now,
-                                            EmployeeCreate = UserId
+                                            EmployeeCreate = UserId,
                                         };
 
                                         unitOfWork.BrachesStockRepository.Add(newobj);
@@ -313,6 +321,9 @@ namespace BBM.Business.Logic
                     {
                         if (product.id <= 0)
                         {
+                            product.DateCreate = DateTime.Now;
+                            product.FromCreate = (int)TypeFromCreate.Soft;
+
                             unitOfWork.ProductRepository.Add(product);
 
                             unitOfWork.ImageRepository.Add(imgage);

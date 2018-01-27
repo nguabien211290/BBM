@@ -52,7 +52,7 @@ namespace BBM.Business.Logic
 
                         if (priceOL != null)
                         {
-                            product.PriceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) - product.PriceBase;
+                            product.PriceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
                             //Giá bán sỉ = (Giá bán online-Giá cơ bản)/5.3 - giá cơ bản
                         }
 

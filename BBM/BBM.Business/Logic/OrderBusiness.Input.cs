@@ -19,7 +19,7 @@ namespace BBM.Business.Logic
         {
             return Mapper.Map<List<OrderModel>>(unitOfWork.OrderRepository.SearchBy(pageinfo, BranchesId, out count, out min));
         }
-        public bool AddOrder_Input(OrderModel model, UserCurrent User, bool isDone = true, int OrderSuppliersId = 0)
+        public async Task<bool> AddOrder_Input(OrderModel model, UserCurrent User, bool isDone = true, int OrderSuppliersId = 0)
         {
             var objOrder = Mapper.Map<soft_Order>(model);
             if (OrderSuppliersId > 0)
@@ -51,11 +51,11 @@ namespace BBM.Business.Logic
 
             UpdatePrice_Channel(model);
 
-            unitOfWork.SaveChanges();
+            await unitOfWork.SaveChanges();
 
             return true;
         }
-        
+
         private void UpdateOrderSuppliers(OrderModel model, int OrderSuppliersId)
         {
             var orderSuppliers = unitOfWork.OrderRepository.FindBy(o => o.Id.Equals(OrderSuppliersId)
@@ -128,7 +128,7 @@ namespace BBM.Business.Logic
                             if (hasprice != null && hasprice.Price != pricechannel.Price)
                             {
                                 hasprice.Price = pricechannel.Price;
-                                
+
                                 unitOfWork.ChanelPriceRepository.Update(hasprice, o => o.Price);
                             }
                         }

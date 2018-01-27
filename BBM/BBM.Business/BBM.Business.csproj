@@ -76,6 +76,26 @@
     <Compile Include="Infractstructure\Helpers.cs" />
     <Compile Include="Infractstructure\Mappers.cs" />
     <Compile Include="Infractstructure\Security\CustomPrincipal.cs" />
+    <Compile Include="Logic\BrachesBusiness.cs" />
+    <Compile Include="Logic\CatalogBusiness.cs" />
+    <Compile Include="Logic\ChannelBusiness.cs" />
+    <Compile Include="Logic\CustomerBusiness.cs" />
+    <Compile Include="Logic\DiscountBusiness.cs" />
+    <Compile Include="Logic\IBrachesBusiness.cs">
+      <DependentUpon>BrachesBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\ICatalogBusiness.cs">
+      <DependentUpon>CatalogBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\IChannelBusiness.cs">
+      <DependentUpon>ChannelBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\ICustomerBusiness.cs">
+      <DependentUpon>CustomerBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\IDiscountBusiness.cs">
+      <DependentUpon>DiscountBusiness.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\IImportBusiness.cs">
       <DependentUpon>ImportBusiness.cs</DependentUpon>
     </Compile>
@@ -83,12 +103,19 @@
     <Compile Include="Logic\ImportBusiness.Product.cs">
       <DependentUpon>ImportBusiness.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\INotificaitonBusiness.cs">
+      <DependentUpon>NotificaitonBusiness.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\IOrderBusiness.cs">
       <DependentUpon>OrderBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\IProductBusiness.cs">
       <DependentUpon>ProductBusiness.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\ISuppliersBusiness.cs">
+      <DependentUpon>SuppliersBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\NotificaitonBusiness.cs" />
     <Compile Include="Logic\OrderBusiness.cs" />
     <Compile Include="Logic\OrderBusiness.Input.cs">
       <DependentUpon>OrderBusiness.cs</DependentUpon>
@@ -100,6 +127,7 @@
       <DependentUpon>OrderBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\ProductBusiness.cs" />
+    <Compile Include="Logic\SuppliersBusiness.cs" />
     <Compile Include="Model\Entity\admin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

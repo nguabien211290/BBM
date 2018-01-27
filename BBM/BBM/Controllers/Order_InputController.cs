@@ -14,6 +14,7 @@ using BBM.Business.Logic;
 using BBM.Business.Model.Module;
 using BBM.Infractstructure.Security;
 using BBM.Business.Repository;
+using System.Threading.Tasks;
 
 namespace BBM.Controllers
 {
@@ -142,7 +143,7 @@ namespace BBM.Controllers
         }
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_Input })]
-        public JsonResult CreateOrder_Inside(OrderModel model, bool isDone = true, int OrderSuppliersId = 0)
+        public async Task<JsonResult> CreateOrder_Inside(OrderModel model, bool isDone = true, int OrderSuppliersId = 0)
         {
             var Messaging = new RenderMessaging();
             try
@@ -163,8 +164,9 @@ namespace BBM.Controllers
 
                 var user = Mapper.Map<UserCurrent>(User);
 
-                Messaging.isError = !_IOrderBus.AddOrder_Input(model, user, isDone, OrderSuppliersId);
-                
+                var isError = await _IOrderBus.AddOrder_Input(model, user, isDone, OrderSuppliersId);
+
+                Messaging.isError = !isError;
                 Messaging.messaging = "Đã Nhập hàng thành công!";
             }
             catch (Exception ex)

@@ -9,7 +9,7 @@
     <div class="span12">
         <div class="text-right padding5px">
             <button class="btn btn-primary" data-bind="click:function(){ CommonUtils.showModal('#AddProductModal')}"><i class="icon-plus"></i></button>
-            <button class="btn btn-primary" data-bind="click: function() {  product.Start() }"><i class="icon-refresh"></i></button>
+            <button class="btn btn-primary" data-bind="click: Resfesh"><i class="icon-refresh"></i></button>
             <label for="file-upload" class="btn btn-success custom-file-upload">
                 <i class="icon-cloud-upload"></i>
             </label>
@@ -21,7 +21,7 @@
             <div class="bar" data-bind="style: {width:Percent_Process}"></div>
         </div>
         <!--/ko-->
-        <!--ko if: fileError && fileError().length>0-->
+        <!--ko if: fileError && fileError().length > 0-->
         <div class="alert alert-error">
             <button type="button" class="close" data-dismiss="alert">
                 <i class="icon-remove"></i>
@@ -98,6 +98,11 @@
                     <input type="checkbox" data-bind="checked: IsStock">
                     <span class="lbl">Số lượng</span>
                 </label>
+                <label>
+                    <input type="checkbox" data-bind="checked: IsStock_Sum">
+                    <span class="lbl">Tổng số lượng</span>
+                </label>
+
                 <label>
                     <input type="checkbox" data-bind="checked: IsPriceInput">
                     <span class="lbl">Giá nhập mới</span>
@@ -178,6 +183,9 @@
                     <!-- ko if: product.mDisplayProductSample().IsStock() -->
                     <th class="sorting">Số lượng</th>
                     <!--/ko-->
+                    <!-- ko if: product.mDisplayProductSample().IsStock_Sum() -->
+                    <th class="sorting">Tổng Số lượng</th>
+                    <!--/ko-->
                     <!-- ko if: product.mDisplayProductSample().IsPriceInput() -->
                     <th class="sorting" data-bind="click: function(){ Sortby('PriceInput'),SortbyDesc(SortbyDesc()?false:true)}">Giá nhập mới</th>
                     <!--/ko-->
@@ -192,7 +200,7 @@
                     <!--/ko-->
                     <!-- ko if: product.mDisplayProductSample().IsPriceWholesale() -->
                     <th class="sorting" data-bind="click: function(){ Sortby('PriceWholesale'),SortbyDesc(SortbyDesc()?false:true)}">Giá bán sỉ</th>
-                    <!--/ko-->          
+                    <!--/ko-->
                     <!-- ko if: product.mDisplayProductSample().IsPriceMainStore() -->
                     <th>Giá cửa hàng</th>
                     <!--/ko-->
@@ -240,7 +248,11 @@
                         <input class="span8" data-bind="value: product_stock().Stock_Total" disabled />
                     </td>
                     <!-- /ko-->
-                    <!-- ko if: $parents[0].mDisplayProductSample().IsPriceInput() -->
+                    <!-- ko if: $parents[0].mDisplayProductSample().IsStock_Sum() -->
+                    <td class="text-center">
+                        <input class="span8" data-bind="value:  product().Stock_Sum" disabled />
+                    </td>
+                    <!-- /ko-->       <!-- ko if: $parents[0].mDisplayProductSample().IsPriceInput() -->
                     <td>
                         <span data-bind="textMoneyDefaultSymbol: product().PriceInput"></span>
                     </td>

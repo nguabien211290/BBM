@@ -69,7 +69,7 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Không lưu được cấu hình, vui lòng thử lại.";
+                Messaging.messaging = "Không lưu được cấu hình, vui lòng thử lại!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

@@ -46,7 +46,7 @@ Product.mvProduct = function () {
             keyword: self.FilterProduct().KeywordSearch(),
             filterby: self.FilterProduct().Fiterby()
         };
-        self.Sortby(undefined);
+        //self.Sortby(undefined);
         CommonUtils.showWait(true);
         $.ajax({
             type: "POST",
@@ -423,6 +423,10 @@ Product.mvProduct = function () {
         });;
     };
     self.IsImport = ko.observable(false);
+
+    self.Resfesh = function () {
+        self.CountFilter(self.CountFilter() + 1);
+    };
 
     self.Start = function () {
         ko.applyBindings(self, document.getElementById('ProductViewId'));

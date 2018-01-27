@@ -599,7 +599,6 @@
     <Content Include="Views\Shared\Partial\module\Order\OrderChannel\_Channel_Order_List.cshtml" />
     <Content Include="Views\Shared\Partial\module\Order\OrderChannel\_InfoOrder.cshtml" />
     <Content Include="Views\Shared\Partial\module\Order\OrderChannel\_OrderSale.cshtml" />
-    <Content Include="Views\Shared\Partial\module\Order\OrderChannel\_OrderSaleDetail.cshtml" />
     <Content Include="Views\Shared\Partial\module\Order\OrderChannel\_PrintOrder.cshtml" />
     <Content Include="Views\Shared\Partial\module\Order\OrderChannel\_TableDetail.cshtml" />
     <Content Include="Views\Shared\Partial\module\Order\OrderInut\_Channel_Order_Input_Create.cshtml" />

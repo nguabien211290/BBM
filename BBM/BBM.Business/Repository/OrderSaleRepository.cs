@@ -21,12 +21,6 @@ namespace BBM.Business.Repository
             #region Fillter
             if (pageinfo.filterby != null && pageinfo.filterby.Count > 0)
             {
-                var filterOnline = pageinfo.filterby.FirstOrDefault(o => o.Fiter == "ChannelOnline");
-                if (filterOnline != null)
-                {
-                    lstTmp = GetAll().Where(o => !o.Channeld.HasValue);
-                }
-
                 foreach (var item in pageinfo.filterby)
                 {
                     var key = 0;
