@@ -56,6 +56,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.1.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.5.1.5\lib\net451\System.IdentityModel.Tokens.Jwt.dll</HintPath>
       <Private>True</Private>
@@ -338,6 +339,7 @@
     <Compile Include="Model\Enum\TypeChannel.cs" />
     <Compile Include="Model\Enum\TypeConfig.cs" />
     <Compile Include="Model\Enum\TypeDiscount.cs" />
+    <Compile Include="Model\Enum\TypeFrom.cs" />
     <Compile Include="Model\Enum\TypeInput.cs" />
     <Compile Include="Model\Enum\TypeNotification.cs" />
     <Compile Include="Model\Enum\TypeOrder.cs" />

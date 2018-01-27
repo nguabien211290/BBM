@@ -53,7 +53,7 @@ namespace BBM.Business.Infractstructure
             }
             else
             {
-                DbContext.Entry(entity).State = EntityState.Modified;
+                DbContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
             }
         }
         public virtual void Add<T>(T entity) where T : class
