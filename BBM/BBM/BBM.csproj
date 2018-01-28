@@ -196,7 +196,6 @@
     <Compile Include="Controllers\DiscountController.cs" />
     <Compile Include="Controllers\EmployessController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="Controllers\ExController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificaitonController.cs" />
     <Compile Include="Controllers\OrderChannelController.cs" />

@@ -17,7 +17,7 @@ namespace BBM.Business.Infractstructure.Security
         public bool IsInRole(string role)
         {
 
-            var employee = _context.sys_Employee.FirstOrDefault(o => o.Id == UserId 
+            var employee = _context.sys_Employee.FirstOrDefault(o => o.Id == UserId
             && o.IsDisable.HasValue
             && !o.IsDelete
             && !o.IsDisable.Value);
@@ -38,7 +38,7 @@ namespace BBM.Business.Infractstructure.Security
             foreach (var item in roleArry)
             {
 
-                var anc = roleObject.FirstOrDefault(o => o.BrandId == BranchesId && o.lstRole.Contains(item));
+                var anc = roleObject.FirstOrDefault(o => o.BrandId == BranchesId && o.lstRole != null && o.lstRole.Contains(item));
                 if (anc != null)
                     return true;
             }
