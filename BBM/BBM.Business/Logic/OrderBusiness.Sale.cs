@@ -18,7 +18,7 @@ namespace BBM.Business.Logic
         {
             var channel = unitOfWork.ChannelRepository.GetById(BranchesId);
 
-            var result = unitOfWork.OrderSaleRepository.SearchBy(pageinfo, BranchesId, out count, out min);
+            var result = unitOfWork.OrderSaleRepository.SearchBy(pageinfo, out count, out min, BranchesId);
             return Mapper.Map<List<donhang>>(result);
         }
 

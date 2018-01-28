@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace BBM.Business.Repository
 {
-    public class ProductRepository : Repository<shop_sanpham>, IProductRepository
+    public class ProductRepository : Repository<shop_sanpham>
     {
         public ProductRepository(admin_softbbmEntities dbContext) : base(dbContext) { }
 
-        public shop_sanpham GetSingle(int fooId)
-        {
-            var query = GetById(fooId);
-            return query;
-        }
+        //public shop_sanpham GetSingle(int fooId)
+        //{
+        //    var query = GetById(fooId);
+        //    return query;
+        //}
     }
 }

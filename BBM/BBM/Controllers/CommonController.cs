@@ -86,8 +86,15 @@ namespace BBM.Controllers
 
         public JsonResult LoadLstBranches()
         {
-            var branches = Mapper.Map<List<BranchesModel>>(_context.soft_Branches.ToList());
+            var branches = new List<BranchesModel>();
+            branches.Add(new BranchesModel
+            {
+                BranchesId = 0,
+                BranchesName = "Tất cả"
+            });
 
+            branches.AddRange(Mapper.Map<List<BranchesModel>>(_context.soft_Branches.ToList()));
+            
             return Json(branches, JsonRequestBehavior.AllowGet);
         }
 

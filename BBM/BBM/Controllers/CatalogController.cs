@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BBM.Business.Infractstructure;
 using BBM.Business.Infractstructure.Security;
+using BBM.Business.Logic;
 using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
@@ -21,10 +22,13 @@ namespace BBM.Controllers
 
         private CRUD _crud;
         private admin_softbbmEntities _context;
-        public CatalogController()
+
+        private ICatalogBusiness catalogBus;
+        public CatalogController(ICatalogBusiness _catalogBus)
         {
             _crud = new CRUD();
             _context = new admin_softbbmEntities();
+            catalogBus = _catalogBus;
         }
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Catalog })]
         public ActionResult RenderView()
@@ -44,52 +48,21 @@ namespace BBM.Controllers
                     Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
-                var lstTmp = from supplier in _context.soft_Catalog select supplier;
-
-                #region Sort
-                if (!string.IsNullOrEmpty(pageinfo.sortby))
-                {
-                    switch (pageinfo.sortby)
-                    {
-                        case "Name":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Name);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Name);
-                            break;
-                    }
-
-                }
-                #endregion
-
-                var catalogs = Mapper.Map<List<CatalogModel>>(lstTmp.ToList());
-                #region Search
-                if (!string.IsNullOrEmpty(pageinfo.keyword))
-                {
-                    var lstcustomer = lstTmp.ToList();
-                    pageinfo.keyword = pageinfo.keyword.ToLower();
-                    catalogs = catalogs.Where(o =>
-                   (!string.IsNullOrEmpty(o.Name) && Helpers.convertToUnSign3(o.Name.ToLower()).Contains(pageinfo.keyword))).ToList();
-
-                }
-                #endregion
                 Channel_Paging<CatalogModel> lstInfo = new Channel_Paging<CatalogModel>();
-                if (catalogs != null && catalogs.Count > 0)
-                {
-                    int min = Helpers.FindMin(pageinfo.pageindex, pageinfo.pagesize);
 
-                    lstInfo.totalItems = catalogs.Count();
-                    int quantity = Helpers.GetQuantity(lstInfo.totalItems, pageinfo.pageindex, pageinfo.pagesize);
-                    if (pageinfo.pagesize < catalogs.Count)
-                        if (quantity > 0)
-                            catalogs = catalogs.GetRange(min, quantity);
-                    lstInfo.startItem = min;
-                    lstInfo.listTable = catalogs;
-                }
+                int count, min = 0;
 
+                var rs = catalogBus.GetCatalog(pageinfo, out count, out min);
+
+                lstInfo.startItem = min;
+
+                lstInfo.totalItems = count;
+
+                lstInfo.listTable = Mapper.Map<List<CatalogModel>>(rs);
+                
                 Messaging.Data = lstInfo;
             }
-            catch
+            catch(Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Hiển thị Nhóm sản phẩm có lỗi!";

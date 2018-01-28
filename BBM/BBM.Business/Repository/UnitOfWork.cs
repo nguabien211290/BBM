@@ -47,7 +47,7 @@ namespace BBM.Business.Repository
             {
                 if (_catalogRepository == null)
                 {
-                    _catalogRepository = new Repository<soft_Catalog>(context);
+                    _catalogRepository = new CatalogRepository(context);
                 }
                 return _catalogRepository;
             }
@@ -195,7 +195,7 @@ namespace BBM.Business.Repository
                 return _channelRepository;
             }
         }
-        public IRepository<soft_Channel_Product_Price>ChanelPriceRepository
+        public IRepository<soft_Channel_Product_Price> ChanelPriceRepository
         {
             get
             {
@@ -232,7 +232,7 @@ namespace BBM.Business.Repository
 
         public async Task SaveChanges()
         {
-           await context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
 
         private bool disposed = false;

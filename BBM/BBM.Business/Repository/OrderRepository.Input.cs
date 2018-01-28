@@ -13,7 +13,7 @@ namespace BBM.Business.Repository
 {
     public partial class OrderRepository
     {
-        public override List<soft_Order> SearchBy(PagingInfo pageinfo, int BranchesId, out int count, out int min)
+        public override List<soft_Order> SearchBy(PagingInfo pageinfo, out int count, out int min, int BranchesId = 0)
         {
             var lstTmp = FindBy(o => (o.TypeOrder == (int)TypeOrder.Input && o.Id_To.HasValue && o.Id_To == BranchesId) ||
                                  (o.TypeOrder == (int)TypeOrder.Output && o.Id_To.HasValue && o.Id_To == BranchesId));

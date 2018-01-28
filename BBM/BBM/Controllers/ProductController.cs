@@ -134,39 +134,68 @@ namespace BBM.Controllers
                                 break;
                             case "Stock":
                                 var branchesId = int.Parse(item.Value2.ToString());
-                                if (item.Value == "Equals")
+                                if (branchesId > 0)
                                 {
-                                    var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total == key
-                                    && o.BranchesId == branchesId).Select(o => o.ProductId);
-
-                                    if (key == 0)
+                                    if (item.Value == "Equals")
                                     {
-                                        var soft_StockNull = _context.soft_Branches_Product_Stock.Where(o => o.BranchesId == User.BranchesId).Select(o => o.ProductId);
+                                        var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total == key
+                                        && o.BranchesId == branchesId).Select(o => o.ProductId);
 
-                                        lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id) || !soft_StockNull.Contains(o.id));
+                                        if (key == 0)
+                                        {
+                                            var soft_StockNull = _context.soft_Branches_Product_Stock.Where(o => o.BranchesId == User.BranchesId).Select(o => o.ProductId);
+
+                                            lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id) || !soft_StockNull.Contains(o.id));
+                                        }
+                                        else
+                                        {
+                                            lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id));
+                                        }
+
                                     }
-                                    else
+                                    if (item.Value == "LessThan")
                                     {
+                                        var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total <= key
+                                       && o.BranchesId == branchesId).Select(o => o.ProductId);
+
                                         lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id));
                                     }
+                                    if (item.Value == "MoreThan")
+                                    {
+                                        var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total >= key
+                                      && o.BranchesId == branchesId).Select(o => o.ProductId);
 
+                                        lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id));
+                                    }
                                 }
-                                if (item.Value == "LessThan")
+                                else
                                 {
-                                    var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total <= key
-                                   && o.BranchesId == branchesId).Select(o => o.ProductId);
+                                    var sum_Stock = _context.soft_Branches_Product_Stock.GroupBy(o => o.ProductId).Select(o => new
+                                    {
+                                        productid = o.Key,
+                                        total = o.Sum(i => i.Stock_Total)
+                                    });
 
-                                    lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id));
-                                }
-                                if (item.Value == "MoreThan")
-                                {
-                                    var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total >= key
-                                  && o.BranchesId == branchesId).Select(o => o.ProductId);
+                                    if (item.Value == "MoreThan")
+                                    {
+                                        var MoreThan = sum_Stock.Where(o => o.total > key).Select(o => o.productid);
 
-                                    lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id));
+                                        lstTmp = lstTmp.Where(o => MoreThan.Contains(o.id));
+                                    }
+                                    if (item.Value == "LessThan")
+                                    {
+                                        var LessThan = sum_Stock.Where(o => o.total < key).Select(o => o.productid);
+
+                                        lstTmp = lstTmp.Where(o => LessThan.Contains(o.id));
+                                    }
+                                    if (item.Value == "Equals")
+                                    {
+                                        var Equals = sum_Stock.Where(o => o.total == key).Select(o => o.productid);
+
+                                        lstTmp = lstTmp.Where(o => Equals.Contains(o.id));
+                                    }
                                 }
                                 break;
-
                         }
                     }
                 }
@@ -237,6 +266,12 @@ namespace BBM.Controllers
                             else
                                 lstTmp = lstTmp.OrderBy(o => o.StatusVAT);
                             break;
+                        case "Stock_Sum":
+                            if (pageinfo.sortbydesc)
+                                lstTmp = lstTmp.OrderByDescending(o => o.Stock_Sum);
+                            else
+                                lstTmp = lstTmp.OrderBy(o => o.Stock_Sum);
+                            break;
                     }
 
                 }
@@ -270,7 +305,7 @@ namespace BBM.Controllers
                 if (quantity > 0)
                 {
                     if (string.IsNullOrEmpty(pageinfo.sortby))
-                        products = Mapper.Map<List<ProductSampleModel>>(lstTmp.OrderByDescending(o => o.id).Skip(min).Take(quantity));
+                        products = Mapper.Map<List<ProductSampleModel>>(lstTmp.OrderBy(o => o.tensp).Skip(min).Take(quantity));
                     else
                         products = Mapper.Map<List<ProductSampleModel>>(lstTmp.Skip(min).Take(quantity));
                 }
@@ -287,6 +322,9 @@ namespace BBM.Controllers
                     var stock = stocks.FirstOrDefault(o => o.BranchesId == User.BranchesId);
                     if (stock != null)
                         item.Stock_Total = stock.Stock_Total;
+
+                    item.Stock_Sum = stocks.Sum(o => o.Stock_Total);
+
                     var productInfo = new Prodcut_Branches_PriceChannel
                     {
                         //product_price = price ?? price,

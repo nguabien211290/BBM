@@ -13,7 +13,7 @@ namespace BBM.Business.Repository
     {
         public OrderSaleRepository(admin_softbbmEntities dbContext) : base(dbContext) { }
 
-        public override List<donhang> SearchBy(PagingInfo pageinfo, int BranchesId, out int count, out int min)
+        public override List<donhang> SearchBy(PagingInfo pageinfo, out int count, out int min, int BranchesId = 0)
         {
             var lstTmp = FindBy(o => (o.Channeld.HasValue && o.Channeld == BranchesId));
 

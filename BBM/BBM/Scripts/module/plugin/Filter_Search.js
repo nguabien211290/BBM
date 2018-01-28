@@ -39,6 +39,12 @@ Filter.mFilterModel = function () {
 Filter.mvFilter_Search_Control = function (type) {
     var self = this;
     //********************************************
+    self.CountFilter = ko.observable(0);
+    self.SearchReLoad = ko.computed(function () {
+        if (self.CountFilter() > 0) {
+            self.LoadListProduct()
+        }
+    }).extend({ throttle: 1000 });
     self.typeFilter = ko.observable(type);
     self.typeChildFilter = ko.observable();
     self.listCatalog = ko.observableArray([]);
@@ -153,22 +159,25 @@ Filter.mvFilter_Search_Control = function (type) {
     }
     self.Fiterby.subscribe(function (val) {
         if (self.typeFilter() == 'Product_Control') {
-            if (val && val.length > 0)
-                self.LoadListProduct();
-            else
-                self.listData([]);
+            self.CountFilter(self.CountFilter() + 1);
         }
     });
+
+    self.KeywordSearch.subscribe(function () {
+        if (self.typeFilter() == 'Product_Control')
+            self.CountFilter(self.CountFilter() + 1);
+    });
+
     self.CurrentPage.subscribe(function () {
-        self.LoadListProduct();
+        self.CountFilter(self.CountFilter() + 1);
     });
     self.ItemPerPage.subscribe(function () {
         self.CurrentPage(1);
-        self.LoadListProduct();
+        self.CountFilter(self.CountFilter() + 1);
     });
     self.Sortby.subscribe(function (val) {
         if (val)
-            self.LoadListProduct();
+            self.CountFilter(self.CountFilter() + 1);
     });
     self.AddToList = function (val) {
         self.isCheckProduct([]);
@@ -233,13 +242,7 @@ Filter.mvFilter_Search_Control = function (type) {
             CommonUtils.showWait(false);
         });
     };
-    self.KeywordSearchFunction = ko.computed(function () {
-        if (self.KeywordSearch() && self.KeywordSearch().length > 0) {
-            if (self.typeFilter() == 'Product_Control')
-                self.LoadListProduct();
-        }
-    }).extend({ throttle: 1000 });
-
+    
     /****************************************************************************/
     self.PushTagFilter = function (val, type) {
         if (self.typeFilter() == "Product" || self.typeFilter() == "Product_Control") {

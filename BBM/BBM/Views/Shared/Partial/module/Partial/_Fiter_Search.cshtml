@@ -50,8 +50,8 @@
                         </ul>
                     </li>
                     @*<li>
-                        <a href="#" tabindex="-1" data-bind="click : function(){  CommonUtils.showModal('#Order_ChannelFilteModal'+ classNameTab())}">Bán hàng theo</a>
-                    </li>*@
+                            <a href="#" tabindex="-1" data-bind="click : function(){  CommonUtils.showModal('#Order_ChannelFilteModal'+ classNameTab())}">Bán hàng theo</a>
+                        </li>*@
                     <li>
                         <a href="#" tabindex="-1" data-bind="click : function(){ typeChildFilter('Price');CommonUtils.showModal('#Order_ChannelPriceFilteModal'+ classNameTab())}">Giá Kênh</a>
                     </li>
@@ -163,9 +163,9 @@
                     <tr>
                         <th></th>
                         <th data-bind="click: function(){ Sortby('Code'),SortbyDesc(SortbyDesc()?false:true)}">Mã</th>
-                        <th></th>
                         <th data-bind="click: function(){ Sortby('ProductName'),SortbyDesc(SortbyDesc()?false:true)}">Tên</th>
                         <th data-bind="click: function(){ Sortby('Stock_Total'); SortbyDesc(SortbyDesc()?false:true)}">Tồn</th>
+                        <th data-bind="click: function(){ Sortby('Stock_Sum'); SortbyDesc(SortbyDesc()?false:true)}">Tồn Chung</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -176,8 +176,6 @@
                         </td>
                         <td>
                             <span data-bind="text: product().masp"></span>
-                        </td>
-                        <td>
                             <img data-bind="img:{src: 'https://babymart.vn/Images/hinhdulieu/thumbnail/' +  product().Img()}" style="max-width:40px" />
                         </td>
                         <td>
@@ -185,6 +183,9 @@
                         </td>
                         <td>
                             <span data-bind="text:product().Stock_Total"></span>
+                        </td>
+                        <td>
+                            <span data-bind="text:product().Stock_Sum"></span>
                         </td>
                     </tr>
                     <!--/ko-->

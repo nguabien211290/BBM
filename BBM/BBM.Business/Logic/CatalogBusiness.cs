@@ -1,4 +1,7 @@
-﻿using BBM.Business.Repository;
+﻿using AutoMapper;
+using BBM.Business.Models.Module;
+using BBM.Business.Models.View;
+using BBM.Business.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +19,12 @@ namespace BBM.Business.Logic
         {
             unitOfWork = _unitOfWork;
         }
+
+        public List<CatalogModel> GetCatalog(PagingInfo pageinfo, out int count, out int min)
+        {
+            var result = unitOfWork.CatalogRepository.SearchBy(pageinfo, out count, out min);
+            return Mapper.Map<List<CatalogModel>>(result);
+        }
+
     }
 }

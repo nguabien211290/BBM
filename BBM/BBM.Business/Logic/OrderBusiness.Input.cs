@@ -17,7 +17,7 @@ namespace BBM.Business.Logic
     {
         public List<OrderModel> GetOrder_Inside(PagingInfo pageinfo, int BranchesId, out int count, out int min)
         {
-            return Mapper.Map<List<OrderModel>>(unitOfWork.OrderRepository.SearchBy(pageinfo, BranchesId, out count, out min));
+            return Mapper.Map<List<OrderModel>>(unitOfWork.OrderRepository.SearchBy(pageinfo, out count, out min, BranchesId));
         }
         public async Task<bool> AddOrder_Input(OrderModel model, UserCurrent User, bool isDone = true, int OrderSuppliersId = 0)
         {
