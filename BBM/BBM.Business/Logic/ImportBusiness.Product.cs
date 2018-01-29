@@ -181,8 +181,8 @@ namespace BBM.Business.Logic
                                 var channel = channel_lst.FirstOrDefault(o => o.Code.Equals(codeChannel));
 
                                 var priceDisscount_Value = 0;
-                                var priceDisscount_StarDate = new DateTime?();
-                                var priceDisscount_EndDate = new DateTime?();
+                                DateTime? priceDisscount_StarDate = null;
+                                DateTime? priceDisscount_EndDate = null;
                                 try
                                 {
                                     DataRow dr = data.Tables[0].Select("Code='" + masp + "'").FirstOrDefault();
@@ -190,8 +190,12 @@ namespace BBM.Business.Logic
                                     if (dr != null)
                                     {
                                         priceDisscount_Value = int.Parse(dr[perfixPriceChannel + channel.Code].ToString());
-                                        priceDisscount_StarDate = Convert.ToDateTime(dr[perfixPriceChannel_StartDate + channel.Code].ToString());
-                                        priceDisscount_EndDate = Convert.ToDateTime(dr[perfixPriceChannel_EndDate + channel.Code].ToString());
+
+                                       var StarDate = Convert.ToDateTime(dr[perfixPriceChannel_StartDate + channel.Code].ToString());
+                                        var EndDate = Convert.ToDateTime(dr[perfixPriceChannel_EndDate + channel.Code].ToString());
+
+                                        priceDisscount_StarDate = StarDate.AddHours(23).AddMinutes(59).AddSeconds(59).AddDays(-1);
+                                        priceDisscount_EndDate = EndDate.AddHours(23).AddMinutes(59).AddSeconds(59);
                                     }
                                 }
                                 catch
@@ -242,6 +246,9 @@ namespace BBM.Business.Logic
                                         else
                                         {
                                             channelPrice.Price = int.Parse(value);
+                                            channelPrice.Price_Discount = priceDisscount_Value;
+                                            channelPrice.StartDate_Discount = priceDisscount_StarDate;
+                                            channelPrice.Enddate_Discount = priceDisscount_EndDate;
 
                                             unitOfWork.ChanelPriceRepository.Update(channelPrice,
                                                 o => o.Price,
