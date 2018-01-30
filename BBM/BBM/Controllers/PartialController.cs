@@ -617,12 +617,12 @@ namespace BBM.Controllers
 
                     foreach (var item in data)
                     {
-                        var queryName = item.tensp.ToLower();
-                        if (queryName.Contains(keyword.ToLower()))
-                            item.tensp = queryName.Replace(keyword, "<strong>" + keyword + "</strong> ");
-
-                        if (!string.IsNullOrEmpty(item.masp))
+                        if (!string.IsNullOrEmpty(item.masp) && !string.IsNullOrEmpty(item.tensp))
                         {
+                            var queryName = item.tensp.ToLower();
+                            if (queryName.Contains(keyword.ToLower()))
+                                item.tensp = queryName.Replace(keyword, "<strong>" + keyword + "</strong> ");
+
                             var queryCode = item.masp.ToLower();
                             if (queryCode.Contains(keyword.ToLower()))
                                 item.masp = queryCode.Replace(keyword, "<strong>" + keyword + "</strong> ");
@@ -633,7 +633,7 @@ namespace BBM.Controllers
                 }
 
             }
-            catch
+            catch(Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Tìm kiếm sản phẩm có lỗi!";

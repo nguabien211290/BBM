@@ -167,7 +167,7 @@ namespace BBM.Controllers
                 Messaging.isError = false;
                 Messaging.Data = new { CodeOrder = CodeOrder, ChannelName = Channel.Channel, EmployeeNameCreate = EmployeeNameCreate, isChannelOnline = isChannelOnline };
             }
-            catch
+            catch(Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Khởi tạo đơn hàng không thành công!";

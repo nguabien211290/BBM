@@ -90,14 +90,16 @@ namespace BBM.Business.Logic
                         title = "default"
                     };
                     unitOfWork.VariantRepository.Add(newvariant);
-
+                    await unitOfWork.SaveChanges();
                     item.IdPro = newvariant.id;
+                    
                 }
                 else
                 {
                     item.IdPro = variant.id;
                 }
             }
+            
 
             objOrder.Status = isDone ? (int)StatusOrder_Sale.Done : (int)StatusOrder_Sale.Process;
 

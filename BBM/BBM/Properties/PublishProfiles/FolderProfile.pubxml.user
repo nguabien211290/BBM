@@ -25,19 +25,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/06/2017 15:08:08</publishTime>
     </File>
     <File Include="bin/BBM.Business.dll">
-      <publishTime>01/27/2018 15:31:14</publishTime>
+      <publishTime>01/28/2018 15:11:23</publishTime>
     </File>
     <File Include="bin/BBM.Business.dll.config">
       <publishTime>01/27/2018 15:19:42</publishTime>
     </File>
     <File Include="bin/BBM.Business.pdb">
-      <publishTime>01/27/2018 15:31:14</publishTime>
+      <publishTime>01/28/2018 15:11:23</publishTime>
     </File>
     <File Include="bin/BBM.dll">
-      <publishTime>01/28/2018 00:15:33</publishTime>
+      <publishTime>01/28/2018 15:11:32</publishTime>
     </File>
     <File Include="bin/BBM.pdb">
-      <publishTime>01/28/2018 00:15:33</publishTime>
+      <publishTime>01/28/2018 15:11:32</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/02/2015 09:32:26</publishTime>
