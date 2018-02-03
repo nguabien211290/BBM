@@ -7,6 +7,8 @@ using BBM.Business.Model.Entity;
 using BBM.Business.Models.Module;
 using BBM.Business.Models.Enum;
 using BBM.Business.Infractstructure.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace BBM.Business.Infractstructure
 {
@@ -96,6 +98,15 @@ namespace BBM.Business.Infractstructure
                             .ForMember(a => a.matkhau, b => b.MapFrom(c => c.Pwd))
                             .ForMember(a => a.tendn, b => b.MapFrom(c => c.User))
                             .ForMember(a => a.diem, b => b.MapFrom(c => c.Mark));
+
+                cfg.CreateMap<CustomerAPiModel, khachhang>();
+                 //.ForMember(a => a.ngaydangky, b => b.ResolveUsing(c =>
+                 //{
+                 //    return JsonConvert.DeserializeObject<DateTime>(c.ngaydangky, new IsoDateTimeConverter { DateTimeFormat = "dd/mm/yyyy:hh:mm:ss" });
+                 //}));
+
+
+
                 #endregion
 
                 #region soft_Order

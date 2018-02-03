@@ -30,4 +30,19 @@ namespace BBM.Business.Models.Module
         public List<OrderModel> Orders { get; set; }
 
     }
+    public class CustomerAPiModel
+    {
+        public int MaKH { get; set; }
+        public int? idtp { get; set; }
+        public int? idquan { get; set; }
+        public string hoten { get; set; }
+        public string duong { get; set; }
+        public string dienthoai { get; set; }
+        public string email { get; set; }
+        public string tendn { get; set; }
+        public string matkhau { get; set; }
+        public string diem { get; set; }
+        public bool konhanmail { get; set; }
+        public DateTime? ngaydangky { get; set; }
+    }
 }

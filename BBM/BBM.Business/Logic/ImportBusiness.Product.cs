@@ -191,7 +191,7 @@ namespace BBM.Business.Logic
                                     {
                                         priceDisscount_Value = int.Parse(dr[perfixPriceChannel + channel.Code].ToString());
 
-                                       var StarDate = Convert.ToDateTime(dr[perfixPriceChannel_StartDate + channel.Code].ToString());
+                                        var StarDate = Convert.ToDateTime(dr[perfixPriceChannel_StartDate + channel.Code].ToString());
                                         var EndDate = Convert.ToDateTime(dr[perfixPriceChannel_EndDate + channel.Code].ToString());
 
                                         priceDisscount_StarDate = StarDate.AddHours(23).AddMinutes(59).AddSeconds(59).AddDays(-1);
@@ -345,6 +345,7 @@ namespace BBM.Business.Logic
                                                          o => o.Status,
                                                          o => o.StatusVAT,
                                                          o => o.SuppliersId,
+                                                         o => o.CatalogId,
                                                          o => o.PriceWholesale
                                                          );
                         }

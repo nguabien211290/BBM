@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BBM.Business.Infractstructure;
 using BBM.Business.Infractstructure.Security;
+using BBM.Business.Logic;
 using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
@@ -9,6 +10,7 @@ using BBM.Infractstructure.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,10 +21,12 @@ namespace BBM.Controllers
 
         private CRUD _crud;
         private admin_softbbmEntities _context;
-        public CustomerController()
+        private IApiBusiness apiBus;
+        public CustomerController(IApiBusiness _apiBus)
         {
             _crud = new CRUD();
             _context = new admin_softbbmEntities();
+            apiBus = _apiBus;
         }
         public ActionResult Index()
         {
@@ -210,6 +214,13 @@ namespace BBM.Controllers
                 Messaging.messaging = "Tìm kiếm khách hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<JsonResult> SyncCustomer()
+        {
+            await apiBus.SyncCustomer();
+
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
     }

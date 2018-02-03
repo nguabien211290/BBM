@@ -72,16 +72,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infractstructure\BBMApiInfo.cs" />
     <Compile Include="Infractstructure\CRUD.cs" />
     <Compile Include="Infractstructure\EnumHelper.cs" />
     <Compile Include="Infractstructure\Helpers.cs" />
     <Compile Include="Infractstructure\Mappers.cs" />
+    <Compile Include="Infractstructure\RequestWrapperSync.cs" />
     <Compile Include="Infractstructure\Security\CustomPrincipal.cs" />
+    <Compile Include="Logic\ApiBusiness.cs" />
     <Compile Include="Logic\BrachesBusiness.cs" />
     <Compile Include="Logic\CatalogBusiness.cs" />
     <Compile Include="Logic\ChannelBusiness.cs" />
     <Compile Include="Logic\CustomerBusiness.cs" />
     <Compile Include="Logic\DiscountBusiness.cs" />
+    <Compile Include="Logic\IApiBusiness.cs">
+      <DependentUpon>ApiBusiness.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\IBrachesBusiness.cs">
       <DependentUpon>BrachesBusiness.cs</DependentUpon>
     </Compile>
