@@ -97,7 +97,7 @@ namespace BBM.Controllers
 
                 int count, min = 0;
 
-                lstInfo.listTable = _IOrderBus.GetOrder_Inside(pageinfo, User.BranchesId, out count, out min);
+                lstInfo.listTable = _IOrderBus.GetOrder_Input(pageinfo, User.BranchesId, out count, out min);
 
                 lstInfo.totalItems = count;
 
@@ -123,7 +123,21 @@ namespace BBM.Controllers
                         var branch = soft_Branches.FirstOrDefault(o => o.BranchesId == item.Id_From);
                         if (branch != null)
                             item.Name_From = branch.BranchesName;
+                        else
+                        {
+                            var orderSuppliers = _unitOW.OrderInputRepository.FindBy(o => o.Id == item.Id_From).FirstOrDefault();
+                            if (orderSuppliers != null)
+                            {
+                                item.Name_From = "ĐH NPP";
+                                foreach (var pro in item.Detail)
+                                {
+                                    if (pro.Product != null && pro.Product.soft_Suppliers != null)
+                                        item.Name_From += " - " + pro.Product.soft_Suppliers.Name;
+                                }
+                            }
+                        }
                     }
+
                     if (item.Id_To > 0)
                     {
                         var branch = soft_Branches.FirstOrDefault(o => o.BranchesId == item.Id_To);

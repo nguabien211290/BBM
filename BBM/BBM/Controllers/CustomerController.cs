@@ -22,10 +22,12 @@ namespace BBM.Controllers
         private CRUD _crud;
         private admin_softbbmEntities _context;
         private IApiBusiness apiBus;
-        public CustomerController(IApiBusiness _apiBus)
+        private ICustomerBusiness _customerBus;
+        public CustomerController(IApiBusiness _apiBus, ICustomerBusiness customerBus)
         {
             _crud = new CRUD();
             _context = new admin_softbbmEntities();
+            _customerBus = customerBus;
             apiBus = _apiBus;
         }
         public ActionResult Index()
@@ -49,95 +51,17 @@ namespace BBM.Controllers
                     Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
-                var lstTmp = from customers in _context.khachhangs orderby customers.MaKH descending select customers;
-
-                #region Sort
-                if (!string.IsNullOrEmpty(pageinfo.sortby))
-                {
-                    switch (pageinfo.sortby)
-                    {
-                        case "Id":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.MaKH);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.MaKH);
-                            break;
-                        case "User":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.tendn);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.tendn);
-                            break;
-                        case "Name":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.hoten);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.hoten);
-                            break;
-                        case "Email":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.email);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.email);
-                            break;
-                        case "Phone":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.dienthoai);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.dienthoai);
-                            break;
-                        case "DistrictId":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.idtp);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.idtp);
-                            break;
-                        case "ProvinceId":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.idquan);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.idquan);
-                            break;
-                    }
-
-                }
-                #endregion
-
-                var customer = Mapper.Map<List<CustomerModel>>(lstTmp.ToList());
-                #region Search
-                if (!string.IsNullOrEmpty(pageinfo.keyword))
-                {
-                    var lstcustomer = lstTmp.ToList();
-                    pageinfo.keyword = pageinfo.keyword.ToLower();
-                    customer = customer.Where(o =>
-                   (!string.IsNullOrEmpty(o.Code) && Helpers.convertToUnSign3(o.Code.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Name) && Helpers.convertToUnSign3(o.Name.ToLower()).Contains(pageinfo.keyword))
-                 || (!string.IsNullOrEmpty(o.User) && Helpers.convertToUnSign3(o.User.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Phone) && Helpers.convertToUnSign3(o.Phone.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Email) && Helpers.convertToUnSign3(o.Email.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Address) && Helpers.convertToUnSign3(o.Address.ToLower()).Contains(pageinfo.keyword))).ToList();
-
-                }
-                #endregion
                 Channel_Paging<CustomerModel> lstInfo = new Channel_Paging<CustomerModel>();
-                if (customer != null && customer.Count > 0)
-                {
-                    int min = Helpers.FindMin(pageinfo.pageindex, pageinfo.pagesize);
 
-                    lstInfo.totalItems = customer.Count();
-                    int quantity = Helpers.GetQuantity(lstInfo.totalItems, pageinfo.pageindex, pageinfo.pagesize);
-                    if (pageinfo.pagesize < customer.Count)
-                        if (quantity > 0)
-                            customer = customer.GetRange(min, quantity);
-                    lstInfo.startItem = min;
-                    lstInfo.listTable = customer;
+                int count, min = 0;
 
-                    foreach (var item in lstInfo.listTable)
-                    {
-                        var orders = Mapper.Map<List<OrderModel>>(_context.soft_Order.Where(o => o.TypeOrder == (int)TypeOrder.Sale && o.Id_To == item.Id).ToList());
-                        item.Orders = orders;
-                    }
-                }
+                var rs = _customerBus.GetCustomer(pageinfo, out count, out min);
+
+                lstInfo.startItem = min;
+
+                lstInfo.totalItems = count;
+
+                lstInfo.listTable = rs;
 
                 Messaging.Data = lstInfo;
             }

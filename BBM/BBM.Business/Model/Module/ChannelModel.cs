@@ -44,5 +44,6 @@ namespace BBM.Business.Models.Module
         public List<T> listTable { get; set; }
         public int totalItems { get; set; }
         public int startItem { get; set; }
+        public double Total { get; set; }
     }
 }

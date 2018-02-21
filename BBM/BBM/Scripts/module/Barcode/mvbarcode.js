@@ -1,8 +1,21 @@
 ﻿var PrintProductBarcode = PrintProductBarcode || {}
-PrintProductBarcode.mvBarcode = function () {
+PrintProductBarcode.mvBarcode = function (Products) {
     var self = this;
-    self.FilterProduct = ko.observable(new Filter.mvFilter_Search_Control('Product_Control'));
     self.mlstBarcode = ko.observableArray();
+
+    if (Products != undefined) {
+        if (Products != null && Products.length > 0) {
+            var data = JSON.parse(Products);
+            ko.utils.arrayForEach(data, function (o) {
+                var obj = ko.mapping.fromJS(o.product, {}, new PrintProductBarcode.mProduct);
+                obj.price(o.product.PriceChannel);
+                obj.totalTem(o.product.Stock_Total);
+                self.mlstBarcode.push(obj);
+            });
+        }
+    };
+
+    self.FilterProduct = ko.observable(new Filter.mvFilter_Search_Control('Product_Control'));
     self.mConfig = ko.observable(new PrintProductBarcode.mConfig);
     self.FilterProduct().classNameTab('mvOBarcode');
     self.FilterProduct().isCheckProduct.subscribe(function (val) {
@@ -32,7 +45,7 @@ PrintProductBarcode.mvBarcode = function () {
                 self.mlstBarcode.push(obj);
             }
         }).always(function () {
-            CommonUtils.showWait(false,"BarcodeViewId");
+            CommonUtils.showWait(false, "BarcodeViewId");
         });
 
     };
@@ -40,7 +53,7 @@ PrintProductBarcode.mvBarcode = function () {
         self.mOrderInput().Detail.remove(val)
     };
     self.SaveConfig = function () {
-        CommonUtils.showWait(true,"BarcodeViewId");
+        CommonUtils.showWait(true, "BarcodeViewId");
         var objectData = ko.toJSON({ model: self.mConfig() });
 
         $.ajax({
@@ -54,11 +67,11 @@ PrintProductBarcode.mvBarcode = function () {
             self.GetConfig();
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
         }).always(function () {
-            CommonUtils.showWait(false,"BarcodeViewId");
+            CommonUtils.showWait(false, "BarcodeViewId");
         });
     };
     self.GetConfig = function () {
-        CommonUtils.showWait(true,"BarcodeViewId");
+        CommonUtils.showWait(true, "BarcodeViewId");
         $.ajax({
             type: "GET",
             url: CommonUtils.url("/Barcode/GetConfig"),
@@ -68,7 +81,7 @@ PrintProductBarcode.mvBarcode = function () {
                 self.mConfig(ko.mapping.fromJS(data.Data, {}, new PrintProductBarcode.mConfig));
             }
         }).always(function () {
-            CommonUtils.showWait(false,"BarcodeViewId");
+            CommonUtils.showWait(false, "BarcodeViewId");
         });
     }
     self.printBarcode = function () {
@@ -82,7 +95,7 @@ PrintProductBarcode.mvBarcode = function () {
         self.NeedPrint([]);
         var barcode = [];
         ko.utils.arrayForEach(self.mlstBarcode(), function (xitem) {
-            for (var i = 0; i < xitem.totalTem() ; i++)
+            for (var i = 0; i < xitem.totalTem(); i++)
                 barcode.push(xitem);
         })
         if (barcode.length > 0) {

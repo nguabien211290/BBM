@@ -17,8 +17,8 @@ namespace BBM.Business.Logic
         public List<donhang> GetOrder_Sale(PagingInfo pageinfo, int BranchesId, out int count, out int min)
         {
             var channel = unitOfWork.ChannelRepository.GetById(BranchesId);
-
-            var result = unitOfWork.OrderSaleRepository.SearchBy(pageinfo, out count, out min, BranchesId);
+            double totalMoney = 0;
+            var result = unitOfWork.OrderSaleRepository.SearchBy(pageinfo, out count, out min, out totalMoney, BranchesId);
             return Mapper.Map<List<donhang>>(result);
         }
 
@@ -92,14 +92,14 @@ namespace BBM.Business.Logic
                     unitOfWork.VariantRepository.Add(newvariant);
                     await unitOfWork.SaveChanges();
                     item.IdPro = newvariant.id;
-                    
+
                 }
                 else
                 {
                     item.IdPro = variant.id;
                 }
             }
-            
+
 
             objOrder.Status = isDone ? (int)StatusOrder_Sale.Done : (int)StatusOrder_Sale.Process;
 

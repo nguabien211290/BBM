@@ -117,7 +117,18 @@ namespace BBM.Business.Models.Enum
         Remove_Catalog = 42,
         [Display(Name = "Xóa nhân viên")]
         Delete_Employess = 46,
-        //46
+
+
+        [Display(Name = "Danh sách đơn hàng đặt nội bộ")]
+        Read_Order_Branches = 47,
+        [Display(Name = "Tạo đơn hàng đặt nội bộ")]
+        Create_Order_Branches = 48,
+        [Display(Name = "Cập nhật đơn hàng đặt nội bộ")]
+        Update_Order_Branches = 49,
+
+        [Display(Name = "Doanh số bán hàng")]
+        report_sales = 50,
+        //50
     }
     public enum GroupRolesEnum
     {
@@ -148,8 +159,11 @@ namespace BBM.Business.Models.Enum
         [Display(Name = "Kênh bán hàng")]
         Channel = 13,
         [Display(Name = "Nhóm hàng hóa")]
-        Catalog = 14
-
+        Catalog = 14,
+        [Display(Name = "Đơn đặt hàng Nội bộ")]
+        OrderBranches = 15,
+        [Display(Name = "Báo cáo")]
+        Report = 16,
 
     }
 }

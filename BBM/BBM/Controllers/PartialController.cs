@@ -25,10 +25,10 @@ namespace BBM.Controllers
         }
 
 
-        public ActionResult _navbar()
+        public ActionResult Menu()
         {
             ViewBag.UserName = User.UserName;
-            return PartialView("~/Views/Shared/Partial/module/Partial/_navbar.cshtml");
+            return PartialView("~/Views/Shared/Partial/module/Partial/_menu.cshtml");
         }
 
 
@@ -50,20 +50,6 @@ namespace BBM.Controllers
 
                 switch (group.Id)
                 {
-                    //case (int)GroupRolesEnum.Administrator:
-                    //var enumAdmin = lstEnumRole.Where(o =>
-                    //    o == RolesEnum.Administrator).ToList();
-
-                    //foreach (var role in enumAdmin)
-                    //{
-                    //    group.Roles.Add(new Models.Module.RoleEnumModel
-                    //    {
-                    //        Name = EnumHelper<RolesEnum>.GetDisplayValuebyInt((int)role),
-                    //        Id = (int)role,
-                    //        isSelect = false
-                    //    });
-                    //}
-                    //break;
                     case (int)GroupRolesEnum.Account:
                         var enumAccount = lstEnumRole.Where(o =>
                             o == RolesEnum.Read_Employess
@@ -282,6 +268,23 @@ namespace BBM.Controllers
                         || o == RolesEnum.Update_Catalog).ToList();
 
                         foreach (var role in enumCatalog)
+                        {
+                            group.Roles.Add(new Business.Models.Module.RoleEnumModel
+                            {
+                                Name = EnumHelper<RolesEnum>.GetDisplayValuebyInt((int)role),
+                                Id = (int)role,
+                                isSelect = false
+                            });
+                        }
+                        break;
+
+                    case (int)GroupRolesEnum.OrderBranches:
+                        var enumOrderBranches = lstEnumRole.Where(o =>
+                         o == RolesEnum.Read_Order_Branches
+                        || o == RolesEnum.Create_Order_Branches
+                        || o == RolesEnum.Update_Order_Branches).ToList();
+
+                        foreach (var role in enumOrderBranches)
                         {
                             group.Roles.Add(new Business.Models.Module.RoleEnumModel
                             {
@@ -591,7 +594,7 @@ namespace BBM.Controllers
         }
 
         [HttpPost]
-        public JsonResult Research(string keyword)
+        public JsonResult Research(string keyword, string searchType)
         {
             var Messaging = new RenderMessaging();
             try
@@ -599,21 +602,40 @@ namespace BBM.Controllers
                 if (!string.IsNullOrWhiteSpace(keyword))
                 {
                     keyword = keyword.ToLower();
-                    var products = _context.shop_sanpham
-                        .Where(o =>
-                           (!string.IsNullOrEmpty(o.tensp) && o.tensp.ToLower().Contains(keyword))
-                         || (!string.IsNullOrEmpty(o.Barcode) && o.Barcode.ToLower().Contains(keyword))
-                         || (!string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Contains(keyword))
-                        )
-                        .Select(product => new ProductSampleModel
-                        {
-                            id = product.id,
-                            masp = product.masp,
-                            Barcode = product.Barcode,
-                            tensp = product.tensp,
-                        });
 
-                    var data = products.ToList();
+                    var data = new List<ProductSampleModel>();
+                    if (searchType == "All")
+                    {
+                        var products = _context.shop_sanpham
+                         .Where(o =>
+                            (!string.IsNullOrEmpty(o.tensp) && o.tensp.ToLower().Contains(keyword))
+                          || (!string.IsNullOrEmpty(o.Barcode) && o.Barcode.ToLower().Contains(keyword))
+                          || (!string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Contains(keyword))
+                         )
+                         .Select(product => new ProductSampleModel
+                         {
+                             id = product.id,
+                             masp = product.masp,
+                             Barcode = product.Barcode,
+                             tensp = product.tensp,
+                         });
+
+                        data = products.ToList();
+                    }
+                    else
+                    {
+                        var products = _context.shop_sanpham
+                         .Where(o => !string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Equals(keyword))
+                         .Select(product => new ProductSampleModel
+                         {
+                             id = product.id,
+                             masp = product.masp,
+                             Barcode = product.Barcode,
+                             tensp = product.tensp,
+                         });
+                        data = products.ToList();
+                    }
+
 
                     foreach (var item in data)
                     {
@@ -633,7 +655,7 @@ namespace BBM.Controllers
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Tìm kiếm sản phẩm có lỗi!";

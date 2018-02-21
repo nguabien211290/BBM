@@ -17,6 +17,8 @@ namespace BBM.Business.Models.Enum
         [Display(Name = "Sale")]
         Sale = 4,
         [Display(Name = "Switch")]
-        Switch =5
+        Switch = 5,
+        [Display(Name = "OrderBranches")]
+        OrderBranches = 6
     }
 }

@@ -15,30 +15,28 @@ namespace BBM.Business.Logic
 {
     public partial class OrderBusiness
     {
-        public List<OrderModel> GetOrder_Inside(PagingInfo pageinfo, int BranchesId, out int count, out int min)
+        public List<OrderModel> GetOrder_Input(PagingInfo pageinfo, int BranchesId, out int count, out int min)
         {
-            return Mapper.Map<List<OrderModel>>(unitOfWork.OrderRepository.SearchBy(pageinfo, out count, out min, BranchesId));
+            double totalMoney = 0;
+            return Mapper.Map<List<OrderModel>>(unitOfWork.OrderInputRepository.SearchBy(pageinfo, out count, out min, out totalMoney, BranchesId));
         }
         public async Task<bool> AddOrder_Input(OrderModel model, UserCurrent User, bool isDone = true, int OrderSuppliersId = 0)
         {
-            var objOrder = Mapper.Map<soft_Order>(model);
-            if (OrderSuppliersId > 0)
-                objOrder.Id_From = OrderSuppliersId;
-            objOrder.Id_To = User.BranchesId;
-            objOrder.DateCreate = DateTime.Now;
-            objOrder.EmployeeCreate = User.UserId;
-            objOrder.TypeOrder = (int)TypeOrder.Input;
-            objOrder.Status = isDone ? (int)StatusOrder_Input.Done : (int)StatusOrder_Input.Process;
-
-            unitOfWork.OrderRepository.Add(objOrder);
-
-            if (OrderSuppliersId > 0 && isDone)
-                UpdateOrderSuppliers(model, OrderSuppliersId);
-
-
 
             model.Id_To = User.BranchesId;
             model.TypeOrder = (int)TypeOrder.Input;
+            model.DateCreate = DateTime.Now;
+            model.EmployeeCreate = User.UserId;
+            if (OrderSuppliersId > 0)
+                model.Id_From = OrderSuppliersId;
+            model.Status = isDone ? (int)StatusOrder_Input.Done : (int)StatusOrder_Input.Process;
+
+            var objOrder = Mapper.Map<soft_Order>(model);
+
+            unitOfWork.OrderInputRepository.Add(objOrder);
+
+            if (OrderSuppliersId > 0 && isDone)
+                UpdateOrderSuppliers(model, OrderSuppliersId);
 
             if (isDone)
             {
@@ -49,7 +47,7 @@ namespace BBM.Business.Logic
                 UpdatePriceCompare(model);
             }
 
-            UpdatePrice_Channel(model);
+            UpdatePrice_Channel(model, User);
 
             await unitOfWork.SaveChanges();
 
@@ -58,7 +56,7 @@ namespace BBM.Business.Logic
 
         private void UpdateOrderSuppliers(OrderModel model, int OrderSuppliersId)
         {
-            var orderSuppliers = unitOfWork.OrderRepository.FindBy(o => o.Id.Equals(OrderSuppliersId)
+            var orderSuppliers = unitOfWork.OrderInputRepository.FindBy(o => o.Id.Equals(OrderSuppliersId)
                                                 && o.TypeOrder == (int)TypeOrder.OrderProduct
                                                 && o.Status == (int)StatusOrder_Input.Process).FirstOrDefault();
 
@@ -91,7 +89,7 @@ namespace BBM.Business.Logic
                 if (OrderChildDoneAll == null)
                 {
                     orderSuppliers.Status = (int)StatusOrder_Input.Done;
-                    unitOfWork.OrderRepository.Update(orderSuppliers, o => o.Status);
+                    unitOfWork.OrderInputRepository.Update(orderSuppliers, o => o.Status);
                 }
             }
         }
@@ -111,28 +109,35 @@ namespace BBM.Business.Logic
             }
         }
 
-        private void UpdatePrice_Channel(OrderModel order)
+        private void UpdatePrice_Channel(OrderModel order, UserCurrent User)
         {
             foreach (var item in order.Detail)
             {
-                if (item.PriceChannels != null && item.PriceChannels.Count > 0)
 
-                    foreach (var pricechannel in item.PriceChannels)
+                var product = unitOfWork.ProductRepository.FindBy(o => o.id == item.ProductId).FirstOrDefault();
+
+                if (product != null)
+                {
+                    var hasprice = product.soft_Channel_Product_Price.FirstOrDefault(o => o.ChannelId == User.ChannelId && o.ProductId == item.ProductId);
+
+                    if (hasprice != null && hasprice.Price != item.Price)
                     {
-                        var product = unitOfWork.ProductRepository.FindBy(o => o.id == item.ProductId).FirstOrDefault();
+                        hasprice.Price = item.Price;
 
-                        if (product != null)
-                        {
-                            var hasprice = product.soft_Channel_Product_Price.FirstOrDefault(o => o.ChannelId == pricechannel.Id && o.ProductId == item.ProductId);
-
-                            if (hasprice != null && hasprice.Price != pricechannel.Price)
-                            {
-                                hasprice.Price = pricechannel.Price;
-
-                                unitOfWork.ChanelPriceRepository.Update(hasprice, o => o.Price);
-                            }
-                        }
+                        unitOfWork.ChanelPriceRepository.Update(hasprice, o => o.Price);
                     }
+                    else
+                    {
+                        unitOfWork.ChanelPriceRepository.Add(new soft_Channel_Product_Price
+                        {
+                            ChannelId = User.ChannelId,
+                            Price = item.Price,
+                            ProductId = item.ProductId,
+                            DateCreate = DateTime.UtcNow,
+                            EmployeeCreate = User.UserId
+                        });
+                    }
+                }
             }
 
         }

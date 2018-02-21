@@ -119,10 +119,19 @@
     <Compile Include="Logic\IProductBusiness.cs">
       <DependentUpon>ProductBusiness.cs</DependentUpon>
     </Compile>
+    <Compile Include="Logic\IReportBusiness.cs">
+      <DependentUpon>ReportBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\ISampleBusiness.cs">
+      <DependentUpon>_SampleBusiness.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\ISuppliersBusiness.cs">
       <DependentUpon>SuppliersBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\NotificaitonBusiness.cs" />
+    <Compile Include="Logic\OrderBusiness.Branch.cs">
+      <DependentUpon>OrderBusiness.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logic\OrderBusiness.cs" />
     <Compile Include="Logic\OrderBusiness.Input.cs">
       <DependentUpon>OrderBusiness.cs</DependentUpon>
@@ -134,6 +143,8 @@
       <DependentUpon>OrderBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\ProductBusiness.cs" />
+    <Compile Include="Logic\_SampleBusiness.cs" />
+    <Compile Include="Logic\ReportBusiness.cs" />
     <Compile Include="Logic\SuppliersBusiness.cs" />
     <Compile Include="Model\Entity\admin.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -362,12 +373,20 @@
     <Compile Include="Model\Module\OrderChannelModel.cs" />
     <Compile Include="Model\Module\ProductModel.cs" />
     <Compile Include="Model\Module\RenderMessaging.cs" />
+    <Compile Include="Model\Module\ReportModel.cs" />
     <Compile Include="Model\Module\SuppliersModel.cs" />
     <Compile Include="Model\Module\UserModel.cs" />
     <Compile Include="Model\View\LoginViewModel.cs" />
     <Compile Include="Model\View\PagingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\CatalogRepository.cs" />
+    <Compile Include="Repository\CustomerRepository.cs" />
+    <Compile Include="Repository\OrderRepository.Branch.cs">
+      <DependentUpon>OrderSaleRepository.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\OrderRepository.Input.cs">
+      <DependentUpon>OrderSaleRepository.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\OrderSaleRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IGenericRepository.cs">
@@ -375,10 +394,6 @@
     </Compile>
     <Compile Include="Repository\IUnitOfWork.cs">
       <DependentUpon>UnitOfWork.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\OrderRepository.cs" />
-    <Compile Include="Repository\OrderRepository.Input.cs">
-      <DependentUpon>OrderRepository.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
@@ -399,7 +414,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Model\Entity\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

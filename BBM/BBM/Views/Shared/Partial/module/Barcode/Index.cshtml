@@ -3,15 +3,14 @@
 @Html.Partial("~/Views/Shared/Partial/module/Barcode/_Barcode.cshtml")
 @Html.Partial("~/Views/Shared/Partial/module/Barcode/_Standard.cshtml")
 <script>
-
-    var listId = "@ViewBag.listId";
-    var barcode = new PrintProductBarcode.mvBarcode();
+    var products = '@Html.Raw(ViewBag.Products)';
+    var barcode = new PrintProductBarcode.mvBarcode(products);
     $(document).ready(function () {
         barcode.Start();
     });
 </script>
 
-<div id="BarcodeViewId" class="row-fluid"  style="min-height:400px">
+<div id="BarcodeViewId" class="row-fluid" style="min-height:400px">
     <div class="span3">
         <div class="widget-box">
             <div class="widget-header">

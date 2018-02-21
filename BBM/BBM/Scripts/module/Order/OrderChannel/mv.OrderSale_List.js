@@ -48,6 +48,7 @@ Order.mvOrderSaleList = function () {
                 return
             if (!data.isError) {
                 self.lstOrder_Sale(CommonUtils.MapArray(data.Data.listTable, Order.mOrder));
+                self.TmpTable().TotalMoney(data.Data.Total);
                 self.TmpTable().Totalitems(data.Data.totalItems);
                 self.TmpTable().StartItem(data.Data.startItem);
             }

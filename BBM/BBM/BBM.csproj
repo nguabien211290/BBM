@@ -199,6 +199,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificaitonController.cs" />
     <Compile Include="Controllers\OrderChannelController.cs" />
+    <Compile Include="Controllers\Order_BranchController.cs">
+      <DependentUpon>OrderChannelController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Order_InputController.cs">
       <DependentUpon>OrderChannelController.cs</DependentUpon>
     </Compile>
@@ -213,6 +216,8 @@
       <DependentUpon>OrderChannelController.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\_SampleController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SaleController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -542,6 +547,8 @@
     <Content Include="Scripts\module\mBarcode.js" />
     <Content Include="Scripts\module\mvBracode.js" />
     <Content Include="Scripts\module\Order\m.Order.js" />
+    <Content Include="Scripts\module\Order\OrderBranch\mv.OrderBranch_Add.js" />
+    <Content Include="Scripts\module\Order\OrderBranch\mv.OrderBranch_List.js" />
     <Content Include="Scripts\module\Order\OrderChannel\m.Order.js" />
     <Content Include="Scripts\module\Order\OrderChannel\mv.OrderSale.js" />
     <Content Include="Scripts\module\Order\OrderChannel\mv.OrderSale_List.js" />
@@ -555,17 +562,20 @@
     <Content Include="Scripts\module\Order\ProductsSwitch\mv.ProductsSwitch_List.js" />
     <Content Include="Scripts\module\plugin\Common.js" />
     <Content Include="Scripts\module\plugin\CommonUtils.js" />
-    <Content Include="Scripts\module\plugin\Filter_Search.js" />
+    <Content Include="Scripts\module\plugin\_filter.js" />
     <Content Include="Scripts\module\plugin\globalize\globalize.culture.en-US.js" />
     <Content Include="Scripts\module\plugin\globalize\globalize.culture.vi-VN.js" />
     <Content Include="Scripts\module\plugin\globalize\globalize.js" />
     <Content Include="Scripts\module\plugin\ko.BBM.js" />
     <Content Include="Scripts\module\plugin\ko.BHN.js" />
-    <Content Include="Scripts\module\plugin\_FilterProduct.js" />
-    <Content Include="Scripts\module\plugin\_TableTool.js" />
+    <Content Include="Scripts\module\plugin\_table.js" />
     <Content Include="Scripts\module\Product\m.Product.js" />
     <Content Include="Scripts\module\Product\mv.Product.js" />
     <Content Include="Scripts\module\rBarcode.js" />
+    <Content Include="Scripts\module\_Sample\m.Sample.js" />
+    <Content Include="Scripts\module\_Sample\mv.Sample.js" />
+    <Content Include="Scripts\module\Report\m.Report.js" />
+    <Content Include="Scripts\module\Report\mv.Report.js" />
     <Content Include="Scripts\module\Suppliers\m.Suppliers.js" />
     <Content Include="Scripts\module\Suppliers\mv.Suppliers.js" />
     <Content Include="Scripts\module\SYS\Officers.js" />
@@ -609,10 +619,9 @@
     <Content Include="Views\Shared\Partial\module\Order\ProductsSwitch\_ProductsSwitch_Create.cshtml" />
     <Content Include="Views\Shared\Partial\module\Order\ProductsSwitch\_ProductsSwitch_List.cshtml" />
     <Content Include="Views\Shared\Partial\module\Partial\_chooseSkin.cshtml" />
-    <Content Include="Views\Shared\Partial\module\Partial\_FilterProduct.cshtml" />
-    <Content Include="Views\Shared\Partial\module\Partial\_Fiter_Search.cshtml" />
-    <Content Include="Views\Shared\Partial\module\Partial\_navbar.cshtml" />
-    <Content Include="Views\Shared\Partial\module\Partial\_TableTool.cshtml" />
+    <Content Include="Views\Shared\Partial\module\Partial\_filter.cshtml" />
+    <Content Include="Views\Shared\Partial\module\Partial\_menu.cshtml" />
+    <Content Include="Views\Shared\Partial\module\Partial\_table.cshtml" />
     <Content Include="Views\Shared\Partial\module\Partial\_template.cshtml" />
     <Content Include="Views\Shared\Partial\module\Product\Product.cshtml" />
     <Content Include="Views\Shared\Partial\module\Suppliers\Suppliers.cshtml" />
@@ -623,6 +632,10 @@
     <Content Include="Views\Shared\Partial\module\Barcode\_Standard.cshtml" />
     <Content Include="Scripts\lib\plugin\selectpicker\css\bootstrap-select.css.map" />
     <Content Include="Scripts\lib\plugin\selectpicker\js\bootstrap-select.js.map" />
+    <Content Include="Views\Shared\Partial\module\Order\OrderBranch\_Branch_Order_Output_Create.cshtml" />
+    <Content Include="Views\Shared\Partial\module\Order\OrderBranch\_Branch_Order_Output_List.cshtml" />
+    <Content Include="Views\Shared\Partial\module\Report\Report.cshtml" />
+    <Content Include="Views\Shared\Partial\module\_Sample\Sample.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

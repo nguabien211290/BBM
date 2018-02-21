@@ -1,9 +1,5 @@
-﻿<script src=@Url.Content("~/Scripts/module/plugin/_FilterProduct.js")></script>
-<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
-<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
+﻿<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
 <script src=@Url.Content("~/Scripts/module/Order/OrderSuppliers/mv.OrderSuppliers_List.js")></script>
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_FilterProduct.cshtml")
 <script>
     var orderSuppliersList = new Order.mvOrderSuppliersList();
     $(document).ready(function () {
@@ -12,26 +8,21 @@
 </script>
 <div id="OrderSuppliersListViewId" class="row-fluid">
     <div class="span12">
-           <div class="right">
-                <button class="btn btn-success" onclick="CommonUtils.addTabDynamic('Đặt hàng Nhà phân phối', CommonUtils.url('/Order_Suppliers/RenderViewCreate'), '#contentX')">Đặt hàng Nhà phân phối</button>
-                <button class="btn btn-primary" data-bind="click: function() {  orderSuppliersList.Start() }"><i class="icon-refresh"></i></button>
+        <div class="right">
+            <button class="btn btn-success" onclick="CommonUtils.addTabDynamic('Đặt hàng Nhà phân phối', CommonUtils.url('/Order_Suppliers/RenderViewCreate'), '#contentX')">Đặt hàng Nhà phân phối</button>
+            <button class="btn btn-primary" data-bind="click: function() {  orderSuppliersList.Start() }"><i class="icon-refresh"></i></button>
 
-            </div>
-            <div class="row-fluid">
-                <h3 class="header smaller lighter">Danh sách phiếu đặt hàng</h3>
-                <div class="table-header">
-                    Phiếu đặt hàng
-                </div>
-                <div class="row-fluid">
-                    <div class="span11 m-10-px">
-                        <!--ko template: {name: 'Filter_Search', data: FilterOrder } --><!--/ko-->
-                    </div>
-                </div>
-                <!--ko template: {name: 'dataTables', data:orderSuppliersList.TmpTable } --><!--/ko-->
-            </div>
         </div>
+        <div class="row-fluid">
+            <h3 class="header smaller lighter">Danh sách phiếu đặt hàng</h3>
+            <div class="table-header">
+                Phiếu đặt hàng
+            </div>
+            <!--ko template: {name: 'dataTables', data:orderSuppliersList.Table } --><!--/ko-->
+        </div>
+    </div>
 </div>
-<script id="table_OrderSuppliers" type="text/html">
+<script id="Order_Suppliers" type="text/html">
     <thead>
         <tr>
             <th class="sorting" data-bind="click: function(){ Sortby('Id'); SortbyDesc(SortbyDesc()?false:true)}">Mã</th>
@@ -105,7 +96,10 @@
                     <!--ko if: Status() == CommonUtils.GetAttrStatus(statusOrder_Input,'Process','Key') -->
                     <button class="btn btn-success btn-small" data-bind="click:  $parents[1].UpdateOrderDone">Hoàn thành</button>
                     <!--/ko -->
-                    <button class="btn btn-warning  btn-small" data-bind="click: $parents[1].CreateOrderInput">Tạo Phiếu nhập hàng</button>
+                    <button class="btn btn-warning  btn-small" data-bind="click: $parents[1].ReturnViewBarcode">In Tem</button>
+
+                    <button class="btn btn-info  btn-small" data-bind="click: $parents[1].CreateOrderInput">Tạo Phiếu nhập hàng</button>
+                    
                 </div>
             </td>
         </tr>

@@ -102,7 +102,10 @@ Order.mvOrderInputList = function () {
             CommonUtils.showWait(false);
         });
     };
-
+    self.ReturnViewBarcode = function (val) {
+        var data = { products: val.Detail() }
+        CommonUtils.addTabDynamic('In Tem', CommonUtils.url('/Barcode/RenderView'), '#contentX', true, data);
+    };
 
     self.Start = function () {
         ko.applyBindings(self, document.getElementById('OrderInputListViewId'));

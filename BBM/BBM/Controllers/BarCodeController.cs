@@ -1,4 +1,5 @@
-﻿using BBM.Business.Infractstructure;
+﻿using AutoMapper;
+using BBM.Business.Infractstructure;
 using BBM.Business.Infractstructure.Security;
 using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
@@ -20,9 +21,37 @@ namespace BBM.Controllers
             _crud = new CRUD();
         }
 
-        public ActionResult RenderView(List<int> listId = null)
+        public ActionResult RenderView(List<Order_DetialModel> products = null)
         {
-            ViewBag.listId = listId;
+            if (products != null)
+            {
+                var rs = new List<Prodcut_Branches_PriceChannel>();
+                foreach (var item in products)
+                {
+                    if (item.Product.id > 0)
+                    {
+                        var product = _context.shop_sanpham.Find(item.Product.id);
+                        if (product != null)
+                        {
+                            var pro = Mapper.Map<ProductSampleModel>(product);
+                            if (product.soft_Channel_Product_Price != null)
+                            {
+                                var price = product.soft_Channel_Product_Price.FirstOrDefault(o => o.ProductId == product.id && o.ChannelId == User.ChannelId);
+
+                                pro.PriceChannel = price != null ? price.Price : 0;
+                            }
+
+                            pro.Stock_Total = item.Total;
+
+                            rs.Add(new Prodcut_Branches_PriceChannel
+                            {
+                                product = pro
+                            });
+                        }
+                    }
+                }
+                ViewBag.Products = Newtonsoft.Json.JsonConvert.SerializeObject(rs);
+            }
             return PartialView("~/Views/Shared/Partial/module/Barcode/Index.cshtml");
         }
 

@@ -1,7 +1,5 @@
-﻿<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
-<script src=@Url.Content("~/Scripts/module/Branches/m.Branches.js")></script>
+﻿<script src=@Url.Content("~/Scripts/module/Branches/m.Branches.js")></script>
 <script src=@Url.Content("~/Scripts/module/Branches/mv.Branches.js")></script>
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
 <script>
     var typeChannel = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypeChannel>.ToJson(typeof(BBM.Business.Models.Enum.TypeChannel)))');
     var branches = new Branches.mvBranches();

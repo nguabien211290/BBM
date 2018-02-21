@@ -7,7 +7,7 @@ Order.mvOrderInputAdd = function (Products, OrderSuppliersId) {
         if (Products != null && Products.length > 0) {
             var data = JSON.parse(Products);
             ko.utils.arrayForEach(data, function (o) {
-                self.mOrderInput().Detail.push(ko.mapping.fromJS(o, {}, new Order.mOrderDetail));
+                self.mOrderInput().Detail.push(ko.mapping.fromJS(o.product, {}, new Order.mOrderDetail));
             });
         }
     };
@@ -102,6 +102,7 @@ Order.mvOrderInputAdd = function (Products, OrderSuppliersId) {
             }
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
         }).always(function () {
+            OrderSuppliersId = undefined;
             CommonUtils.showWait(false, self.idelement());
         });
     };
@@ -128,6 +129,6 @@ Order.mvOrderInputAdd = function (Products, OrderSuppliersId) {
     self.Start = function () {
         self.idelement("OrderInputAddViewId");
         ko.applyBindings(self, document.getElementById("OrderInputAddViewId"));
-        
+
     };
 };

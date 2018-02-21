@@ -14,15 +14,11 @@ namespace BBM.Business.Repository
 
         private Repository<shop_sanpham> _productRepository;
         private Repository<shop_image> _productImgRepository;
-        private Repository<soft_Order> _orderRepository;
-        private Repository<soft_Order_Child> _orderChildRepository;
         private Repository<soft_Branches> _brachesRepository;
         private Repository<soft_Branches_Product_Stock> _brachesStockRepository;
         private Repository<soft_Channel> _channelRepository;
         private Repository<soft_Channel_Product_Price> _channelPriceRepository;
         private Repository<sys_Employee> _employeeRepository;
-        private Repository<donhang> _orderSaleRepository;
-        private Repository<donhang_ct> _orderSale_DetailRepository;
         private Repository<khachhang> _customerRepository;
         private Repository<soft_Discount> _disscountRepository;
         private Repository<shop_bienthe> _variantRepository;
@@ -102,31 +98,9 @@ namespace BBM.Business.Repository
             {
                 if (_customerRepository == null)
                 {
-                    _customerRepository = new Repository<khachhang>(context);
+                    _customerRepository = new CustomerRepository(context);
                 }
                 return _customerRepository;
-            }
-        }
-        public IRepository<donhang> OrderSaleRepository
-        {
-            get
-            {
-                if (_orderSaleRepository == null)
-                {
-                    _orderSaleRepository = new OrderSaleRepository(context);
-                }
-                return _orderSaleRepository;
-            }
-        }
-        public IRepository<donhang_ct> OrderSale_DetailRepository
-        {
-            get
-            {
-                if (_orderSale_DetailRepository == null)
-                {
-                    _orderSale_DetailRepository = new Repository<donhang_ct>(context);
-                }
-                return _orderSale_DetailRepository;
             }
         }
         public IRepository<shop_sanpham> ProductRepository
@@ -138,28 +112,6 @@ namespace BBM.Business.Repository
                     _productRepository = new ProductRepository(context);
                 }
                 return _productRepository;
-            }
-        }
-        public IRepository<soft_Order> OrderRepository
-        {
-            get
-            {
-                if (_orderRepository == null)
-                {
-                    _orderRepository = new OrderRepository(context);
-                }
-                return _orderRepository;
-            }
-        }
-        public IRepository<soft_Order_Child> OrderChildRepository
-        {
-            get
-            {
-                if (_orderChildRepository == null)
-                {
-                    _orderChildRepository = new Repository<soft_Order_Child>(context);
-                }
-                return _orderChildRepository;
             }
         }
         public IRepository<soft_Branches> BrachesRepository
@@ -218,17 +170,68 @@ namespace BBM.Business.Repository
             }
         }
 
-        //public IRepository<soft_Order> OrderRepository
-        //{
-        //    get
-        //    {
-        //        if (_orderRepository == null)
-        //        {
-        //            _orderRepository = new Repository<soft_Order>(context);
-        //        }
-        //        return _orderRepository;
-        //    }
-        //}
+        #region Order
+        private Repository<donhang> _orderSaleRepository;
+        private Repository<donhang_ct> _orderSale_DetailRepository;
+        private Repository<soft_Order_Child> _orderChildRepository;
+        private Repository<soft_Order> _orderInputRepository;
+        private Repository<soft_Order> _orderBranchesRepository;
+        public IRepository<donhang> OrderSaleRepository
+        {
+            get
+            {
+                if (_orderSaleRepository == null)
+                {
+                    _orderSaleRepository = new OrderSaleRepository(context);
+                }
+                return _orderSaleRepository;
+            }
+        }
+        public IRepository<donhang_ct> OrderSale_DetailRepository
+        {
+            get
+            {
+                if (_orderSale_DetailRepository == null)
+                {
+                    _orderSale_DetailRepository = new Repository<donhang_ct>(context);
+                }
+                return _orderSale_DetailRepository;
+            }
+        }
+        public IRepository<soft_Order_Child> OrderChildRepository
+        {
+            get
+            {
+                if (_orderChildRepository == null)
+                {
+                    _orderChildRepository = new Repository<soft_Order_Child>(context);
+                }
+                return _orderChildRepository;
+            }
+        }
+        public IRepository<soft_Order> OrderInputRepository
+        {
+            get
+            {
+                if (_orderInputRepository == null)
+                {
+                    _orderInputRepository = new OrderInputRepository(context);
+                }
+                return _orderInputRepository;
+            }
+        }
+        public IRepository<soft_Order> OrderBranchesRepository
+        {
+            get
+            {
+                if (_orderBranchesRepository == null)
+                {
+                    _orderBranchesRepository = new OrderBranchRepository(context);
+                }
+                return _orderBranchesRepository;
+            }
+        }
+        #endregion
 
         public async Task SaveChanges()
         {

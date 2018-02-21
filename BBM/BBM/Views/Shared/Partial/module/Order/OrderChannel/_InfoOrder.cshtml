@@ -50,7 +50,7 @@
                 <div class="profile-info-row">
                     <div class="profile-info-name">Trạng thái</div>
                     <div class="profile-info-value">
-                        <span data-bind="renderStatus:mOrderSale().Status, typeStatus:'Order_Channel'"></span>                       
+                        <span data-bind="renderStatus:mOrderSale().Status, typeStatus:'Order_Channel'"></span>
                     </div>
                 </div>
                 <!--ko if: mOrderSale().EmployeeUpdate() > 0 -->
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="profile-info-row">
-                    <div class="profile-info-name">Điểm tích lũy cũ</div>
+                    <div class="profile-info-name">Điểm tích lũy</div>
                     <div class="profile-info-value">
                         <span class="editable editable-click" data-bind="text:mOrderSale().Customer().Mark() +' điểm'"></span>
                         <!--ko if: mOrderSale().Customer().Mark()>1000 -->
@@ -116,12 +116,14 @@
                         <!-- /ko -->
                     </div>
                 </div>
+                <!--ko  if: !OrderSaleId() || OrderSaleId() < 0 -->
                 <div class="profile-info-row">
                     <div class="profile-info-name">Điểm tích lũy mới</div>
                     <div class="profile-info-value">
                         <span class="editable editable-click" data-bind="text:mOrderSale().Customer().MarkTmp() +' điểm'"></span>
                     </div>
                 </div>
+                <!-- /ko -->
             </div>
         </div>
         <div class="span3">

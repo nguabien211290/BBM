@@ -58,7 +58,7 @@ namespace BBM.Controllers
 
                 lstInfo.totalItems = count;
 
-                lstInfo.listTable = Mapper.Map<List<CatalogModel>>(rs);
+                lstInfo.listTable = rs;
                 
                 Messaging.Data = lstInfo;
             }

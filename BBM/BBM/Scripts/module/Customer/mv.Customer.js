@@ -2,20 +2,30 @@
 Customer.mvCustomer = function () {
     var self = this;
     self.provinces = ko.observable(new Common.mvProvince());
-    self.TmpTable = ko.observable(new Paging_TmpControltool());
+    self.TmpTable = ko.observable(new Paging_TmpControltool("Khách hàng"));
+    self.FilterProduct = ko.observable(new Filter.mvFilter_Search_Control('Customer', true));
+    self.FilterProduct().classNameTab('mvCustomer');
+    self.CountFilter = ko.observable(0);
+    self.FilterProduct().KeywordSearch.subscribe(function () {
+        self.CountFilter(self.CountFilter() + 1);
+    });
+    self.SearchReLoad = ko.computed(function () {
+        if (self.CountFilter() > 0) {
+            self.LoadListCustomer()
+        }
+    }).extend({ throttle: 1000 });
+
     self.TmpTable().CurrentPage.subscribe(function () {
-        self.LoadListCustomer();
+        self.CountFilter(self.CountFilter() + 1);
     });
     self.TmpTable().ItemPerPage.subscribe(function () {
         self.TmpTable().CurrentPage(1);
-        self.LoadListCustomer();
+        self.CountFilter(self.CountFilter() + 1);
     });
-    self.TmpTable().KeywordSearch.subscribe(function () {
-        self.LoadListCustomer();
-    });
+
     self.TmpTable().Sortby.subscribe(function (val) {
         if (val)
-            self.LoadListCustomer();
+            self.CountFilter(self.CountFilter() + 1);
     });
     self.TmpTable().nameTemplate('table_Customer');
     self.LoadListCustomer = function () {
@@ -23,7 +33,7 @@ Customer.mvCustomer = function () {
         var model = {
             pageindex: self.TmpTable().CurrentPage(),
             pagesize: self.TmpTable().ItemPerPage(),
-            keyword: self.TmpTable().KeywordSearch(),
+            keyword: self.FilterProduct().KeywordSearch(),
             sortby: self.TmpTable().Sortby(),
             sortbydesc: self.TmpTable().SortbyDesc()
         };

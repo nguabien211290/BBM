@@ -109,6 +109,8 @@ namespace BBM.Controllers
                     }
                 }
 
+                lstInfo.Total = lstInfo.listTable.Sum(o => o.Total);
+
                 Messaging.Data = lstInfo;
             }
             catch (Exception ex)

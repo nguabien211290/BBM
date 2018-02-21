@@ -87,6 +87,6 @@ namespace BBM.Business.Models.Module
     public class Product_Sale_Average
     {
         public int ProductId { get; set; }
-        public int Sale_Average { get; set; }
+        public double Sale_Average { get; set; }
     }
 }

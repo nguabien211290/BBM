@@ -25,19 +25,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/06/2017 15:08:08</publishTime>
     </File>
     <File Include="bin/BBM.Business.dll">
-      <publishTime>01/30/2018 13:11:03</publishTime>
+      <publishTime>02/21/2018 21:28:53</publishTime>
     </File>
     <File Include="bin/BBM.Business.dll.config">
-      <publishTime>01/30/2018 13:09:21</publishTime>
+      <publishTime>02/17/2018 12:06:39</publishTime>
     </File>
     <File Include="bin/BBM.Business.pdb">
-      <publishTime>01/30/2018 13:11:03</publishTime>
+      <publishTime>02/21/2018 21:28:53</publishTime>
     </File>
     <File Include="bin/BBM.dll">
-      <publishTime>01/30/2018 13:11:13</publishTime>
+      <publishTime>02/21/2018 21:29:01</publishTime>
     </File>
     <File Include="bin/BBM.pdb">
-      <publishTime>01/30/2018 13:11:13</publishTime>
+      <publishTime>02/21/2018 21:29:01</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/02/2015 09:32:26</publishTime>
@@ -583,7 +583,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2018 14:54:24</publishTime>
     </File>
     <File Include="Content/css/me/me.css">
-      <publishTime>01/27/2018 14:54:24</publishTime>
+      <publishTime>02/17/2018 14:00:09</publishTime>
     </File>
     <File Include="Content/css/prettify.css">
       <publishTime>01/27/2018 14:54:24</publishTime>
@@ -4117,10 +4117,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2018 14:54:42</publishTime>
     </File>
     <File Include="Scripts/module/Barcode/mv.printproductbarcode.js">
-      <publishTime>01/27/2018 14:54:42</publishTime>
+      <publishTime>02/17/2018 18:30:01</publishTime>
     </File>
     <File Include="Scripts/module/Barcode/mvbarcode.js">
-      <publishTime>01/27/2018 14:54:43</publishTime>
+      <publishTime>02/17/2018 18:57:03</publishTime>
     </File>
     <File Include="Scripts/module/Branches/m.Branches.js">
       <publishTime>01/27/2018 14:54:43</publishTime>
@@ -4138,7 +4138,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2018 14:54:43</publishTime>
     </File>
     <File Include="Scripts/module/Customer/mv.Customer.js">
-      <publishTime>01/27/2018 14:54:43</publishTime>
+      <publishTime>02/15/2018 10:09:02</publishTime>
     </File>
     <File Include="Scripts/module/Discount/m.Discount.js">
       <publishTime>01/27/2018 14:54:43</publishTime>
@@ -4161,32 +4161,38 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/module/Order/m.Order.js">
       <publishTime>01/27/2018 14:54:47</publishTime>
     </File>
+    <File Include="Scripts/module/Order/OrderBranch/mv.OrderBranch_Add.js">
+      <publishTime>02/15/2018 14:14:10</publishTime>
+    </File>
+    <File Include="Scripts/module/Order/OrderBranch/mv.OrderBranch_List.js">
+      <publishTime>02/15/2018 15:40:53</publishTime>
+    </File>
     <File Include="Scripts/module/Order/OrderChannel/m.Order.js">
       <publishTime>01/27/2018 14:54:44</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderChannel/mv.OrderSale.js">
-      <publishTime>01/27/2018 14:54:45</publishTime>
+      <publishTime>02/21/2018 20:49:17</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderChannel/mv.OrderSale_List.js">
-      <publishTime>01/27/2018 14:54:45</publishTime>
+      <publishTime>02/19/2018 18:53:09</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderInput/mv.OrderInput_Add.js">
-      <publishTime>01/27/2018 14:54:46</publishTime>
+      <publishTime>02/17/2018 18:39:25</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderInput/mv.OrderInput_List.js">
-      <publishTime>01/27/2018 14:54:46</publishTime>
+      <publishTime>02/21/2018 20:03:04</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderOutput/mv.OrderOutput_Add.js">
       <publishTime>01/27/2018 14:54:46</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderOutput/mv.OrderOutput_List.js">
-      <publishTime>01/27/2018 14:54:46</publishTime>
+      <publishTime>02/21/2018 21:22:43</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderSuppliers/mv.OrderSuppliers_Add.js">
       <publishTime>01/27/2018 14:54:47</publishTime>
     </File>
     <File Include="Scripts/module/Order/OrderSuppliers/mv.OrderSuppliers_List.js">
-      <publishTime>01/27/2018 14:54:47</publishTime>
+      <publishTime>02/21/2018 21:24:16</publishTime>
     </File>
     <File Include="Scripts/module/Order/ProductsSwitch/mv.ProductsSwitch_Add.js">
       <publishTime>01/27/2018 14:54:47</publishTime>
@@ -4213,13 +4219,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2018 14:54:47</publishTime>
     </File>
     <File Include="Scripts/module/plugin/ko.BBM.js">
-      <publishTime>01/27/2018 14:54:48</publishTime>
+      <publishTime>02/17/2018 12:48:30</publishTime>
     </File>
     <File Include="Scripts/module/plugin/ko.BHN.js">
       <publishTime>01/27/2018 14:54:48</publishTime>
     </File>
+    <File Include="Scripts/module/plugin/_filter.js">
+      <publishTime>02/21/2018 20:24:52</publishTime>
+    </File>
     <File Include="Scripts/module/plugin/_FilterProduct.js">
       <publishTime>01/27/2018 14:54:47</publishTime>
+    </File>
+    <File Include="Scripts/module/plugin/_table.js">
+      <publishTime>02/19/2018 18:48:21</publishTime>
     </File>
     <File Include="Scripts/module/plugin/_TableTool.js">
       <publishTime>01/27/2018 14:54:47</publishTime>
@@ -4232,6 +4244,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/module/rBarcode.js">
       <publishTime>01/27/2018 14:54:48</publishTime>
+    </File>
+    <File Include="Scripts/module/Report/m.Report.js">
+      <publishTime>02/19/2018 17:52:19</publishTime>
+    </File>
+    <File Include="Scripts/module/Report/mv.Report.js">
+      <publishTime>02/19/2018 17:52:45</publishTime>
     </File>
     <File Include="Scripts/module/Suppliers/m.Suppliers.js">
       <publishTime>01/27/2018 14:54:47</publishTime>
@@ -4247,6 +4265,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/module/SYS/Role.js">
       <publishTime>01/27/2018 14:54:47</publishTime>
+    </File>
+    <File Include="Scripts/module/_Sample/m.Sample.js">
+      <publishTime>02/19/2018 17:59:26</publishTime>
+    </File>
+    <File Include="Scripts/module/_Sample/mv.Sample.js">
+      <publishTime>02/19/2018 17:59:26</publishTime>
     </File>
     <File Include="Scripts/respond.js">
       <publishTime>01/27/2018 14:54:48</publishTime>
@@ -4267,7 +4291,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2018 14:54:48</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Barcode/Index.cshtml">
-      <publishTime>01/27/2018 14:54:48</publishTime>
+      <publishTime>02/17/2018 18:30:33</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Barcode/tmp_Setting.cshtml">
       <publishTime>01/27/2018 14:54:48</publishTime>
@@ -4282,28 +4306,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2018 14:54:48</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Branches/Branches.cshtml">
-      <publishTime>01/27/2018 14:54:48</publishTime>
+      <publishTime>02/15/2018 16:31:42</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Catalog/Catalog.cshtml">
-      <publishTime>01/27/2018 14:54:48</publishTime>
+      <publishTime>02/15/2018 16:31:43</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Customer/Customer.cshtml">
-      <publishTime>01/27/2018 14:54:48</publishTime>
+      <publishTime>02/15/2018 16:31:43</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Discount/Discount.cshtml">
-      <publishTime>01/27/2018 14:54:48</publishTime>
+      <publishTime>02/15/2018 16:31:43</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Employess/Employess.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/15/2018 16:31:43</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Employess/Employess_info.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/15/2018 16:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/Partial/module/Order/OrderBranch/_Branch_Order_Output_Create.cshtml">
+      <publishTime>02/15/2018 14:15:44</publishTime>
+    </File>
+    <File Include="Views/Shared/Partial/module/Order/OrderBranch/_Branch_Order_Output_List.cshtml">
+      <publishTime>02/15/2018 16:35:24</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderChannel/_Channel_Order_List.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/19/2018 18:55:34</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderChannel/_InfoOrder.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/21/2018 20:47:55</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderChannel/_OrderSale.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
@@ -4312,37 +4342,40 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/08/2018 21:51:42</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderChannel/_PrintOrder.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/21/2018 20:11:56</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderChannel/_TableDetail.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/21/2018 20:47:41</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderInut/_Channel_Order_Input_Create.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderInut/_Channel_Order_Input_List.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/21/2018 21:00:55</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderOutput/_Channel_Order_Output_Create.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderOutput/_Channel_Order_Output_List.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/21/2018 21:13:29</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderSuppliers/_Channel_Order_Suppliers_Create.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/OrderSuppliers/_Channel_Order_Suppliers_List.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/17/2018 19:00:40</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/ProductsSwitch/_ProductsSwitch_Create.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Order/ProductsSwitch/_ProductsSwitch_List.cshtml">
-      <publishTime>01/27/2018 14:54:49</publishTime>
+      <publishTime>02/15/2018 16:37:01</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Partial/_chooseSkin.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
+    </File>
+    <File Include="Views/Shared/Partial/module/Partial/_filter.cshtml">
+      <publishTime>02/21/2018 20:24:15</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Partial/_FilterProduct.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
@@ -4350,8 +4383,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Shared/Partial/module/Partial/_Fiter_Search.cshtml">
       <publishTime>01/28/2018 00:04:24</publishTime>
     </File>
+    <File Include="Views/Shared/Partial/module/Partial/_menu.cshtml">
+      <publishTime>02/15/2018 15:37:06</publishTime>
+    </File>
     <File Include="Views/Shared/Partial/module/Partial/_navbar.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
+    </File>
+    <File Include="Views/Shared/Partial/module/Partial/_table.cshtml">
+      <publishTime>02/21/2018 21:22:17</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Partial/_TableTool.cshtml">
       <publishTime>01/27/2018 14:54:49</publishTime>
@@ -4360,13 +4399,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/27/2018 14:54:49</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Product/Product.cshtml">
-      <publishTime>01/27/2018 14:54:50</publishTime>
+      <publishTime>02/15/2018 10:26:51</publishTime>
+    </File>
+    <File Include="Views/Shared/Partial/module/Report/Report.cshtml">
+      <publishTime>02/19/2018 17:55:17</publishTime>
     </File>
     <File Include="Views/Shared/Partial/module/Suppliers/Suppliers.cshtml">
-      <publishTime>01/27/2018 14:54:50</publishTime>
+      <publishTime>02/15/2018 16:31:42</publishTime>
+    </File>
+    <File Include="Views/Shared/Partial/module/_Sample/Sample.cshtml">
+      <publishTime>02/19/2018 18:00:23</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>01/27/2018 14:54:50</publishTime>
+      <publishTime>02/15/2018 16:37:35</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>01/27/2018 14:54:50</publishTime>

@@ -1,7 +1,5 @@
-﻿<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
-<script src=@Url.Content("~/Scripts/module/Customer/m.Customer.js")></script>
+﻿<script src=@Url.Content("~/Scripts/module/Customer/m.Customer.js")></script>
 <script src=@Url.Content("~/Scripts/module/Customer/mv.Customer.js")></script>
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
 <script>
     var customer = new Customer.mvCustomer();
     $(document).ready(function () {
@@ -20,6 +18,13 @@
         <div class="row-fluid">
             <div class="table-header">
                 Khách hàng
+            </div>
+            <div class="row-fluid">
+                <div class="row-fluid">
+                    <div class="span11 m-10-px">
+                        <!--ko template: {name: 'Filter_Search', data: FilterProduct } --><!--/ko-->
+                    </div>
+                </div>
             </div>
             <!--ko template: {name: 'dataTables', data:customer.TmpTable } --><!--/ko-->
         </div>
@@ -160,9 +165,7 @@
 <script id="table_Customer" type="text/html">
     <thead>
         <tr>
-
             <th class="sorting" data-bind="click: function(){ Sortby('Code'),SortbyDesc(SortbyDesc()?false:true)}">Mã KH</th>
-
             <th class="sorting" data-bind="click: function(){ Sortby('User'); SortbyDesc(SortbyDesc()?false:true)}">Tên đăng nhập</th>
             <th class="sorting" data-bind="click: function(){ Sortby('Name'); SortbyDesc(SortbyDesc()?false:true)}">Họ Tên</th>
             <td class="sorting" data-bind="click: function(){ Sortby('Mark'); SortbyDesc(SortbyDesc()?false:true)}">Điểm tích lũy</td>

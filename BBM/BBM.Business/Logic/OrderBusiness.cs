@@ -48,15 +48,21 @@ namespace BBM.Business.Logic
 
                         product.PriceBase = (int)(((stockbySum * pricebase_old) + (item.Total * (int)item.Price)) / (sumTotal != 0 ? sumTotal : 1));
 
-                        var priceOL = product.soft_Channel_Product_Price.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelOnline);
+                        var channelOnline = unitOfWork.ChannelRepository.FindBy(o => o.Type == (int)TypeChannel.IsChannelOnline && o.Id == User.ChannelId).FirstOrDefault();
 
-                        if (priceOL != null)
+                        if (channelOnline != null)
                         {
-                            product.PriceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
-                            //Giá bán sỉ = (Giá bán online-Giá cơ bản)/5.3 - giá cơ bản
-                        }
+                            var priceOL = product.soft_Channel_Product_Price.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelOnline);
 
-                        unitOfWork.ProductRepository.Update(product, o => o.PriceBase, o => o.PriceInput, o => o.PriceBase_Old, o => o.PriceCompare, o => o.PriceWholesale);
+                            if (priceOL != null)
+                                product.PriceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
+                            else
+                                product.PriceWholesale = (int)((0 - product.PriceBase) / 5.3) + product.PriceBase;
+
+                            unitOfWork.ProductRepository.Update(product, o => o.PriceBase, o => o.PriceInput, o => o.PriceBase_Old, o => o.PriceCompare, o => o.PriceWholesale);
+                        }
+                        else
+                            unitOfWork.ProductRepository.Update(product, o => o.PriceBase, o => o.PriceInput, o => o.PriceBase_Old, o => o.PriceCompare);
 
                         #endregion
 
@@ -172,7 +178,7 @@ namespace BBM.Business.Logic
                     }
                     else
                     {
-                        var total_stock = 0;
+                        double total_stock = 0;
                         switch (order.Status)
                         {
                             case (int)StatusOrder_Sale.Cancel:

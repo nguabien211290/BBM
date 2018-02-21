@@ -1,32 +1,13 @@
 ﻿var Order = Order || {};
 Order.mvOrderSuppliersList = function () {
     var self = this;
-    self.lstOrder_Suppliers = ko.observableArray();
-    self.CountFilter = ko.observable(0);
+    self.Table = ko.observable(new Paging_TmpControltool("Order_Suppliers", true));
     self.SearchReLoad = ko.computed(function () {
-        if (self.CountFilter() > 0) {
+        if (self.Table().CountFilter() > 0) {
             self.GetListOrderSuppliers()
         }
     }).extend({ throttle: 1000 });
-    self.FilterOrder = ko.observable(new Filter.mvFilter_Search_Control('Order_Suppliers'));
-    self.FilterOrder().Fiterby.subscribe(function (val) {
-        if (val && val.length > 0)
-            self.CountFilter(self.CountFilter() + 1);
-    });
-    self.FilterOrder().KeywordSearch.subscribe(function () {
-        self.CountFilter(self.CountFilter() + 1);
-    });
-
     self.GetListOrderSuppliers = function () {
-        self.lstOrder_Suppliers([]);
-        var model = {
-            pageindex: self.TmpTable().CurrentPage(),
-            pagesize: self.TmpTable().ItemPerPage(),
-            sortby: self.TmpTable().Sortby(),
-            sortbydesc: self.TmpTable().SortbyDesc(),
-            filterby: self.FilterOrder().Fiterby()
-        };
-        self.TmpTable().Sortby(undefined);
         CommonUtils.showWait(true);
         $.ajax({
             type: "POST",
@@ -34,14 +15,14 @@ Order.mvOrderSuppliersList = function () {
             cache: false,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON(model),
+            data: ko.toJSON(self.Table().Model()),
         }).done(function (data) {
             if (data == null)
                 return
             if (!data.isError) {
-                self.lstOrder_Suppliers(CommonUtils.MapArray(data.Data.listTable, Order.mOrder));
-                self.TmpTable().Totalitems(data.Data.totalItems);
-                self.TmpTable().StartItem(data.Data.startItem);
+                self.Table().listData(CommonUtils.MapArray(data.Data.listTable, Order.mOrder));
+                self.Table().Totalitems(data.Data.totalItems);
+                self.Table().StartItem(data.Data.startItem);
             }
             else
                 CommonUtils.notify("Thông báo", data.messaging, 'error');
@@ -50,26 +31,8 @@ Order.mvOrderSuppliersList = function () {
             CommonUtils.showWait(false);
         });
     };
-    //--------------Table--------------------------------
-    self.TmpTable = ko.observable(new Paging_TmpControltool());
-    self.TmpTable().CurrentPage.subscribe(function () {
-        self.GetListOrderSuppliers();
-    });
-    self.TmpTable().ItemPerPage.subscribe(function () {
-        self.TmpTable().CurrentPage(1);
-        self.GetListOrderSuppliers();
-    });
-    self.TmpTable().Sortby.subscribe(function (val) {
-        if (val)
-            self.GetListOrderSuppliers();
-    });
-    self.lstOrder_Suppliers.subscribe(function (val) {
-        self.TmpTable().listData(val);
-    });
-    self.TmpTable().nameTemplate('table_OrderSuppliers');
-    //----------------------Filter-------------------
     self.GetDetail = function (val) {
-        ko.utils.arrayForEach(self.TmpTable().listData(), function (v) {
+        ko.utils.arrayForEach(self.Table().listData(), function (v) {
             v.IsViewDetail(false);
         })
         val.IsViewDetail(true);
@@ -77,6 +40,11 @@ Order.mvOrderSuppliersList = function () {
     self.CreateOrderInput = function (val) {
         var data = { products: val.Detail(), orderSuppliersId: val.Id() }
         CommonUtils.addTabDynamic('Nhập hàng', CommonUtils.url('/Order_Input/RenderViewCreate'), '#contentX', true, data);
+    };
+
+    self.ReturnViewBarcode = function (val) {
+        var data = { products: val.Detail() }
+        CommonUtils.addTabDynamic('In Tem', CommonUtils.url('/Barcode/RenderView'), '#contentX', true, data);
     };
 
     self.UpdateOrderDone = function (val) {
@@ -100,6 +68,5 @@ Order.mvOrderSuppliersList = function () {
     };
     self.Start = function () {
         ko.applyBindings(self, document.getElementById('OrderSuppliersListViewId'));
-        self.GetListOrderSuppliers();
     };
 };

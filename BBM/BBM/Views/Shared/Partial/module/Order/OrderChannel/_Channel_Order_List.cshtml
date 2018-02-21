@@ -1,9 +1,5 @@
-﻿<script src=@Url.Content("~/Scripts/module/plugin/_FilterProduct.js")></script>
-<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
-<script src=@Url.Content("~/Scripts/module/Order/OrderChannel/m.Order.js")></script>
+﻿<script src=@Url.Content("~/Scripts/module/Order/OrderChannel/m.Order.js")></script>
 <script src=@Url.Content("~/Scripts/module/Order/OrderChannel/mv.OrderSale_List.js")></script>
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_FilterProduct.cshtml")
 <script>
     var orderSaleList = new Order.mvOrderSaleList();
     $(document).ready(function () {
@@ -33,6 +29,10 @@
 <script id="table_OrderSale" type="text/html">
     <thead>
         <tr>
+            <th colspan="8" class="text-right"><h4>Tổng</h4></th>
+            <th><h4 data-bind="textMoneyDefaultSymbol: TotalMoney"></h4></th>
+        </tr>
+        <tr>
             <th class="sorting" data-bind="click: function(){ Sortby('Id'); SortbyDesc(SortbyDesc()?false:true)}">Mã</th>
             <th class="sorting" data-bind="click: function(){ Sortby('ChannelsTo'); SortbyDesc(SortbyDesc()?false:true)}">Khách hàng</th>
             <th class="sorting" data-bind="click: function(){ Sortby('DateCreate'),SortbyDesc(SortbyDesc()?false:true)}">Ngày tạo</th>
@@ -57,7 +57,7 @@
                 <span data-bind="datelong: DateCreate"></span>
             </td>
             <td>
-                <span data-bind="text: Total"></span>
+                <span data-bind="textMoneyDefaultSymbol: Total"></span>
             </td>
             <td>
                 <span data-bind="text: EmployeeNameCreate"></span>

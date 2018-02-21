@@ -32,7 +32,7 @@
                         <span data-bind="text: ProductName"></span>
                     </td>
                     <td>
-                        <input data-bind="value: Total, valueUpdate: 'afterkeydown'" class="input-mini" />
+                        <input data-bind="numericTotal: Total,value: Total, valueUpdate: 'afterkeydown'" class="input-mini" />
                     </td>
                     <td class="text-center">
                         <input data-bind="moneyMaskWithSymbol: Price" class="input-mini" />
@@ -55,16 +55,30 @@
                 <!-- /ko -->
                 <tr class="odd">
                     <td class="text-center"></td>
-                    <td class="span5">
+                    <td class="span3">
                         <input class="span12" placeholder="Từ khóa tìm kiếm" data-bind="value: KeywordSearch , valueUpdate: 'afterkeydown'" />
+                        <div class="span12">
+                            <div class="span6">
+                                <label>
+                                    <input type="radio" name="search" value="Code" data-bind="checked: SearchType">
+                                    <span class="lbl">Mã SP</span>
+                                </label>
+                            </div>
+                            <div class="span6">
+                                <label>
+                                    <input type="radio" name="search" value="All" data-bind="checked: SearchType">
+                                    <span class="lbl">Tất cả</span>
+                                </label>
+                            </div>
+                        </div>
                         <!--ko if:  ListProductSearch().length > 0 -->
                         <div class="search_recommended">
-                                <ul>
-                                    <!--ko foreach: ListProductSearch -->
-                                    <li data-bind="html: (masp() +' - ' + tensp()), click: $parents[0].GetProduct"></li>
-                                    <!-- /ko -->
-                                </ul>
-                            </div>
+                            <ul>
+                                <!--ko foreach: ListProductSearch -->
+                                <li data-bind="html: (masp() +' - ' + tensp()), click: $parents[0].GetProduct"></li>
+                                <!-- /ko -->
+                            </ul>
+                        </div>
                         <!-- /ko -->
                     </td>
                     <td class="text-center"></td>
@@ -93,11 +107,11 @@
         <div class="m-20-px text-center">
             <!--ko if: mOrderSale().Status() !=3   && mOrderSale().Status() !=4 -->
             <button class="btn btn-info" data-bind="click: function(){ mOrderSale().Status(2), UpdateOrderSale()}">Đang giao hàng</button>
-            <button class="btn btn-danger" data-bind="click: function(){ mOrderSale().Status(5), UpdateOrderSale()}">Hoãn</button>
             <button class="btn btn-warning" data-bind="click: function(){ mOrderSale().Status(6),UpdateOrderSale()}">Giao thất bại</button>
             <button class="btn btn-success" data-bind="click: function(){ mOrderSale().Status(3),UpdateOrderSale()}">Hoàn thành</button>
+            <button class="btn btn-danger" data-bind="click: function(){ mOrderSale().Status(5), UpdateOrderSale()}">Hoãn</button>
             <button class="btn btn-danger" data-bind="click: function(){ mOrderSale().Status(4),UpdateOrderSale()}">Hủy</button>
-            <button class="btn btn-danger" data-bind="click: function(){CommonUtils.Print('printordersales_' + OrderId)}">In đơn hàng</button>
+            <button class="btn btn-default" data-bind="click: function(){CommonUtils.Print('printordersales_' + OrderSaleId())}">In đơn hàng</button>
             <!--/ko-->
         </div>
         <!--/ko-->

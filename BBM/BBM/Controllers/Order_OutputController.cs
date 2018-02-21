@@ -319,7 +319,7 @@ namespace BBM.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        private int Product_Sale_AveragebyChannel(int productId, int brancheId, int totaldateSum)
+        private double Product_Sale_AveragebyChannel(int productId, int brancheId, int totaldateSum)
         {
             var branches = _context.soft_Branches.Find(brancheId);
 

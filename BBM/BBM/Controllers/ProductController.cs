@@ -451,6 +451,8 @@ namespace BBM.Controllers
                         tensp = model.tensp,
                         masp = model.masp,
                         Barcode = model.Barcode,
+                        PriceBase_Old = model.PriceBase_Old,
+                        PriceBase = model.PriceBase,
                         PriceCompare = model.PriceCompare,
                         CatalogId = model.CatalogId <= 0 ? (int?)null : model.CatalogId,
                         SuppliersId = model.SuppliersId <= 0 ? (int?)null : model.SuppliersId,
@@ -462,6 +464,8 @@ namespace BBM.Controllers
                     _crud.Update<shop_sanpham>(data, o => o.SuppliersId,
                         o => o.StatusVAT,
                         o => o.tensp,
+                        o => o.PriceBase,
+                        o => o.PriceBase_Old,
                         o => o.CatalogId, o => o.PriceCompare,
                         o => o.Barcode, o => o.masp,
                         o => o.Status, o => o.Note);

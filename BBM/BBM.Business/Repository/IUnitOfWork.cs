@@ -9,11 +9,7 @@ namespace BBM.Business.Repository
 {
     public interface IUnitOfWork
     {
-        IRepository<donhang> OrderSaleRepository { get; }
-        IRepository<donhang_ct> OrderSale_DetailRepository { get; }
-        IRepository<shop_sanpham> ProductRepository { get; }
-        IRepository<soft_Order> OrderRepository { get; }
-        IRepository<soft_Order_Child> OrderChildRepository { get; }
+      IRepository<shop_sanpham> ProductRepository { get; }
         IRepository<soft_Branches> BrachesRepository { get; }
         IRepository<soft_Branches_Product_Stock> BrachesStockRepository { get; }
         IRepository<soft_Channel> ChannelRepository { get; }
@@ -26,6 +22,13 @@ namespace BBM.Business.Repository
         IRepository<soft_Catalog> CatalogRepository { get; }
         IRepository<shop_image> ImageRepository { get; }
         IRepository<soft_Config> ConfigRepository { get; }
+        #region Order
+        IRepository<soft_Order> OrderBranchesRepository { get; }
+        IRepository<donhang> OrderSaleRepository { get; }
+        IRepository<donhang_ct> OrderSale_DetailRepository { get; }
+        IRepository<soft_Order_Child> OrderChildRepository { get; }
+        IRepository<soft_Order> OrderInputRepository { get; }
+        #endregion
         Task SaveChanges();
     }
 }

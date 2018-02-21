@@ -1,7 +1,7 @@
 ﻿<script type="text/html" id="_PrintOrder">
-    <div class="printable">
-        <h4 class="text-center" style="font-weight:bold">Babymart.vn - Nơi bố mẹ gửi trọn niềm tin.</h4>
-        <p class="text-center" style="line-height:1">Điện thoại: (028) 7309.3479 – Hotline: 0918.644643.</p>
+    <div class="printable" style="font-size:11px">
+        <h5 class="text-center" style="font-weight:bold">Babymart.vn - Nơi bố mẹ gửi trọn niềm tin.</h5>
+        <p class="text-center" style="line-height:0">(028) 7309.3479 – 0918.644643</p>
         <h4 class="text-center m-t-20"> HÓA ĐƠN BÁN HÀNG</h4>
         <table class="m-auto">
             <tbody>
@@ -40,7 +40,7 @@
                     <td>Tên sản phẩm</td>
                     <td>SL</td>
                     <td>Giá</td>
-                    <td>Thành tiền</td>
+                    <td>T.Tiền</td>
                 </tr>
             </thead>
             <tbody>
@@ -51,16 +51,16 @@
                         <span data-bind="text: ($index() + 1)"></span>
                     </td>
                     <td>
-                        <span data-bind="text: ProductName"></span>
+                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;" data-bind="text: ProductName"></div>
                     </td>
                     <td>
                         <span data-bind="text: Total"></span>
                     </td>
                     <td class="text-center">
-                        <span data-bind="textMoneyDefaultSymbol: Price"></span>
+                        <span data-bind="textMoney: Price"></span>
                     </td>
                     <td>
-                        <span data-bind="textMoneyDefaultSymbol: TotalMoney"></span>
+                        <span data-bind="textMoney: TotalMoney"></span>
                     </td>
                 </tr>
                 <!-- /ko -->
@@ -93,8 +93,16 @@
                         <span data-bind="textMoneyDefaultSymbol: CustommerMoneyTake"></span>
                     </td>
                 </tr>
+                <!--ko if: mOrderSale().Note() && mOrderSale().Note().length >0 -->
+                <tr>
+                    <td colspan="3" class="text-right">Ghi chú</td>
+                    <td colspan="2">
+                        <span data-bind="text: mOrderSale().Note"></span>
+                    </td>
+                </tr>
+                <!-- /ko -->
             </tbody>
         </table>
-        <h5 style="text-align:right">Cám ơn và hẹn gặp lại !</h5>
+        <h5 style="text-align:right">Xin cảm ơn Quý Khách và hẹn gặp lại.</h5>
     </div>
 </script>

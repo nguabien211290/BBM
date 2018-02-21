@@ -1,9 +1,5 @@
-﻿<script src=@Url.Content("~/Scripts/module/plugin/_FilterProduct.js")></script>
-<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
-<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
+﻿<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
 <script src=@Url.Content("~/Scripts/module/Order/OrderInput/mv.OrderInput_List.js")></script>
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_FilterProduct.cshtml")
 <script>
     var lstTypeOrder = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypeOrder>.ToJson(typeof(BBM.Business.Models.Enum.TypeOrder)))');
     var orderInputList = new Order.mvOrderInputList();
@@ -173,7 +169,9 @@
 
                 <!--ko if: Status() == CommonUtils.GetAttrStatus(statusOrder_Input,'Process','Key') -->
                 <div class="right">
-                    <button class="btn btn-success" data-bind="click: function(){ $parents[1].UpdateOrder($data) }">Hoàn thành</button>
+                    <button class="btn btn-warning  btn-small" data-bind="click: $parents[1].ReturnViewBarcode">In Tem</button>
+
+                    <button class="btn btn-success btn-small" data-bind="click: function(){ $parents[1].UpdateOrder($data) }">Hoàn thành</button>
                 </div>
                 <!--/ko -->
             </td>

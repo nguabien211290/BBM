@@ -22,7 +22,8 @@ namespace BBM.Business.Logic
 
         public List<CatalogModel> GetCatalog(PagingInfo pageinfo, out int count, out int min)
         {
-            var result = unitOfWork.CatalogRepository.SearchBy(pageinfo, out count, out min);
+            double totalMoney = 0;
+            var result = unitOfWork.CatalogRepository.SearchBy(pageinfo, out count, out min, out totalMoney);
             return Mapper.Map<List<CatalogModel>>(result);
         }
 

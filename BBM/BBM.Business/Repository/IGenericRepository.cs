@@ -36,6 +36,6 @@ namespace BBM.Business.Repository
            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
            string includeProperties = "");
 
-        List<T> SearchBy(PagingInfo pageinfo, out int count, out int min, int BranchesId = 0);
+        List<T> SearchBy(PagingInfo pageinfo, out int count, out int min, out double totalMoney, int BranchesId = 0);
     }
 }

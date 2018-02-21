@@ -37,7 +37,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
-    @{Html.RenderAction("_navbar", "Partial");}
+    @{Html.RenderAction("Menu", "Partial");}
     <div class="main-container container-fluid">
         <a class="menu-toggler" id="menu-toggler" href="#">
             <span class="menu-text"></span>
@@ -102,12 +102,17 @@
     <script src=@Url.Content("~/Scripts/lib/plugin/jquery.barcode/jquery-barcode.js")></script>
 
     <script src=@Url.Content("~/Scripts/module/Product/m.Product.js")></script>
-    <script src=@Url.Content("~/Scripts/module/plugin/Filter_Search.js")></script>
-    @Html.Partial("~/Views/Shared/Partial/module/Partial/_Fiter_Search.cshtml")
+    <script src=@Url.Content("~/Scripts/module/plugin/_table.js")></script>
+    <script src=@Url.Content("~/Scripts/module/plugin/_filter.js")></script>
+
+    @Html.Partial("~/Views/Shared/Partial/module/Partial/_filter.cshtml")
+    @Html.Partial("~/Views/Shared/Partial/module/Partial/_table.cshtml")
 
     @Html.Partial("~/Views/Shared/Partial/module/Order/OrderChannel/_InfoOrder.cshtml")
     @Html.Partial("~/Views/Shared/Partial/module/Order/OrderChannel/_PrintOrder.cshtml")
     @Html.Partial("~/Views/Shared/Partial/module/Order/OrderChannel/_TableDetail.cshtml")
+
+
     <script type="text/javascript">
         var statusProducts = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusProduct>.ToJson(typeof(BBM.Business.Models.Enum.StatusProduct)))');
         var lstStatusVAT = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusVATProduct>.ToJson(typeof(BBM.Business.Models.Enum.StatusVATProduct)))');

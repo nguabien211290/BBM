@@ -1,9 +1,5 @@
-﻿<script src=@Url.Content("~/Scripts/module/plugin/_FilterProduct.js")></script>
-<script src=@Url.Content("~/Scripts/module/plugin/_TableTool.js")></script>
-<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
+﻿<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
 <script src=@Url.Content("~/Scripts/module/Order/OrderOutput/mv.OrderOutput_List.js")></script>
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_TableTool.cshtml")
-@Html.Partial("~/Views/Shared/Partial/module/Partial/_FilterProduct.cshtml")
 <script>
     var orderOutputList = new Order.mvOrderOutputList();
     $(document).ready(function () {
@@ -22,16 +18,17 @@
             <div class="table-header">
                 Phiếu xuất
             </div>
-            <div class="row-fluid">
+            <!--ko template: {name: 'dataTables', data:orderOutputList.Table } --><!--/ko-->
+            @*<div class="row-fluid">
                 <div class="span11 m-10-px">
                     <!--ko template: {name: 'Filter_Search', data: FilterOrder } --><!--/ko-->
                 </div>
             </div>
-            <!--ko template: {name: 'dataTables', data:orderOutputList.TmpTable } --><!--/ko-->
+            <!--ko template: {name: 'dataTables', data:orderOutputList.TmpTable } --><!--/ko-->*@
         </div>
     </div>
 </div>
-<script id="table_OrderOutput" type="text/html">
+<script id="Order_Output" type="text/html">
     <thead>
         <tr>
             <th class="sorting" data-bind="click: function(){ Sortby('Id'); SortbyDesc(SortbyDesc()?false:true)}">Mã</th>

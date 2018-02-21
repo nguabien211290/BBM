@@ -11,12 +11,16 @@ using System.Threading.Tasks;
 
 namespace BBM.Business.Repository
 {
-    public partial class OrderRepository
+    public class OrderInputRepository : Repository<soft_Order>
     {
-        public override List<soft_Order> SearchBy(PagingInfo pageinfo, out int count, out int min, int BranchesId = 0)
+        public OrderInputRepository(admin_softbbmEntities dbContext) : base(dbContext) { }
+
+        public override List<soft_Order> SearchBy(PagingInfo pageinfo, out int count, out int min, out double totalMoney, int BranchesId = 0)
         {
+            totalMoney = 0;
+
             var lstTmp = FindBy(o => (o.TypeOrder == (int)TypeOrder.Input && o.Id_To.HasValue && o.Id_To == BranchesId) ||
-                                 (o.TypeOrder == (int)TypeOrder.Output && o.Id_To.HasValue && o.Id_To == BranchesId));
+                              (o.TypeOrder == (int)TypeOrder.Output && o.Id_To.HasValue && o.Id_To == BranchesId));
 
             #region Fillter
             if (pageinfo.filterby != null && pageinfo.filterby.Count > 0)

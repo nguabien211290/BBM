@@ -13,8 +13,10 @@ namespace BBM.Business.Repository
     {
         public CatalogRepository(admin_softbbmEntities dbContext) : base(dbContext) { }
 
-        public override List<soft_Catalog> SearchBy(PagingInfo pageinfo, out int count, out int min, int BranchesId = 0)
+        public override List<soft_Catalog> SearchBy(PagingInfo pageinfo, out int count, out int min, out double totalMoney, int BranchesId = 0)
         {
+            totalMoney = 0;
+
             var lstTmp = GetAll();
 
             var isSort = false;
@@ -41,7 +43,7 @@ namespace BBM.Business.Repository
                 lstTmp = lstTmp.Where(o => !string.IsNullOrEmpty(o.Name) && o.Name.Contains(pageinfo.keyword));
             }
             #endregion
-            
+
             min = Helpers.FindMin(pageinfo.pageindex, pageinfo.pagesize);
 
             count = lstTmp.Count();

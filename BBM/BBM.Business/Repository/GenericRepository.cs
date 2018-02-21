@@ -113,10 +113,11 @@ namespace BBM.Business.Repository
             Delete(entityToDelete);
         }
 
-        public virtual List<T> SearchBy(PagingInfo pageinfo, out int count, out int min, int BranchesId = 0)
+        public virtual List<T> SearchBy(PagingInfo pageinfo, out int count, out int min, out double totalMoney, int BranchesId = 0)
         {
             count = 0;
             min = 0;
+            totalMoney = 0;
             return new List<T>();
         }
 

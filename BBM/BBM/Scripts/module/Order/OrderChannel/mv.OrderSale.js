@@ -1,7 +1,9 @@
 ﻿var Order = Order || {};
 Order.mvOrderSale = function (OrderId) {
     var self = this;
+    self.OrderSaleId = ko.observable(OrderId);
     self.KeywordSearch = ko.observable();
+    self.SearchType = ko.observable("Code");
     self.ListProductSearch = ko.observableArray();
     self.valueDiscountForMember = ko.observable(valueDiscountFormember);
     self.lstEmployShip = ko.observableArray();
@@ -14,10 +16,10 @@ Order.mvOrderSale = function (OrderId) {
     self.SetValueDisscount = function (value, type) {
         switch (type) {
             case 'Money':
-                self.mOrderSale().DisscountValue(parseInt(value));
+                self.mOrderSale().DisscountValue(parseFloat(value));
                 break;
             case 'Percent':
-                var per = (self.mOrderSale().TotalMoney() * parseInt(value)) / 100;
+                var per = (self.mOrderSale().TotalMoney() * parseFloat(value)) / 100;
                 self.mOrderSale().DisscountValue(per);
                 break;
             case 'Code':
@@ -70,14 +72,15 @@ Order.mvOrderSale = function (OrderId) {
     self.Total = ko.computed(function () {
         var sum = 0;
         ko.utils.arrayForEach(self.mOrderSale().Detail(), function (val) {
-            sum += parseInt(val.Total());
+            sum += parseFloat(val.Total());
         });
         self.mOrderSale().Total(sum);
     });
+
     self.TotalMoenySumary = ko.computed(function () {
         var sum = 0;
         ko.utils.arrayForEach(self.mOrderSale().Detail(), function (val) {
-            sum += parseInt(val.TotalMoney());
+            sum += parseFloat(val.TotalMoney());
         });
         self.mOrderSale().TotalMoney(sum);
         self.SetValueDisscount(self.InputDisscount(), self.DisscountType());
@@ -85,6 +88,7 @@ Order.mvOrderSale = function (OrderId) {
         var hasDiscount = ko.utils.arrayFirst(self.mOrderSale().Detail(), function (pro) {
             return pro.isDiscountForMember();
         })
+
         if (hasDiscount)
             self.mOrderSale().Customer().MarkTmp(parseInt(parseInt(self.mOrderSale().Customer().Mark()) - 1000));
         else
@@ -164,7 +168,7 @@ Order.mvOrderSale = function (OrderId) {
                 cache: false,
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
-                data: ko.toJSON({ keyword: self.KeywordSearch() }),
+                data: ko.toJSON({ keyword: self.KeywordSearch(), searchType: self.SearchType() }),
             }).done(function (data) {
                 if (data == null)
                     return
@@ -234,13 +238,13 @@ Order.mvOrderSale = function (OrderId) {
     };
     self.isChannelOnline = ko.observable(false);
     self.GetInfoOrder = function () {
-        if (OrderId && OrderId > 0) {
+        if (self.OrderSaleId() && self.OrderSaleId() > 0) {
             CommonUtils.showWait(true);
             $.ajax({
                 type: "POST",
                 url: CommonUtils.url("/OrderChannel/GetInfoOrder"),
                 cache: false,
-                data: { Id: OrderId }
+                data: { Id: self.OrderSaleId() }
             }).done(function (data) {
                 if (data == null)
                     return
@@ -298,7 +302,7 @@ Order.mvOrderSale = function (OrderId) {
     self.CustommerofMoney_Print = ko.observable();
     self.CustommerMoneyGive_Print = ko.observable();
     self.Start = function () {
-        ko.applyBindings(self, document.getElementById('OrderSaleViewId-' + OrderId));
+        ko.applyBindings(self, document.getElementById('OrderSaleViewId-' + self.OrderSaleId()));
         self.GetInfoOrder();
     };
 
@@ -319,10 +323,10 @@ Order.mvOrderSale = function (OrderId) {
             if (!data.isError) {
                 self.mOrderSale().Code(data.Data.Code);
                 if (data.Data.isPrint)
-                    CommonUtils.Print("printordersales_" + OrderId);
+                    CommonUtils.Print("printordersales_" + self.OrderSaleId());
                 else
                     if (isDone)
-                        CommonUtils.Print("printordersales_" + OrderId);
+                        CommonUtils.Print("printordersales_" + self.OrderSaleId());
                 self.GetInfoOrder();
             }
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
@@ -346,10 +350,10 @@ Order.mvOrderSale = function (OrderId) {
                     return
                 if (!data.isError) {
                     if (self.mOrderSale().Status() == 2 && data.Data.isPrint)
-                        CommonUtils.Print("printordersales_" + OrderId);
+                        CommonUtils.Print("printordersales_" + self.OrderSaleId());
                     else
                         if (self.mOrderSale().Status() == 3)
-                            CommonUtils.Print("printordersales_" + OrderId);
+                            CommonUtils.Print("printordersales_" + self.OrderSaleId());
                 }
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
             }).always(function () {
