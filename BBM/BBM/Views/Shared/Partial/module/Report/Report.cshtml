@@ -1,0 +1,10 @@
+﻿<script src=@Url.Content("~/Scripts/module/Report/m.Report.js")></script>
+<script src=@Url.Content("~/Scripts/module/Report/mv.Report.js")></script>
+<script>
+    var report = new Product.mvReport();
+    $(document).ready(function () {
+        report.Start();
+    });
+</script>
+<div id="ReportViewId" class="row-fluid">
+</div>

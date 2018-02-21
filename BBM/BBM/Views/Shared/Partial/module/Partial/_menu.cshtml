@@ -1,0 +1,89 @@
+﻿<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container-fluid container_dropdown_menu">
+            <span class="brand">
+                <small>
+                    <i class="icon-leaf"></i>
+                </small>
+            </span><!--/.brand-->
+            <div class="dropdown_menu">
+                <button class="dropbtn_menu">Danh mục</button>
+                <div class="dropdown-content_menu">
+
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Sản phẩm', '@Url.Content("~/Product/RenderView")', '#contentX')">Sản phẩm</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Khuyễn mãi', '@Url.Content("~/Discount/RenderView")', '#contentX')">Khuyễn mãi</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Nhóm sản phẩm', '@Url.Content("~/Catalog/RenderView")', '#contentX')">Nhóm sản phẩm</a>
+
+                </div>
+            </div>
+            <div class="dropdown_menu">
+                <button class="dropbtn_menu">Hàng hóa</button>
+                <div class="dropdown-content_menu">
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Danh sách đặt hàng', '@Url.Content("~/Order_Suppliers/RenderView")','#contentX')"> Đặt hàng NPP</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Đặt hàng Nội bộ', '@Url.Content("~/Order_Branch/RenderView")','#contentX')"> Đặt hàng Nội bộ</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Danh sách nhập hàng', '@Url.Content("~/Order_Input/RenderView")','#contentX')">Nhập hàng</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Xuất hàng nội bộ', '@Url.Content("~/Order_Output/RenderView")','#contentX')">Xuất hàng nội bộ</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Phiếu điều chỉnh', '@Url.Content("~/ProductsSwitch/RenderView")','#contentX')">Phiếu điều chỉnh</a>
+
+
+                </div>
+            </div>
+            <div class="dropdown_menu">
+                <button class="dropbtn_menu" style="background-color: #ffb752;">Giao dịch</button>
+                <div class="dropdown-content_menu">
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Danh sách đơn hàng', '@Url.Content("~/OrderChannel/RenderViewList")','#contentX')">Danh sách đơn hàng</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Bán hàng', '@Url.Content("~/OrderChannel/RenderViewOrder")','#contentX')"> Bán hàng</a>
+                </div>
+            </div>
+            <div class="dropdown_menu">
+                <button class="dropbtn_menu">Đối tác</button>
+                <div class="dropdown-content_menu">
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Nhóm khách hàng', '@Url.Content("~/Customer/RenderView")', '#contentX')">Khách hàng </a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Nhà phân phối', '@Url.Content("~/Suppliers/RenderView")', '#contentX')"> Nhà phân phối </a>
+                </div>
+            </div>
+            <div class="dropdown_menu">
+                <button class="dropbtn_menu">Thiết lập</button>
+                <div class="dropdown-content_menu">
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Quản lý chi nhánh', '@Url.Content("~/Branches/RenderView")', '#contentX')">Quản lý Kho</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Quản lý người dùng', '@Url.Content("~/Employess/RenderView")', '#contentX')">Quản lý người dùng</a>
+                    <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('In Tem', '@Url.Content("~/Barcode/RenderView")', '#contentX')">In Tem</a>
+                </div>
+            </div>
+            <div class="dropdown_menu">
+                <button class="dropbtn_menu btn-success" onclick="CommonUtils.addTabDynamic('Bán hàng', '@Url.Content("~/OrderChannel/RenderViewOrder")','#contentX')">BÁN HÀNG</button>
+            </div>
+            <!--ko template: {name: '_branchesCtrol', data:common } --><!--/ko-->
+            <ul class="nav ace-nav pull-right">
+                <!--ko template: {name: '_notificationCtrol', data:common } --><!--/ko-->
+                <li class="light-blue">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <span class="user-info p-t10">
+                            <small>
+                                Welcome,
+                                @ViewBag.UserName   <i class="icon-caret-down"></i>
+                            </small>
+                        </span>
+
+
+                    </a>
+
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer" style="min-width: 100px;">
+                        <li>
+                            <a href="javascript:void(0)" onclick="CommonUtils.addTabDynamic('Thông tin tài khoản', '@Url.Content("~/Employess/Render_info_View")','#contentX')">
+                                <i class="icon-user"></i>
+                                Tài khoản
+                            </a>
+                        </li>
+                        <li>
+                            <a href=@Url.Content("~/auth/logout")>
+                                <i class="icon-off"></i>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!--/.container-fluid-->
+    </div><!--/.navbar-inner-->
+</div>
