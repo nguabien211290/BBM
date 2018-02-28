@@ -167,13 +167,12 @@
                     </tbody>
                 </table>
 
-                <!--ko if: Status() == CommonUtils.GetAttrStatus(statusOrder_Input,'Process','Key') -->
                 <div class="right">
                     <button class="btn btn-warning  btn-small" data-bind="click: $parents[1].ReturnViewBarcode">In Tem</button>
-
+                    <!--ko if: Status() == CommonUtils.GetAttrStatus(statusOrder_Input,'Process','Key') -->
                     <button class="btn btn-success btn-small" data-bind="click: function(){ $parents[1].UpdateOrder($data) }">Hoàn thành</button>
+                    <!--/ko -->
                 </div>
-                <!--/ko -->
             </td>
         </tr>
         <!--/ko-->

@@ -68,7 +68,15 @@
             <td>
                 <span data-bind="text: Note"></span>
             </td>
-            <td data-bind="renderStatus:Status, typeStatus:'Order_Channel'"></td>
+            <td>
+                <span data-bind="renderStatus:Status, typeStatus:'Order_Channel'"></span>
+                <!--ko if: StatusPrint() && StatusPrint().length > 0 -->
+                <span class="label label-info arrowed-in arrowed-in-right">
+                    Đã In
+                </span>
+                <!--/ko-->
+
+            </td>
             <td>
                 <button class="btn btn-primary" data-bind="click: function(){ CommonUtils.addTabDynamic('Đơn bán hàng số '+ Code()+'-'+ Id(), CommonUtils.url('/OrderChannel/RenderViewOrder'), '#contentX',true,{ OrderId : Id }) }"><i class="icon-eye-open"></i></button>
             </td>

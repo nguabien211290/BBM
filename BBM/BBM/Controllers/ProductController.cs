@@ -78,7 +78,7 @@ namespace BBM.Controllers
                     Status = o.Status.HasValue ? o.Status.Value : 0,
                     StatusVAT = o.StatusVAT.HasValue ? o.StatusVAT.Value : 0,
                     DateCreate = o.DateCreate,
-                    PriceWholesale = o.PriceWholesale.HasValue ? o.PriceWholesale.Value : 0,
+                    //PriceWholesale = o.PriceWholesale.HasValue ? o.PriceWholesale.Value : 0,
                     Stock_Sum = o.soft_Branches_Product_Stock.Any() ? o.soft_Branches_Product_Stock.Sum(p => p.Stock_Total) : 0
                 });
 
@@ -334,14 +334,19 @@ namespace BBM.Controllers
                     };
 
                     var prices = _context.soft_Channel_Product_Price.Where(o => o.ProductId == item.id).ToList();
+
                     if (prices != null && prices.Count > 0)
                     {
-                        var price = Mapper.Map<Product_PriceModel>(prices.FirstOrDefault(o => o.ChannelId == User.ChannelId));
-
                         var PriceMainStore = prices.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsMainStore);
                         if (PriceMainStore != null)
                             item.PriceMainStore = PriceMainStore.Price;
+                        
+                        var PriceSi = prices.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelWholesale);
+                        if (PriceSi != null)
+                            item.PriceWholesale = PriceSi.Price;
 
+
+                        var price = Mapper.Map<Product_PriceModel>(prices.FirstOrDefault(o => o.ChannelId == User.ChannelId));
                         productInfo.product_price = price;
                     }
 

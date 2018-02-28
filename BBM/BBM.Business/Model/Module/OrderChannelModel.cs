@@ -40,6 +40,8 @@ namespace BBM.Business.Models.Module
 
         public List<Order_DetialModel> Detail { get; set; }
         public CustomerModel Customer { get; set; }
+
+        public string StatusPrint { get; set; }
     }
     public class Order_InputTmpModel
     {

@@ -7,7 +7,7 @@ Order.mvOrderInputAdd = function (Products, OrderSuppliersId) {
         if (Products != null && Products.length > 0) {
             var data = JSON.parse(Products);
             ko.utils.arrayForEach(data, function (o) {
-                self.mOrderInput().Detail.push(ko.mapping.fromJS(o.product, {}, new Order.mOrderDetail));
+                self.mOrderInput().Detail.push(ko.mapping.fromJS(o, {}, new Order.mOrderDetail));
             });
         }
     };

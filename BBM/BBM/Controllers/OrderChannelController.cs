@@ -169,7 +169,7 @@ namespace BBM.Controllers
                 Messaging.isError = false;
                 Messaging.Data = new { CodeOrder = CodeOrder, ChannelName = Channel.Channel, EmployeeNameCreate = EmployeeNameCreate, isChannelOnline = isChannelOnline };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Khởi tạo đơn hàng không thành công!";
@@ -291,6 +291,41 @@ namespace BBM.Controllers
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Tạo đơn hàng không thành công!";
+            }
+            return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Print_Order_Sale(OrderModel model)
+        {
+            var Messaging = new RenderMessaging();
+            try
+            {
+                if (User == null)
+                {
+                    Messaging.isError = true;
+                    Messaging.messaging = "Phiên đăng nhập đã hết hạn.";
+                    return Json(Messaging, JsonRequestBehavior.AllowGet);
+                }
+
+                var order = _unitOW.OrderSaleRepository.GetById(model.Id);
+
+                if (!string.IsNullOrEmpty(order.StatusPrint))
+                    order.StatusPrint = order.StatusPrint + " <li>" + User.UserName + " đã in (" + DateTime.Now + ")</li>";
+                else
+                    order.StatusPrint = "<li>" + User.UserName + " đã in (" + DateTime.Now + ")</li>";
+
+
+                _unitOW.OrderSaleRepository.Update(order, o => o.StatusPrint);
+
+                await _unitOW.SaveChanges();
+                
+                Messaging.isError = false;
+            }
+            catch
+            {
+                Messaging.isError = true;
+                Messaging.messaging = "In đơn hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

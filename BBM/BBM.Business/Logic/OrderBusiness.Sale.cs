@@ -18,8 +18,7 @@ namespace BBM.Business.Logic
         {
             var channel = unitOfWork.ChannelRepository.GetById(BranchesId);
             double totalMoney = 0;
-            var result = unitOfWork.OrderSaleRepository.SearchBy(pageinfo, out count, out min, out totalMoney, BranchesId);
-            return Mapper.Map<List<donhang>>(result);
+            return unitOfWork.OrderSaleRepository.SearchBy(pageinfo, out count, out min, out totalMoney, BranchesId);
         }
 
         public async Task<OrderModel> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User)
@@ -109,6 +108,12 @@ namespace BBM.Business.Logic
 
             objOrder.khachhang = null;
 
+            if (User.IsPrimary || model.Status == (int)StatusOrder_Sale.Done)
+            {
+                objOrder.StatusPrint = "<li>" + User.UserName + " đã in (" + DateTime.Now + ")</li>";
+            }
+
+
             unitOfWork.OrderSaleRepository.Add(objOrder);
 
             model.TypeOrder = (int)TypeOrder.Sale;
@@ -179,6 +184,17 @@ namespace BBM.Business.Logic
             order.Status = model.Status;
 
             order.EmployeeShip = model.EmployeeShip;
+
+            if (model.Status == (int)StatusOrder_Sale.Done
+                || (model.Status == (int)StatusOrder_Sale.Shipped && User.IsPrimary)
+                )
+            {
+                if (!string.IsNullOrEmpty(order.StatusPrint))
+                    order.StatusPrint = order.StatusPrint + " <li>" + User.UserName + " đã in (" + DateTime.Now + ")</li>";
+                else
+                    order.StatusPrint = "<li>" + User.UserName + " đã in (" + DateTime.Now + ")</li>";
+
+            }
 
             unitOfWork.OrderSaleRepository.Update(order, o => o.Status, o => o.ghichu, o => o.EmployeeShip);
 

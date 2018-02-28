@@ -47,7 +47,7 @@ namespace BBM.Business.Logic
                 UpdatePriceCompare(model);
             }
 
-            UpdatePrice_Channel(model, User);
+            //UpdatePrice_Channel(model, User);
 
             await unitOfWork.SaveChanges();
 

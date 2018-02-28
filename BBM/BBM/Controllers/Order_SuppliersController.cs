@@ -54,7 +54,6 @@ namespace BBM.Controllers
 
                 var lstTmp = clientMatters.AsEnumerable().Select(o => new OrderModel
                 {
-
                     Id = o.Id,
                     EmployeeCreate = o.EmployeeCreate,
                     EmployeeUpdate = o.EmployeeUpdate,

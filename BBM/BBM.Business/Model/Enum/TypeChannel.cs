@@ -15,6 +15,8 @@ namespace BBM.Business.Models.Enum
         IsMainStore = 1,
         [Display(Name = "Kênh online")]
         IsChannelOnline = 2,
+        [Display(Name = "Kênh sỉ")]
+        IsChannelWholesale = 3,
         [Display(Name = "ONLINE")]
         IsOnline = 99
     }

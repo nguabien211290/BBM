@@ -38,6 +38,8 @@ namespace BBM.Business.Logic
 
                         product.PriceCompare = item.PriceCompare;
 
+                        #region Giá cơ bản
+
                         product.PriceBase_Old = product.PriceBase;
 
                         var stockbySum = StockProduct != null && StockProduct.Count > 0 ? StockProduct.Sum(o => o.Stock_Total) : 0;
@@ -48,21 +50,48 @@ namespace BBM.Business.Logic
 
                         product.PriceBase = (int)(((stockbySum * pricebase_old) + (item.Total * (int)item.Price)) / (sumTotal != 0 ? sumTotal : 1));
 
+                        unitOfWork.ProductRepository.Update(product, o => o.PriceBase, o => o.PriceInput, o => o.PriceBase_Old, o => o.PriceCompare);
+                        #endregion
+
+                        #region Giá sỉ
+
                         var channelOnline = unitOfWork.ChannelRepository.FindBy(o => o.Type == (int)TypeChannel.IsChannelOnline && o.Id == User.ChannelId).FirstOrDefault();
 
                         if (channelOnline != null)
                         {
                             var priceOL = product.soft_Channel_Product_Price.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelOnline);
 
-                            if (priceOL != null)
-                                product.PriceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
-                            else
-                                product.PriceWholesale = (int)((0 - product.PriceBase) / 5.3) + product.PriceBase;
+                            int? priceWholesale = 0;
 
-                            unitOfWork.ProductRepository.Update(product, o => o.PriceBase, o => o.PriceInput, o => o.PriceBase_Old, o => o.PriceCompare, o => o.PriceWholesale);
+                            if (priceOL != null)
+                                priceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
+                            else
+                                priceWholesale = (int)((0 - product.PriceBase) / 5.3) + product.PriceBase;
+
+                            var priceSi = unitOfWork.ChanelPriceRepository.Get(o => o.ProductId == product.id && o.soft_Channel.Type == (int)TypeChannel.IsChannelWholesale).FirstOrDefault();
+
+                            if (priceSi != null)
+                            {
+                                priceSi.Price = (int)priceWholesale;
+
+                                unitOfWork.ChanelPriceRepository.Update(priceSi, o => o.Price);
+                            }
+                            else
+                            {
+                                var ChannelSi = unitOfWork.ChannelRepository.Get(o => o.Type == (int)TypeChannel.IsChannelWholesale).FirstOrDefault();
+
+                                unitOfWork.ChanelPriceRepository.Add(new soft_Channel_Product_Price
+                                {
+                                    Price = (int)priceWholesale,
+                                    ChannelId = ChannelSi.Id,
+                                    DateCreate = DateTime.UtcNow,
+                                    EmployeeCreate = User.UserId,
+                                    ProductId = product.id
+                                });
+                            }
                         }
-                        else
-                            unitOfWork.ProductRepository.Update(product, o => o.PriceBase, o => o.PriceInput, o => o.PriceBase_Old, o => o.PriceCompare);
+
+                        #endregion
 
                         #endregion
 
