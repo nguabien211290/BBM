@@ -21,7 +21,7 @@ namespace BBM.Business.Logic
             return unitOfWork.OrderSaleRepository.SearchBy(pageinfo, out count, out min, out totalMoney, BranchesId);
         }
 
-        public async Task<OrderModel> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User)
+        public async Task<Tuple<OrderModel, bool>> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User)
         {
             #region Customer
             if (model.Customer.Id > 0)
@@ -108,10 +108,23 @@ namespace BBM.Business.Logic
 
             objOrder.khachhang = null;
 
-            if (User.IsPrimary || model.Status == (int)StatusOrder_Sale.Done)
+            #region in don hang
+
+            var isPrint = false;
+
+            if (channel.Type == (int)TypeChannel.IsMainStore)
             {
-                objOrder.StatusPrint = "<li>" + User.UserName + " đã in (" + DateTime.Now + ")</li>";
+                isPrint = objOrder.Status == (int)StatusOrder_Sale.Done ? true : false;
             }
+            else if (channel.Type == (int)TypeChannel.IsChannelOnline)
+            {
+                isPrint = objOrder.Status == (int)StatusOrder_Sale.Process ? true : false;
+            }
+
+            if (isPrint)
+                objOrder.StatusPrint = "<li>" + User.UserName + " đã in (" + DateTime.Now + ")</li>";
+
+            #endregion
 
 
             unitOfWork.OrderSaleRepository.Add(objOrder);
@@ -124,7 +137,9 @@ namespace BBM.Business.Logic
 
             await unitOfWork.SaveChanges();
 
-            return Mapper.Map<OrderModel>(objOrder);
+            var rs= Mapper.Map<OrderModel>(objOrder);
+
+            return new Tuple<OrderModel, bool>(rs, isPrint);
         }
 
         public async Task<Tuple<bool, string>> UpdateOrder_Sale(OrderModel model, UserCurrent User)

@@ -48,9 +48,9 @@ namespace BBM.Business.Models.Module
         public string ProductName { get; set; }
         public long ProductId { get; set; }
         public string Code { get; set; }
-        public int Price { get; set; }
+        public double? Price { get; set; }
         public int Status { get; set; }
-        public double Total { get; set; }
+        public double? Total { get; set; }
 
         public string SuppliersName { get; set; }
         public int PriceBase { get; set; }

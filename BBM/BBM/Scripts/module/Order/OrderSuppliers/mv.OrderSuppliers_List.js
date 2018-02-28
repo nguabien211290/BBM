@@ -38,7 +38,7 @@ Order.mvOrderSuppliersList = function () {
         val.IsViewDetail(true);
     }
     self.CreateOrderInput = function (val) {
-        var data = { products: val.Detail(), orderSuppliersId: val.Id() }
+        var data = { orderId: val.Id(), orderSuppliersId: val.Id() }
         CommonUtils.addTabDynamic('Nhập hàng', CommonUtils.url('/Order_Input/RenderViewCreate'), '#contentX', true, data);
     };
 

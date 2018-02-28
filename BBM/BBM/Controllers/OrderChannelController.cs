@@ -225,10 +225,8 @@ namespace BBM.Controllers
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
 
-                var isPrint = User.IsPrimary;
                 Messaging.isError = false;
                 Messaging.messaging = "Cập nhật đơn hàng thành công.";
-                Messaging.Data = new { isPrint = isPrint };
             }
             catch
             {
@@ -272,19 +270,8 @@ namespace BBM.Controllers
                 var user = Mapper.Map<UserCurrent>(User);
 
                 var order = await _IOrderBus.CreatOrder_Sale(model, isDone, user);
-                var isPrint = false;
 
-                if (User.IsPrimary)
-                {
-                    if (model.Status == (int)StatusOrder_Sale.Done)
-                        isPrint = true;
-                }
-                else
-                {
-                    isPrint = true;
-                }
-
-                Messaging.Data = new { Code = order.Code + "-" + order.Id, isPrint = isPrint };
+                Messaging.Data = new { Code = order.Item1.Code + "-" + order.Item1.Id, isPrint = order.Item2 };
                 Messaging.messaging = "Đã tạo đơn hàng thành công.";
             }
             catch (Exception ex)
@@ -319,7 +306,7 @@ namespace BBM.Controllers
                 _unitOW.OrderSaleRepository.Update(order, o => o.StatusPrint);
 
                 await _unitOW.SaveChanges();
-                
+
                 Messaging.isError = false;
             }
             catch

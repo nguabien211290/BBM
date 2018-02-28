@@ -22,7 +22,7 @@ namespace BBM.Business.Logic
         #region Order sale
         List<donhang> GetOrder_Sale(PagingInfo pageinfo, int BranchesId, out int count, out int min);
 
-        Task<OrderModel> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User);
+        Task<Tuple<OrderModel, bool>> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User);
 
         Task<Tuple<bool, string>> UpdateOrder_Sale(OrderModel model, UserCurrent User);
 

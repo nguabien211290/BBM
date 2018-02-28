@@ -47,35 +47,41 @@ namespace BBM.Controllers
 
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_Input })]
-        public ActionResult RenderViewCreate(List<Order_DetialModel> products = null, int orderSuppliersId = 0)
+        public ActionResult RenderViewCreate(int orderSuppliersId = 0, int orderId = 0)
         {
-            if (products != null)
+            if (orderId > 0)
             {
-                var rs = new List<Order_InputTmpModel>();
-                foreach (var item in products)
+                var order = _context.soft_Order.FirstOrDefault(o => o.Id == orderId);
+
+                if (order != null)
                 {
-                    if (item.Product.id > 0)
+                    var rs = new List<Order_InputTmpModel>();
+                    foreach (var item in order.soft_Order_Child)
                     {
-                        var product = _context.shop_sanpham.Find(item.Product.id);
-                        if (product != null)
+                        if (item.shop_sanpham.id > 0)
                         {
-                            var stock = _context.soft_Branches_Product_Stock.FirstOrDefault(o => o.BranchesId == User.BranchesId && o.ProductId == product.id);
-                            rs.Add(new Business.Models.Module.Order_InputTmpModel
+                            var product = _context.shop_sanpham.Find(item.shop_sanpham.id);
+                            if (product != null)
                             {
-                                Code = item.Product.masp,
-                                ProductId = (long)item.Product.id,
-                                ProductName = item.Product.tensp,
-                                Price = item.Price,
-                                Total = item.Total,
-                                PriceBase = product.PriceBase.HasValue ? product.PriceBase.Value : 0,
-                                SuppliersName = product.soft_Suppliers != null ? product.soft_Suppliers.Name : "",
-                                PriceCompare = product.PriceCompare.HasValue ? product.PriceCompare.Value : 0,
-                                Stock_Total = stock != null ? stock.Stock_Total : 0
-                            });
+                                var stock = _context.soft_Branches_Product_Stock.FirstOrDefault(o => o.BranchesId == User.BranchesId && o.ProductId == product.id);
+                                rs.Add(new Business.Models.Module.Order_InputTmpModel
+                                {
+                                    Code = item.shop_sanpham.masp,
+                                    ProductId = (long)item.shop_sanpham.id,
+                                    ProductName = item.shop_sanpham.tensp,
+                                    Price = item.Price,
+                                    Total = item.Total,
+                                    PriceBase = product.PriceBase.HasValue ? product.PriceBase.Value : 0,
+                                    SuppliersName = product.soft_Suppliers != null ? product.soft_Suppliers.Name : "",
+                                    PriceCompare = product.PriceCompare.HasValue ? product.PriceCompare.Value : 0,
+                                    Stock_Total = stock != null ? stock.Stock_Total : 0
+                                });
+                            }
                         }
                     }
+                    ViewBag.Products = Newtonsoft.Json.JsonConvert.SerializeObject(rs);
                 }
-                ViewBag.Products = Newtonsoft.Json.JsonConvert.SerializeObject(rs);
+
                 ViewBag.OrderSuppliersId = orderSuppliersId;
             }
             return PartialView("~/Views/Shared/Partial/module/Order/OrderInut/_Channel_Order_Input_Create.cshtml");

@@ -111,7 +111,7 @@
             <button class="btn btn-success" data-bind="click: function(){ mOrderSale().Status(3),UpdateOrderSale()}">Hoàn thành</button>
             <button class="btn btn-danger" data-bind="click: function(){ mOrderSale().Status(5), UpdateOrderSale()}">Hoãn</button>
             <button class="btn btn-danger" data-bind="click: function(){ mOrderSale().Status(4),UpdateOrderSale()}">Hủy</button>
-            <button class="btn btn-default" data-bind="click: function(){CommonUtils.Print('printordersales_' + OrderSaleId())}">In đơn hàng</button>
+            <button class="btn btn-default" data-bind="click: Print_Order_Sale">In đơn hàng</button>
             <!--/ko-->
         </div>
         <!--/ko-->

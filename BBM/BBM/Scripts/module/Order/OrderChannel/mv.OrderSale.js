@@ -324,9 +324,7 @@ Order.mvOrderSale = function (OrderId) {
                 self.mOrderSale().Code(data.Data.Code);
                 if (data.Data.isPrint)
                     CommonUtils.Print("printordersales_" + self.OrderSaleId());
-                else
-                    if (isDone)
-                        CommonUtils.Print("printordersales_" + self.OrderSaleId());
+
                 self.GetInfoOrder();
             }
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
@@ -348,12 +346,33 @@ Order.mvOrderSale = function (OrderId) {
             }).done(function (data) {
                 if (data == null)
                     return
+                //if (!data.isError) {
+                //    if (data.Data.isPrint)
+                //        CommonUtils.Print("printordersales_" + self.OrderSaleId());
+                //}
+                CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
+            }).always(function () {
+                CommonUtils.showWait(false);
+            });
+        }
+    };
+
+
+    self.Print_Order_Sale = function () {
+        if (self.mOrderSale().Id() > 0) {
+            CommonUtils.showWait(true);
+            $.ajax({
+                type: "POST",
+                url: CommonUtils.url("/OrderChannel/Print_Order_Sale"),
+                cache: false,
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: ko.toJSON({ model: self.mOrderSale() }),
+            }).done(function (data) {
+                if (data == null)
+                    return
                 if (!data.isError) {
-                    if (self.mOrderSale().Status() == 2 && data.Data.isPrint)
-                        CommonUtils.Print("printordersales_" + self.OrderSaleId());
-                    else
-                        if (self.mOrderSale().Status() == 3)
-                            CommonUtils.Print("printordersales_" + self.OrderSaleId());
+                    CommonUtils.Print("printordersales_" + self.OrderSaleId());
                 }
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
             }).always(function () {
