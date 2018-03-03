@@ -1,10 +1,10 @@
-﻿var Paging_TmpControltool = function (nameView, IsFiter) {
+﻿var Paging_TmpControltool = function (nameView, IsSearch, IsNotFilter) {
     var self = this;
-    self.IsFiter = ko.observable(IsFiter);
+    self.IsSearch = ko.observable(IsSearch);
+    self.IsNotFilter = ko.observable(IsNotFilter);
     self.CountFilter = ko.observable(0);
-    self.Filter_Search = ko.observable(new Filter.mvFilter_Search_Control(nameView));
+    self.Filter_Search = ko.observable(new Filter.mvFilter_Search_Control(nameView, IsNotFilter));
     self.OptionShowItem = ko.observableArray([20, 50, 100]);
-    self.KeywordSearch = ko.observable();
     self.Sortby = ko.observable();
     self.SortbyDesc = ko.observable(true);
     self.ItemPerPage = ko.observable();
@@ -66,7 +66,8 @@
             pagesize: self.ItemPerPage(),
             sortby: self.Sortby(),
             sortbydesc: self.SortbyDesc(),
-            filterby: self.Filter_Search().Fiterby()
+            filterby: self.Filter_Search().Fiterby(),
+            keyword: self.Filter_Search().KeywordSearch()
         };
     });
 };

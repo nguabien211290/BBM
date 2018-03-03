@@ -119,14 +119,14 @@ namespace BBM.Controllers
                                 }
                                 if (item.Value == "LessThan")
                                 {
-                                    var soft_Prices = _context.soft_Channel_Product_Price.Where(o => o.Price <= key
+                                    var soft_Prices = _context.soft_Channel_Product_Price.Where(o => o.Price < key
                                     && o.ChannelId == User.ChannelId).Select(o => o.ProductId);
 
                                     lstTmp = lstTmp.Where(o => soft_Prices.Contains(o.id));
                                 }
                                 if (item.Value == "MoreThan")
                                 {
-                                    var soft_Prices = _context.soft_Channel_Product_Price.Where(o => o.Price >= key
+                                    var soft_Prices = _context.soft_Channel_Product_Price.Where(o => o.Price > key
                                     && o.ChannelId == User.ChannelId).Select(o => o.ProductId);
 
                                     lstTmp = lstTmp.Where(o => soft_Prices.Contains(o.id));
@@ -155,14 +155,14 @@ namespace BBM.Controllers
                                     }
                                     if (item.Value == "LessThan")
                                     {
-                                        var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total <= key
+                                        var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total < key
                                        && o.BranchesId == branchesId).Select(o => o.ProductId);
 
                                         lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id));
                                     }
                                     if (item.Value == "MoreThan")
                                     {
-                                        var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total >= key
+                                        var soft_Stock = _context.soft_Branches_Product_Stock.Where(o => o.Stock_Total > key
                                       && o.BranchesId == branchesId).Select(o => o.ProductId);
 
                                         lstTmp = lstTmp.Where(o => soft_Stock.Contains(o.id));

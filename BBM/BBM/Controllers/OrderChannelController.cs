@@ -68,6 +68,8 @@ namespace BBM.Controllers
 
                 var lstOrder = _IOrderBus.GetOrder_Sale(pageinfo, User.ChannelId, out count, out min);
 
+                var a = lstOrder.Select(o => o.id).ToList();
+
                 lstInfo.totalItems = count;
 
                 lstInfo.listTable = Mapper.Map<List<OrderModel>>(lstOrder);

@@ -19,6 +19,23 @@ namespace BBM.Business.Repository
 
             totalMoney = 0;
 
+            #region Search
+            if (!string.IsNullOrEmpty(pageinfo.keyword))
+            {
+                int iKey = 0;
+                bool tryInt = int.TryParse(pageinfo.keyword, out iKey);
+                //if (tryInt)
+                //    lstTmp = lstTmp.Where(o => o.id == iKey);
+
+                pageinfo.keyword = pageinfo.keyword.ToLower();
+                lstTmp = lstTmp.Where(o =>
+                (tryInt == true && o.id == iKey)
+                 || (!string.IsNullOrEmpty(o.khachhang.tendn) && o.khachhang.tendn.Contains(pageinfo.keyword))
+                 || (!string.IsNullOrEmpty(o.khachhang.dienthoai) && o.khachhang.dienthoai.Contains(pageinfo.keyword))
+                 || (!string.IsNullOrEmpty(o.khachhang.hoten) && o.khachhang.hoten.Contains(pageinfo.keyword)));
+            }
+            #endregion
+
             #region Fillter
             if (pageinfo.filterby != null && pageinfo.filterby.Count > 0)
             {
@@ -48,8 +65,9 @@ namespace BBM.Business.Repository
                 }
             }
             #endregion
-            bool isSort = false;
+
             #region Sort
+            bool isSort = false;
             if (!string.IsNullOrEmpty(pageinfo.sortby))
             {
                 isSort = true;

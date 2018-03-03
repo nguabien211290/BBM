@@ -124,6 +124,8 @@ namespace BBM.Controllers
                         item.EmployeeNameUpdate = userUpdate.Name + "(" + userUpdate.Email + ")";
                     }
 
+                    var lstSup = new List<int>();
+
                     if (item.Id_From > 0)
                     {
                         var branch = soft_Branches.FirstOrDefault(o => o.BranchesId == item.Id_From);
@@ -138,7 +140,15 @@ namespace BBM.Controllers
                                 foreach (var pro in item.Detail)
                                 {
                                     if (pro.Product != null && pro.Product.soft_Suppliers != null)
-                                        item.Name_From += " - " + pro.Product.soft_Suppliers.Name;
+                                    {
+                                        var checkHas = lstSup.FirstOrDefault(o => o == pro.Product.soft_Suppliers.SuppliersId);
+                                        if (checkHas <= 0)
+                                        {
+                                            item.Name_From += " - " + pro.Product.soft_Suppliers.Name;
+
+                                            lstSup.Add(pro.Product.soft_Suppliers.SuppliersId);
+                                        }
+                                    }
                                 }
                             }
                         }

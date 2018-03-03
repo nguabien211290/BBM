@@ -31,8 +31,42 @@ namespace BBM.Controllers
         }
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_Suppliers })]
-        public ActionResult RenderViewCreate()
+        public ActionResult RenderViewCreate(int orderId = 0)
         {
+
+            if (orderId > 0)
+            {
+                var order = _context.soft_Order.FirstOrDefault(o => o.Id == orderId);
+
+                if (order != null)
+                {
+                    var rs = new List<Order_InputTmpModel>();
+                    foreach (var item in order.soft_Order_Child)
+                    {
+                        if (item.shop_sanpham.id > 0)
+                        {
+                            var product = _context.shop_sanpham.Find(item.shop_sanpham.id);
+                            if (product != null)
+                            {
+                                var stock = _context.soft_Branches_Product_Stock.FirstOrDefault(o => o.BranchesId == User.BranchesId && o.ProductId == product.id);
+                                rs.Add(new Business.Models.Module.Order_InputTmpModel
+                                {
+                                    Code = item.shop_sanpham.masp,
+                                    ProductId = (long)item.shop_sanpham.id,
+                                    ProductName = item.shop_sanpham.tensp,
+                                    Price = item.Price,
+                                    Total = item.Total,
+                                    PriceBase = product.PriceBase.HasValue ? product.PriceBase.Value : 0,
+                                    SuppliersName = product.soft_Suppliers != null ? product.soft_Suppliers.Name : "",
+                                    PriceCompare = product.PriceCompare.HasValue ? product.PriceCompare.Value : 0,
+                                    Stock_Total = stock != null ? stock.Stock_Total : 0
+                                });
+                            }
+                        }
+                    }
+                    ViewBag.Products = Newtonsoft.Json.JsonConvert.SerializeObject(rs);
+                }
+            }
             ViewBag.UserName = User.UserName;
             return PartialView("~/Views/Shared/Partial/module/Order/OrderSuppliers/_Channel_Order_Suppliers_Create.cshtml");
         }
@@ -95,6 +129,7 @@ namespace BBM.Controllers
                 }
 
                 #endregion
+
                 #region Sort
                 if (!string.IsNullOrEmpty(pageinfo.sortby))
                 {
@@ -148,6 +183,25 @@ namespace BBM.Controllers
                 int min = Helpers.FindMin(pageinfo.pageindex, pageinfo.pagesize);
 
                 var orderSuppliers = lstTmp.Skip(min).Take(pageinfo.pagesize).ToList();
+
+                foreach (var item in orderSuppliers)
+                {
+                    var lstSup = new List<int>();
+
+                    foreach (var pro in item.Detail)
+                    {
+                        if (pro.Product != null && pro.Product.soft_Suppliers != null)
+                        {
+                            var checkHas = lstSup.FirstOrDefault(o => o == pro.Product.soft_Suppliers.SuppliersId);
+                            if (checkHas <= 0)
+                            {
+                                item.Name_To += " - " + pro.Product.soft_Suppliers.Name;
+
+                                lstSup.Add(pro.Product.soft_Suppliers.SuppliersId);
+                            }
+                        }
+                    }
+                }
 
                 lstInfo.listTable = orderSuppliers;
                 lstInfo.startItem = min;
@@ -204,7 +258,6 @@ namespace BBM.Controllers
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
-
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_Suppliers })]
         [HttpPost]
@@ -301,10 +354,7 @@ namespace BBM.Controllers
                     };
                     _crud.Update<soft_Order_Child>(objOrderChild, o => o.Status);
                 }
-
-
-
-                _crud.SaveChanges();
+               _crud.SaveChanges();
 
             }
             catch

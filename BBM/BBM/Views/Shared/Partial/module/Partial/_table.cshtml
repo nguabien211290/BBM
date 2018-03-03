@@ -1,8 +1,8 @@
 ﻿<script id="dataTables" type="text/html">
     <div class="">
-        <!--ko if: IsFiter -->
+        <!--ko if: IsSearch -->
         <div class="row-fluid">
-            <div class="span11 m-10-px">
+            <div data-bind="attr:{class:IsNotFilter() ? 'span12' : 'span11 m-10-px'}">
                 <!--ko template: {name: 'Filter_Search', data: Filter_Search } --><!--/ko-->
             </div>
         </div>
@@ -24,7 +24,7 @@
             <div class="span6 m-t-5">
                 <div class="dataTables_info">
                     Hiển thị từ <span data-bind="text: parseInt(CurrentPage()) == 1 ? 1 : ((parseInt(CurrentPage()) * parseInt(ItemPerPage())) -(parseInt(ItemPerPage())-1 ))"></span> đến <span data-bind="text: (parseInt(CurrentPage()) * parseInt(ItemPerPage()))"></span> của <span data-bind="text: Totalitems"></span>
-                    <!--ko if: nameView()=='Order_Suppliers' 
+                    <!--ko if: nameView()=='Order_Suppliers'
                         || nameView()=='Order_Output' -->
                     <span> đơn</span>
                     <!--/ko-->

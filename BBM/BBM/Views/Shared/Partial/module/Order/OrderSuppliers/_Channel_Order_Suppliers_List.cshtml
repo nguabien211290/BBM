@@ -26,6 +26,7 @@
     <thead>
         <tr>
             <th class="sorting" data-bind="click: function(){ Sortby('Id'); SortbyDesc(SortbyDesc()?false:true)}">Mã</th>
+            <th>NPP</th>
             <th class="sorting" data-bind="click: function(){ Sortby('DateCreate'),SortbyDesc(SortbyDesc()?false:true)}">Ngày tạo</th>
             <th class="sorting" data-bind="click: function(){ Sortby('Total'),SortbyDesc(SortbyDesc()?false:true)}">Tổng tiền</th>
             <th class="sorting" data-bind="click: function(){ Sortby('Note'),SortbyDesc(SortbyDesc()?false:true)}">Ghi chú</th>
@@ -37,6 +38,9 @@
         <tr data-bind="click: $parents[1].GetDetail" class="cursor-pointer">
             <td>
                 <span data-bind="text: Id"></span>
+            </td>
+            <td>
+                <span data-bind="text: Name_To"></span>
             </td>
             <td>
                 <span data-bind="datelong: DateCreate"></span>
@@ -99,7 +103,7 @@
                     <button class="btn btn-warning  btn-small" data-bind="click: $parents[1].ReturnViewBarcode">In Tem</button>
 
                     <button class="btn btn-info  btn-small" data-bind="click: $parents[1].CreateOrderInput">Tạo Phiếu nhập hàng</button>
-                    
+
                 </div>
             </td>
         </tr>

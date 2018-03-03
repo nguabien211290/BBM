@@ -1,0 +1,48 @@
+﻿Hóa đơn
+R-Phí khác không lưu lại trong hóa đơn
+R-sửa thông tin KH
+R-Trong ds đơn hàng, em cho cái nút trạng thái đã in nhé. vd đơn nào đã in thì cho dấu check 
+R- Ô để ghi ghi chú khá nhỏ, em cho bung qua ô bên trái luôn nhé.
+R- Hóa đơn online khi bấm hòan thành thì khỏi ra trang in nhé
+R- Trang in hóa đơn online: em thay cột STT bằng cột mã số nhé: 6
+R- Em cho tìm theo sđt và tên KH nhé
+Đã có- Em cho đơn hàng trên web test bbm đặt hàng đổ đơn hàng về soft nhé.
+Test- Theo rule thì khi có đơn hàng thì stock tự trừ số lượng. Khi hủy đơn hàng thì stock tự hòan lại nhé
+Test- Khi đơn hàng đó hủy thì điểm cũng bị trừ tưng ứng số tiền đơn hàng
+-Cỡ chữ hđ CH vẫn chưa chỉnh nha Gi, coi chừng e quên đó
+- Tạo đơn hàng mới từ đơn hang khác
+- Hóa đơn bán hàng không giảm 5% khi xem lại
+
+Dat hang NPP:
+R- Them hien thi tên nha phan phoi
+
+Dat hang kho nội bộ:
+- Ngoài đặt hàng nhà PP, cho thêm chức năng đặt hàng nội bộ (kho này đặt hàng từ kho khác). Chọn xong sp và số lượng thì bấm gửi, đơn đặt hàng sẽ được gửi đến kho kia. Kho kia dùng đơn đó làm phiếu xuất kho nội bộ.
+
+San pham
+R- Lọc SL tồn không ra đúng nha Giang, vd anh lọc SL kho chính >0 nhưng những cái = 0 cũng ra: 3 
+R - Em xóa dùm anh những mã sp bắt đầu = C + các chữ cái khác, vd CMxxx, CVxxx, CBTAxxx,.... mà không co 1tên sp nhé. Anh không biết ở đâu ra mà nhiều thế: 5
+
+NPP
+R- Nhà PP em cho chức năng tìm kiếm luôn nhé
+Hủy- Các dữ liệu liên quan đến nhà PP em cho lọai là text tất cả các trừơng nhé, nghĩa là nhập gì vô cũng đựơc, vì nó chỉ để xem chứ không liên quan đến các quy trình.
+
+
+
+Report
+1. Tổng doanh số bán hàng các kênh (tính tổng thanh tóan trên các đơn hàng), lọc theo ngày, người bán, ngừơi giao hàng,...: 1
+2. - Doanh thu từng sp bán ra = thành tiền từng sp - (giá cơn bản của sp đó*SL bán)
+- Doanh thu từng hóa đơn = tổng doanh thu từng sp trong hóa đơn đó
+- Doanh thu theo ngày của 1 kênh = Tổng doanh thu của các hóa đơn trong ngày đó (tính từng kênh). Chuỗi ngày (từ ... đến...) cũng tương tự.
+
+In
+- Trong tất cả các giao diện mà có in, khi xem lại em cho thêm nút in nhé. Vd hóa đơn CH hoặc hóa đơn xuất kho, in đc có 1 lần, lỡ in sai là bó tay, không in lại được: 2
+- In tem don hang nhap: Em cho in tem từ đơn hàng nhập là khá tốt, nếu cải thiện được việc này nữa là tuyệt vời:
+Có nghĩa là, khi chưa đủ 30 tem thì anh chưa in, chừa tem đó khi nào đủ 1 tờ tem là 20 cái anh mới in.
+Khi nhập hàng có 20 sp chẳng hạn, chuyển qua in tem thì chưa in được, mà để cũng không được, vì đơn hàng khác mà chuyển qua in tem sẽ mất tem đơn hàng cũ, có nghĩa là màn hình in tem chỉ hiện đơn hàng mới nhất.
+Cho nên anh có ý thế này, em xem làm giùm anh nhé:
+Là khi màn hình in ten còn sẵn mấy cái tem chưa in, khi chuyển in tem từ đơn hàng khác qua thì em cho xếp tiếp theo bên dưới, chứ đừng đè lên các tên đang có. Có nghĩa là số tem cộng dồn nhé, khi nào in xong cái nào thì xóa cái đó thôi.
+Nếu em chưa rõ thì cứ gọi anh giải thích nhé
+
+
+

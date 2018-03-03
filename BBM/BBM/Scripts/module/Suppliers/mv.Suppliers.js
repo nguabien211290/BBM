@@ -1,33 +1,16 @@
 ﻿var Suppliers = Suppliers || {};
 Suppliers.mvSuppliers = function () {
     var self = this;
+    self.mSuppliers = ko.observable(new Suppliers.mSuppliers);
     self.provinces = ko.observable(new Common.mvProvince());
-    self.TmpTable = ko.observable(new Paging_TmpControltool());
-    self.TmpTable().CurrentPage.subscribe(function () {
-        self.LoadListSuppliers();
-    });
-    self.TmpTable().ItemPerPage.subscribe(function () {
-        self.TmpTable().CurrentPage(1);
-        self.LoadListSuppliers();
-    });
-    self.TmpTable().KeywordSearch.subscribe(function () {
-        self.LoadListSuppliers();
-    });
-    self.TmpTable().Sortby.subscribe(function (val) {
-        if (val)
-            self.LoadListSuppliers();
-    });
-    self.TmpTable().nameTemplate('table_Suppliers');
+    self.Table = ko.observable(new Paging_TmpControltool("Suppliers", true, true));
+    self.SearchReLoad = ko.computed(function () {
+        if (self.Table().CountFilter() > 0) {
+            self.LoadListSuppliers()
+        }
+    }).extend({ throttle: 1000 });
     self.LoadListSuppliers = function () {
-        self.TmpTable().listData([]);
-        var model = {
-            pageindex: self.TmpTable().CurrentPage(),
-            pagesize: self.TmpTable().ItemPerPage(),
-            keyword: self.TmpTable().KeywordSearch(),
-            sortby: self.TmpTable().Sortby(),
-            sortbydesc: self.TmpTable().SortbyDesc()
-        };
-        self.TmpTable().Sortby(undefined);
+        debugger
         CommonUtils.showWait(true);
         $.ajax({
             type: "POST",
@@ -35,14 +18,14 @@ Suppliers.mvSuppliers = function () {
             cache: false,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON({ pageinfo: model }),
+            data: ko.toJSON(self.Table().Model()),
         }).done(function (data) {
             if (data == null)
                 return
             if (!data.isError) {
-                self.TmpTable().listData(CommonUtils.MapArray(data.Data.listTable, Suppliers.mSuppliers));
-                self.TmpTable().Totalitems(data.Data.totalItems);
-                self.TmpTable().StartItem(data.Data.startItem);
+                self.Table().listData(CommonUtils.MapArray(data.Data.listTable, Suppliers.mSuppliers));
+                self.Table().Totalitems(data.Data.totalItems);
+                self.Table().StartItem(data.Data.startItem);
             } else
                 CommonUtils.notify("Thông báo", data.messaging, 'error');
 
@@ -51,12 +34,11 @@ Suppliers.mvSuppliers = function () {
         });
     };
     self.GetDetail = function (val) {
-        ko.utils.arrayForEach(self.TmpTable().listData(), function (v) {
+        ko.utils.arrayForEach(self.Table().listData(), function (v) {
             v.IsViewDetail(false);
         })
         val.IsViewDetail(true);
     };
-    self.mSuppliers = ko.observable(new Suppliers.mSuppliers);
     self.AddSuppliers = function () {
         CommonUtils.showModal('#AddSuppliers', function () {
             self.UpdateSuppliers(self.mSuppliers());
@@ -83,7 +65,6 @@ Suppliers.mvSuppliers = function () {
             CommonUtils.showWait(false);
         });
     };
-
     self.DeleteSuppliers = function (val) {
         CommonUtils.confirm("Thông báo", "Bạn có chắc xóa nhà phân phối này không? ", function () {
             CommonUtils.showWait(true);
