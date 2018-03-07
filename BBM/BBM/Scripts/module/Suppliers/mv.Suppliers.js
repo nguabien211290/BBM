@@ -10,7 +10,6 @@ Suppliers.mvSuppliers = function () {
         }
     }).extend({ throttle: 1000 });
     self.LoadListSuppliers = function () {
-        debugger
         CommonUtils.showWait(true);
         $.ajax({
             type: "POST",

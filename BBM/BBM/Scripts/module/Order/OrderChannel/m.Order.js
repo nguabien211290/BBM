@@ -89,6 +89,7 @@ Order.mOrderSaleDetail = function () {
     self.ProductId = ko.observable();
     self.Total = ko.observable(1);
     self.Price = ko.observable();
+    self.Discount = ko.observable(0);
     self.PriceFix = ko.observable();
     self.Product = ko.observable();
     self.TotalMoney = ko.observable();
@@ -104,10 +105,18 @@ Order.mOrderSaleDetail = function () {
             var sum = self.Total() * self.Price();
             var discount = sum - ((sum * valueDiscountFormember) / 100)
             self.TotalMoney(discount);
+            self.Discount(self.Price() - ((self.Price() * valueDiscountFormember) / 100));
         } else {
             self.TotalMoney(self.Total() * self.Price());
+            self.Discount(0);
         }
     });
+
+    self.Discount.subscribe(function (val) {
+        debugger
+        if (val > 0 && self.Id() > 0)
+            self.isDiscountForMember(true)
+    })
 
     self.isFristLoad = ko.observable(false);
     self.binded = ko.observable(false);

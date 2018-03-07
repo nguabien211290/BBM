@@ -1,34 +1,14 @@
 ﻿var Employess = Employess || {};
 Employess.mvEmployess = function () {
     var self = this;
-    self.TmpTable = ko.observable(new Paging_TmpControltool());
-    self.TmpTable().CurrentPage.subscribe(function () {
-        self.LoadListEmployess();
-    });
-    self.TmpTable().ItemPerPage.subscribe(function () {
-        self.TmpTable().CurrentPage(1);
-        self.LoadListEmployess();
-    });
-    self.TmpTable().KeywordSearch.subscribe(function () {
-        self.LoadListEmployess();
-    });
-    self.TmpTable().Sortby.subscribe(function (val) {
-        if (val)
-            self.LoadListEmployess();
-    });
+    self.Table = ko.observable(new Paging_TmpControltool("Employess", true, true));
+    self.SearchReLoad = ko.computed(function () {
+        if (self.Table().CountFilter() > 0) {
+            self.LoadListEmployess()
+        }
+    }).extend({ throttle: 1000 });
     self.IsReCreatePwd = ko.observable(false);
-
-    self.TmpTable().nameTemplate('table_Employess');
     self.LoadListEmployess = function () {
-        self.TmpTable().listData([]);
-        var model = {
-            pageindex: self.TmpTable().CurrentPage(),
-            pagesize: self.TmpTable().ItemPerPage(),
-            keyword: self.TmpTable().KeywordSearch(),
-            sortby: self.TmpTable().Sortby(),
-            sortbydesc: self.TmpTable().SortbyDesc()
-        };
-        self.TmpTable().Sortby(undefined);
         CommonUtils.showWait(true);
         $.ajax({
             type: "POST",
@@ -36,14 +16,14 @@ Employess.mvEmployess = function () {
             cache: false,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON({ pageinfo: model }),
+            data: ko.toJSON(self.Table().Model()),
         }).done(function (data) {
             if (data == null)
                 return
             if (!data.isError) {
-                self.TmpTable().listData(CommonUtils.MapArray(data.Data.listTable, Employess.mEmployess));
-                self.TmpTable().Totalitems(data.Data.totalItems);
-                self.TmpTable().StartItem(data.Data.startItem);
+                self.Table().listData(CommonUtils.MapArray(data.Data.listTable, Employess.mEmployess));
+                self.Table().Totalitems(data.Data.totalItems);
+                self.Table().StartItem(data.Data.startItem);
             } else
                 CommonUtils.notify("Thông báo", data.messaging, 'error');
 
@@ -60,7 +40,7 @@ Employess.mvEmployess = function () {
             });
         });
 
-        ko.utils.arrayForEach(self.TmpTable().listData(), function (val) {
+        ko.utils.arrayForEach(self.Table().listData(), function (val) {
             val.IsViewDetail(false);
         })
 
@@ -92,28 +72,6 @@ Employess.mvEmployess = function () {
 
             })
         }
-
-        //if (val.Roles() != null) {
-
-        //    ko.utils.arrayForEach(self.TmpTable().listData(), function (employ) {
-        //        employ.IsViewDetail(false);
-        //    })
-        //    val.IsViewDetail(true);
-        //}
-        //else {
-        //    ko.utils.arrayForEach(self.TmpTable().listData(), function (v) {
-        //        v.IsViewDetail(false);
-        //    });
-        //    ko.utils.arrayForEach(self.lstRoles(), function (obj) {
-        //        ko.utils.arrayForEach(obj.mGroupRoles(), function (obj2) {
-        //            ko.utils.arrayForEach(obj2.Roles(), function (obj3) {
-        //                obj3.isSelect(false);
-        //            });
-        //        });
-        //    });
-        //    val.IsViewDetail(true);
-        //}
-
     };
     self.mNewCustomer = ko.observable(new Employess.mEmployess);
     self.AddEmployee = function () {

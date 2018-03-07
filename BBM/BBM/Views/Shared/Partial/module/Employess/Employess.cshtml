@@ -16,7 +16,7 @@
             <div class="table-header">
                 Danh sách nhân viên
             </div>
-            <!--ko template: {name: 'dataTables', data:employess.TmpTable } --><!--/ko-->
+            <!--ko template: {name: 'dataTables', data:employess.Table } --><!--/ko-->
         </div>
     </div>
     <div id="AddEmployee" class="modal fade hide">
@@ -87,7 +87,7 @@
         </div>
     </div>
 </div>
-<script id="table_Employess" type="text/html">
+<script id="Employess" type="text/html">
     <thead>
         <tr>
             <th class="sorting" data-bind="click: function(){ Sortby('Name'); SortbyDesc(SortbyDesc()?false:true)}">Name</th>

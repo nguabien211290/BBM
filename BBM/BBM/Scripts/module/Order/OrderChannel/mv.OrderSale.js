@@ -249,16 +249,21 @@ Order.mvOrderSale = function (OrderId) {
                 if (data == null)
                     return
                 if (!data.isError) {
+                    debugger
                     self.mOrderSale(ko.mapping.fromJS(data.Data, { 'ignore': ['Detail', 'Customer'] }, new Order.mOrder));
                     ko.utils.arrayForEach(data.Data.Detail, function (pro) {
                         var newObj = new Order.mOrderSaleDetail();
+                        newObj.Id(pro.Id);
                         newObj.ProductName(pro.Product.tensp);
                         newObj.ProductId(pro.ProductId);
                         newObj.Code(pro.Product.masp);
                         newObj.Price(pro.Price);
                         newObj.PriceFix(pro.Price);
                         newObj.Total(pro.Total);
+                        newObj.Discount(pro.Discount);
                         self.mOrderSale().Detail.push(newObj);
+                        if (pro.Discount > 0)
+                            self.IsDisscountbyMark(true);
                     });
                     self.mOrderSale().Customer(ko.mapping.fromJS(data.Data.Customer, {}, new Order.mCustomer));
                     self.CustommerofMoney(self.CustommerMoneyTake());

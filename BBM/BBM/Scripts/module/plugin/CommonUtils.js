@@ -460,7 +460,6 @@ var CommonUtils = {
         return rs + ' ' + symbol
     },
     chunkArray: function (myArray, chunk_size) {
-        debugger
         var index = 0;
         var arrayLength = myArray.length;
         var tempArray = [];

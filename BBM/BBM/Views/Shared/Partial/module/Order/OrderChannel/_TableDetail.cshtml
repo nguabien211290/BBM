@@ -37,7 +37,7 @@
                     <td class="text-center">
                         <input data-bind="moneyMaskWithSymbol: Price" class="input-mini" />
                     </td>
-                    <!--ko if: $parents[0].IsDisscountbyMark -->
+                   <!--ko if: $parents[0].IsDisscountbyMark() || Discount() > 0 -->
                     <td class="text-center">
                         <label class="text-left">
                             <input type="checkbox" data-bind="checked: isDiscountForMember, value:true">

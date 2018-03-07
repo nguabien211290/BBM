@@ -33,9 +33,11 @@ namespace BBM.Business.Infractstructure
                            {
                                rs.Add(new Order_DetialModel
                                {
+                                   Id = item.Id,
                                    OrderId = item.Sodh,
                                    Price = item.Dongia.Value,
                                    Total = item.Soluong,
+                                   Discount = item.Discount.HasValue ? item.Discount.Value : 0,
                                    ProductId = (int)item.IdPro
                                });
                            }
@@ -57,6 +59,8 @@ namespace BBM.Business.Infractstructure
                              Sodh = item.OrderId,
                              Dongia = item.Price,
                              Soluong = item.Total,
+
+                             Discount = item.Discount,
                              IdPro = (long)item.ProductId
                          });
                      }
@@ -100,10 +104,10 @@ namespace BBM.Business.Infractstructure
                             .ForMember(a => a.diem, b => b.MapFrom(c => c.Mark));
 
                 cfg.CreateMap<CustomerAPiModel, khachhang>();
-                 //.ForMember(a => a.ngaydangky, b => b.ResolveUsing(c =>
-                 //{
-                 //    return JsonConvert.DeserializeObject<DateTime>(c.ngaydangky, new IsoDateTimeConverter { DateTimeFormat = "dd/mm/yyyy:hh:mm:ss" });
-                 //}));
+                //.ForMember(a => a.ngaydangky, b => b.ResolveUsing(c =>
+                //{
+                //    return JsonConvert.DeserializeObject<DateTime>(c.ngaydangky, new IsoDateTimeConverter { DateTimeFormat = "dd/mm/yyyy:hh:mm:ss" });
+                //}));
 
 
 

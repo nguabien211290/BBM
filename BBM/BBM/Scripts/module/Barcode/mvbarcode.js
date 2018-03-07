@@ -91,7 +91,6 @@ PrintProductBarcode.mvBarcode = function (Products) {
     self.ShowType = ko.observable("Setting");
     self.NeedPrint = ko.observableArray();
     self.PrintIt = function () {
-        debugger
         self.NeedPrint([]);
         var barcode = [];
         ko.utils.arrayForEach(self.mlstBarcode(), function (xitem) {
