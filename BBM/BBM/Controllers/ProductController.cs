@@ -11,6 +11,9 @@ using BBM.Business.Infractstructure.Security;
 using BBM.Business.Models.Enum;
 using System.Data;
 using BBM.Infractstructure.Security;
+using BBM.Business.Logic;
+using BBM.Business.Model.Module;
+using BBM.Business.Repository;
 
 namespace BBM.Controllers
 {
@@ -18,10 +21,14 @@ namespace BBM.Controllers
     {
         private CRUD _crud;
         private admin_softbbmEntities _context;
-        public ProductController()
+        private IOrderBusiness _IOrderBus;
+        private IUnitOfWork _unitOW;
+        public ProductController(IOrderBusiness IOrderBus, IUnitOfWork unitOW)
         {
             _crud = new CRUD();
             _context = new admin_softbbmEntities();
+            _IOrderBus = IOrderBus;
+            _unitOW = unitOW;
         }
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Products })]
         public ActionResult RenderView()
@@ -340,7 +347,7 @@ namespace BBM.Controllers
                         var PriceMainStore = prices.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsMainStore);
                         if (PriceMainStore != null)
                             item.PriceMainStore = PriceMainStore.Price;
-                        
+
                         var PriceSi = prices.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelWholesale);
                         if (PriceSi != null)
                             item.PriceWholesale = PriceSi.Price;
@@ -370,38 +377,33 @@ namespace BBM.Controllers
             var Messaging = new RenderMessaging();
             try
             {
+                var lstChangePrice = new List<int>();
 
                 foreach (var item in model)
                 {
+
                     var pricechannel = _context.soft_Channel_Product_Price.FirstOrDefault(o => o.ProductId == item.ProductId && o.ChannelId == User.ChannelId);
                     if (pricechannel != null)
                     {
-                        if (item.PriceChange != pricechannel.Price
-                            && pricechannel.soft_Channel.Type == (int)TypeChannel.IsChannelOnline)
+                        if (pricechannel.Price != item.Price)
                         {
-                            var priceWholesale = (int)((item.PriceChange - pricechannel.shop_sanpham.PriceBase) / 5.3) - pricechannel.shop_sanpham.PriceBase;
+                            lstChangePrice.Add(item.ProductId);
 
-                            var product = new shop_sanpham
+                             var data = new soft_Channel_Product_Price
                             {
-                                id = item.ProductId,
-                                PriceWholesale = priceWholesale
+                                Id = pricechannel.Id,
+                                Price = item.PriceChange,
+                                DateUpdate = DateTime.Now,
+                                EmployeeUpdate = User.UserId,
                             };
-                            _crud.Update<shop_sanpham>(product, o => o.PriceWholesale);
+
+                            _crud.Update<soft_Channel_Product_Price>(data, o => o.Price, o => o.DateUpdate, o => o.EmployeeUpdate);
                         }
-                        //Giá bán sỉ = (Giá bán online-Giá cơ bản)/5.3 - giá cơ bản
-
-                        var data = new soft_Channel_Product_Price
-                        {
-                            Id = pricechannel.Id,
-                            Price = item.PriceChange,
-                            DateUpdate = DateTime.Now,
-                            EmployeeUpdate = User.UserId,
-                        };
-
-                        _crud.Update<soft_Channel_Product_Price>(data, o => o.Price, o => o.DateUpdate, o => o.EmployeeUpdate);
                     }
                     else
                     {
+                        lstChangePrice.Add(item.ProductId);
+
                         var data = new soft_Channel_Product_Price
                         {
                             Price = item.PriceChange,
@@ -414,7 +416,16 @@ namespace BBM.Controllers
                         _crud.Add<soft_Channel_Product_Price>(data);
                     }
                 }
+
                 _crud.SaveChanges();
+
+                foreach(var item in lstChangePrice)
+                {
+                    var user = Mapper.Map<UserCurrent>(User);
+                    var product = _unitOW.ProductRepository.FindBy(o => o.id == item).FirstOrDefault();
+                    _IOrderBus.UpdatePriceWholesale(product, user, true);
+                }
+
                 Messaging.messaging = "Đã thay đổi giá thành công!";
             }
             catch
@@ -476,6 +487,13 @@ namespace BBM.Controllers
                         o => o.Status, o => o.Note);
 
                     _crud.SaveChanges();
+
+                    if (productObj.PriceBase != model.PriceBase)
+                    {
+                        var user = Mapper.Map<UserCurrent>(User);
+                        productObj = _context.shop_sanpham.Find(model.id);
+                        _IOrderBus.UpdatePriceWholesale(productObj, user, true);
+                    }
 
                     Messaging.isError = false;
                     Messaging.messaging = "Cập nhật sản phẩm thành công!";

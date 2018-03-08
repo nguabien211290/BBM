@@ -30,6 +30,9 @@ namespace BBM.Business.Logic
                 if (order.TypeOrder == (int)TypeOrder.Input)
                 {
                     var product = unitOfWork.ProductRepository.FindBy(o => o.id == item.ProductId).FirstOrDefault();
+
+                    var priceBase = product.PriceBase;
+
                     if (product != null)
                     {
                         #region Product
@@ -55,41 +58,8 @@ namespace BBM.Business.Logic
 
                         #region Giá sỉ
 
-                        var channelOnline = unitOfWork.ChannelRepository.FindBy(o => o.Type == (int)TypeChannel.IsChannelOnline && o.Id == User.ChannelId).FirstOrDefault();
-
-                        if (channelOnline != null)
-                        {
-                            var priceOL = product.soft_Channel_Product_Price.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelOnline);
-
-                            int? priceWholesale = 0;
-
-                            if (priceOL != null)
-                                priceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
-                            else
-                                priceWholesale = (int)((0 - product.PriceBase) / 5.3) + product.PriceBase;
-
-                            var priceSi = unitOfWork.ChanelPriceRepository.Get(o => o.ProductId == product.id && o.soft_Channel.Type == (int)TypeChannel.IsChannelWholesale).FirstOrDefault();
-
-                            if (priceSi != null)
-                            {
-                                priceSi.Price = (int)priceWholesale;
-
-                                unitOfWork.ChanelPriceRepository.Update(priceSi, o => o.Price);
-                            }
-                            else
-                            {
-                                var ChannelSi = unitOfWork.ChannelRepository.Get(o => o.Type == (int)TypeChannel.IsChannelWholesale).FirstOrDefault();
-
-                                unitOfWork.ChanelPriceRepository.Add(new soft_Channel_Product_Price
-                                {
-                                    Price = (int)priceWholesale,
-                                    ChannelId = ChannelSi.Id,
-                                    DateCreate = DateTime.UtcNow,
-                                    EmployeeCreate = User.UserId,
-                                    ProductId = product.id
-                                });
-                            }
-                        }
+                        if (priceBase != product.PriceBase)
+                            UpdatePriceWholesale(product, User);
 
                         #endregion
 
@@ -234,6 +204,52 @@ namespace BBM.Business.Logic
                     #endregion                 
                 }
             }
+        }
+
+        public void UpdatePriceWholesale(shop_sanpham product, UserCurrent User, bool isCommit = false)
+        {
+            #region Giá sỉ
+
+            var channelOnline = unitOfWork.ChannelRepository.FindBy(o => o.Type == (int)TypeChannel.IsChannelOnline && o.Id == User.ChannelId).FirstOrDefault();
+
+            if (channelOnline != null)
+            {
+                var priceOL = product.soft_Channel_Product_Price.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelOnline);
+
+                int? priceWholesale = 0;
+
+                if (priceOL != null)
+                    priceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
+                else
+                    priceWholesale = (int)((0 - product.PriceBase) / 5.3) + product.PriceBase;
+
+                var priceSi = unitOfWork.ChanelPriceRepository.Get(o => o.ProductId == product.id && o.soft_Channel.Type == (int)TypeChannel.IsChannelWholesale).FirstOrDefault();
+
+                if (priceSi != null)
+                {
+                    priceSi.Price = (int)priceWholesale;
+
+                    unitOfWork.ChanelPriceRepository.Update(priceSi, o => o.Price);
+                }
+                else
+                {
+                    var ChannelSi = unitOfWork.ChannelRepository.Get(o => o.Type == (int)TypeChannel.IsChannelWholesale).FirstOrDefault();
+
+                    unitOfWork.ChanelPriceRepository.Add(new soft_Channel_Product_Price
+                    {
+                        Price = (int)priceWholesale,
+                        ChannelId = ChannelSi.Id,
+                        DateCreate = DateTime.UtcNow,
+                        EmployeeCreate = User.UserId,
+                        ProductId = product.id
+                    });
+                }
+            }
+
+            if (isCommit)
+                unitOfWork.SaveChanges();
+
+            #endregion
         }
     }
 }

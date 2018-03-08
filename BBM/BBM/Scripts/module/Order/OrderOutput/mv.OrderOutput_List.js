@@ -34,7 +34,7 @@ Order.mvOrderOutputList = function () {
     };
     //----------------------Filter-------------------
     self.GetDetail = function (val) {
-        ko.utils.arrayForEach(self.TmpTable().listData(), function (v) {
+        ko.utils.arrayForEach(self.Table().listData(), function (v) {
             v.IsViewDetail(false);
         })
         val.IsViewDetail(true);
