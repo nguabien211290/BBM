@@ -29,6 +29,8 @@ namespace BBM.Business.Logic
         OrderModel GetInfoOrder(int Id);
 
         void UpdatePriceWholesale(shop_sanpham product, UserCurrent User, bool isCommit = false);
+
+        Task<bool> CancelOrder(int id);
         #endregion
 
         #region Order Braches

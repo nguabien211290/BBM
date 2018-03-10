@@ -1,7 +1,13 @@
 ﻿var Order = Order || {};
 Order.mvOrderSale = function (OrderId) {
     var self = this;
+
+    self.OrderCloneId = ko.observable(OrderCloneId);
     self.OrderSaleId = ko.observable(OrderId);
+    self.OrderCloneId.subscribe(function (val) {
+        if (val.length > 0)
+            self.OrderSaleId(val);
+    })
     self.KeywordSearch = ko.observable();
     self.SearchType = ko.observable("Code");
     self.ListProductSearch = ko.observableArray();
@@ -13,6 +19,7 @@ Order.mvOrderSale = function (OrderId) {
     CommonUtils.loadLstLoadEmployes(function (data) {
         self.lstEmployShip(CommonUtils.MapArray(data, Order.mCustomer));
     });
+    self.DisabledStatus = ko.observable(false);
     self.SetValueDisscount = function (value, type) {
         switch (type) {
             case 'Money':
@@ -249,13 +256,17 @@ Order.mvOrderSale = function (OrderId) {
                 if (data == null)
                     return
                 if (!data.isError) {
-                    debugger
                     self.mOrderSale(ko.mapping.fromJS(data.Data, { 'ignore': ['Detail', 'Customer'] }, new Order.mOrder));
+                    if (self.mOrderSale().Status() == 3 || self.mOrderSale().Status() == 4)
+                        self.DisabledStatus(true);
+
+                    if (IsClone == 'True')
+                        self.mOrderSale().Id(0);
                     ko.utils.arrayForEach(data.Data.Detail, function (pro) {
                         var newObj = new Order.mOrderSaleDetail();
                         newObj.Id(pro.Id);
                         newObj.ProductName(pro.Product.tensp);
-                        newObj.ProductId(pro.ProductId);
+                        newObj.ProductId(pro.Product.id);
                         newObj.Code(pro.Product.masp);
                         newObj.Price(pro.Price);
                         newObj.PriceFix(pro.Price);
@@ -302,12 +313,22 @@ Order.mvOrderSale = function (OrderId) {
         }
 
     };
+    self.CloneOrder = function () {
+        CommonUtils.confirm("Thông báo", "Đơn hàng này sẽ được hủy trước khi đặt lại ?", function () {
+            self.mOrderSale().Status(4);
+            self.DisabledStatus(true);
+            CommonUtils.addTabDynamic('Bán hàng', '/OrderChannel/RenderViewOrder', '#contentX', true, { OrderId: self.mOrderSale().Id(), IsClone: true })
+        });
+    }
     self.mPrintModel = ko.observable();
     self.CustommerMoneyTake_Print = ko.observable();
     self.CustommerofMoney_Print = ko.observable();
     self.CustommerMoneyGive_Print = ko.observable();
     self.Start = function () {
-        ko.applyBindings(self, document.getElementById('OrderSaleViewId-' + self.OrderSaleId()));
+        var el = IsClone == 'False' ? 'OrderSaleViewId-' + self.OrderSaleId() : 'OrderSaleViewId-0';
+        self.OrderCloneId(OrderCloneId);
+
+        ko.applyBindings(self, document.getElementById(el));
         self.GetInfoOrder();
     };
 
@@ -351,10 +372,10 @@ Order.mvOrderSale = function (OrderId) {
             }).done(function (data) {
                 if (data == null)
                     return
-                //if (!data.isError) {
-                //    if (data.Data.isPrint)
-                //        CommonUtils.Print("printordersales_" + self.OrderSaleId());
-                //}
+
+                if (self.mOrderSale().Status() == 3 || self.mOrderSale().Status() == 4)
+                    self.DisabledStatus(true);
+
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
             }).always(function () {
                 CommonUtils.showWait(false);

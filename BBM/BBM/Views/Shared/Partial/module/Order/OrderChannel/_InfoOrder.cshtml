@@ -50,7 +50,8 @@
                 <div class="profile-info-row">
                     <div class="profile-info-name">Trạng thái</div>
                     <div class="profile-info-value">
-                        <span data-bind="renderStatus:mOrderSale().Status, typeStatus:'Order_Channel'"></span>
+                        <select data-bind="options: statausOrder, optionsText: 'Value',optionsValue:'Key', value: mOrderSale().Status, attr : {'disabled' : DisabledStatus}" style="width:90%!important"></select>
+                        @*<span data-bind="renderStatus:mOrderSale().Status, typeStatus:'Order_Channel'"></span>*@
                     </div>
                 </div>
                 <!--ko if: mOrderSale().EmployeeUpdate() > 0 -->

@@ -14,6 +14,7 @@ using BBM.Infractstructure.Security;
 using BBM.Business.Logic;
 using BBM.Business.Model.Module;
 using BBM.Business.Repository;
+using BBM.Business.Model.Enum;
 
 namespace BBM.Controllers
 {
@@ -545,7 +546,8 @@ namespace BBM.Controllers
                     hide = false,
                     Status = model.Status,
                     Note = model.Note,
-                    DateCreate = DateTime.Now
+                    DateCreate = DateTime.Now,
+                    FromCreate=(int)TypeFromCreate.Soft
                 };
 
                 _crud.Add<shop_sanpham>(data);

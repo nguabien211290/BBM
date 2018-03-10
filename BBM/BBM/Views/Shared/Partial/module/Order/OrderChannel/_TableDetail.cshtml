@@ -37,7 +37,7 @@
                     <td class="text-center">
                         <input data-bind="moneyMaskWithSymbol: Price" class="input-mini" />
                     </td>
-                   <!--ko if: $parents[0].IsDisscountbyMark() || Discount() > 0 -->
+                    <!--ko if: $parents[0].IsDisscountbyMark() || Discount() > 0 -->
                     <td class="text-center">
                         <label class="text-left">
                             <input type="checkbox" data-bind="checked: isDiscountForMember, value:true">
@@ -105,15 +105,17 @@
         <!--/ko-->
         <!--ko if: mOrderSale().Id() >0  -->
         <div class="m-20-px text-center">
-            <!--ko if: mOrderSale().Status() !=3   && mOrderSale().Status() !=4 -->
-            <button class="btn btn-info" data-bind="click: function(){ mOrderSale().Status(2), UpdateOrderSale()}">Đang giao hàng</button>
-            <button class="btn btn-warning" data-bind="click: function(){ mOrderSale().Status(6),UpdateOrderSale()}">Giao thất bại</button>
-            <button class="btn btn-success" data-bind="click: function(){ mOrderSale().Status(3),UpdateOrderSale()}">Hoàn thành</button>
-            <button class="btn btn-danger" data-bind="click: function(){ mOrderSale().Status(5), UpdateOrderSale()}">Hoãn</button>
-            <button class="btn btn-danger" data-bind="click: function(){ mOrderSale().Status(4),UpdateOrderSale()}">Hủy</button>
-            <button class="btn btn-default" data-bind="click: Print_Order_Sale">In đơn hàng</button>
+            <!--ko if: mOrderSale().Status() != 3 && mOrderSale().Status() != 4 -->
+            <button class="btn btn-info" data-bind="click: UpdateOrderSale">Cập nhật</button>
+            <button class="btn btn-warning" data-bind="click: CloneOrder">Đặt lại</button>
             <!--/ko-->
+            <button class="btn btn-default" data-bind="click: Print_Order_Sale">In</button>
         </div>
         <!--/ko-->
+        <div class="text-left">
+            <ul>
+                <li data-bind="html: mOrderSale().StatusPrint()"></li>
+            </ul>
+        </div>
     </div>
 </script>

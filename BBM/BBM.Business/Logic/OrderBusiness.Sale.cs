@@ -106,7 +106,11 @@ namespace BBM.Business.Logic
 
             objOrder.Code = DateTime.Now.ToString("dd/MM/yy").Replace("/", "") + "-" + channel.Code;
 
+            objOrder.ngaydat = DateTime.Now;
+
             objOrder.khachhang = null;
+
+            objOrder.StatusPrint = string.Empty;
 
             #region in don hang
 
@@ -137,7 +141,7 @@ namespace BBM.Business.Logic
 
             await unitOfWork.SaveChanges();
 
-            var rs= Mapper.Map<OrderModel>(objOrder);
+            var rs = Mapper.Map<OrderModel>(objOrder);
 
             return new Tuple<OrderModel, bool>(rs, isPrint);
         }
@@ -316,6 +320,24 @@ namespace BBM.Business.Logic
             }
 
             return order;
+        }
+
+        public async Task<bool> CancelOrder(int id)
+        {
+            var order = unitOfWork.OrderSaleRepository.GetById(id);
+
+            if (order == null)
+            {
+                return false;
+            }
+
+            order.Status = (int)StatusOrder_Sale.Cancel;
+
+            unitOfWork.OrderSaleRepository.Update(order, o => o.Status);
+
+            await unitOfWork.SaveChanges();
+
+            return true;
         }
     }
 }

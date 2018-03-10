@@ -239,7 +239,7 @@ namespace BBM.Business.Logic
                     {
                         Price = (int)priceWholesale,
                         ChannelId = ChannelSi.Id,
-                        DateCreate = DateTime.UtcNow,
+                        DateCreate = DateTime.Now,
                         EmployeeCreate = User.UserId,
                         ProductId = product.id
                     });

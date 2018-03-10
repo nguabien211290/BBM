@@ -77,6 +77,8 @@ Order.mOrder = function () {
     self.EmployeeShip = ko.observable();
     self.isChannelOnline = ko.observable(false);
     self.StatusPrint = ko.observable();
+
+    self.StatusPrint = ko.observable();
 };
 Order.mOrderSaleDetail = function () {
     var self = this;

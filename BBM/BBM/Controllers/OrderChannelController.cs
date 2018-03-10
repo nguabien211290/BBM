@@ -44,9 +44,20 @@ namespace BBM.Controllers
             return PartialView("~/Views/Shared/Partial/module/Order/OrderChannel/_Channel_Order_List.cshtml");
         }
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_Sales })]
-        public ActionResult RenderViewOrder(int OrderId = 0)
+        public async Task<ActionResult> RenderViewOrder(int OrderId = 0, bool IsClone = false)
         {
             ViewBag.OrderId = OrderId;
+            ViewBag.IsClone = IsClone;
+            if (IsClone)
+            {
+                var rs = await _IOrderBus.CancelOrder(OrderId);
+                if (rs)
+                {
+                    ViewBag.OrderId = 0;
+                    ViewBag.OrderCloneId = OrderId;
+                }
+            }
+
             return PartialView("~/Views/Shared/Partial/module/Order/OrderChannel/_OrderSale.cshtml");
         }
 

@@ -107,7 +107,7 @@ namespace BBM.Business.Repository
             count = lstTmp.Count();
 
             if (!isSort)
-                lstTmp = lstTmp.OrderByDescending(o => o.ngaydat);
+                lstTmp = lstTmp.OrderByDescending(o => o.id);
 
             var result = lstTmp.Skip(min).Take(pageinfo.pagesize).ToList();
 

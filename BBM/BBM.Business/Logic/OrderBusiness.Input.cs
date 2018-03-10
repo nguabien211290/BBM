@@ -133,7 +133,7 @@ namespace BBM.Business.Logic
                             ChannelId = User.ChannelId,
                             Price = item.Price,
                             ProductId = item.ProductId,
-                            DateCreate = DateTime.UtcNow,
+                            DateCreate = DateTime.Now,
                             EmployeeCreate = User.UserId
                         });
                     }
