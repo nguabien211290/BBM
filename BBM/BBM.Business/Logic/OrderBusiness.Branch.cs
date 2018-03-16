@@ -22,7 +22,6 @@ namespace BBM.Business.Logic
         }
         public async Task<bool> AddOrder_Branches(OrderModel model, UserCurrent User)
         {
-            model.Id_To = User.BranchesId;
             model.TypeOrder = (int)TypeOrder.OrderBranches;
             model.DateCreate = DateTime.Now;
             model.EmployeeCreate = User.UserId;

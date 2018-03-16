@@ -28,6 +28,7 @@ namespace BBM.Business.Repository
         IRepository<donhang_ct> OrderSale_DetailRepository { get; }
         IRepository<soft_Order_Child> OrderChildRepository { get; }
         IRepository<soft_Order> OrderInputRepository { get; }
+        IRepository<soft_Order> soft_Order { get; }
         #endregion
         Task SaveChanges();
     }

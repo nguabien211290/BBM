@@ -12,6 +12,10 @@ namespace BBM.Business.Logic
 {
     public interface IOrderBusiness
     {
+        #region Common
+        Task<OrderModel> UpdateStatus(OrderModel model);
+        #endregion
+
         #region Order Input
 
         List<OrderModel> GetOrder_Input(PagingInfo pageinfo, int BranchesId, out int count, out int min);

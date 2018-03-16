@@ -149,6 +149,7 @@
         <!--ko if: Fiterby().length > 0 -->
         <div class="tags border-none span12">
             <!--ko foreach: Fiterby -->
+            <!-- ko if: IsDisplay -->
             <!-- ko if: Type !== 'Date' -->
             <span class="tag"><span data-bind="text: $data.FiterDisplay"></span><button type="button" data-bind="click: $parents[0].RemoveTagFilter" class="close">×</button></span>
             <!--/ko-->
@@ -157,11 +158,12 @@
             <span class="tag"><span data-bind="text: $data.Name"></span> Từ <span data-bind="dateshort: $data.StartDate"></span> đến <span data-bind="dateshort: $data.EndDate"></span>  <button type="button" data-bind="click: $parents[0].RemoveTagFilter" class="close">×</button></span>
             <!--/ko-->
             <!--ko if: $parents[0].typeFilter()=='Order_Output'
-                || $parents[0].typeFilter()=='Order_Channel'
-                || $parents[0].typeFilter()=='Order_ProductSwitch'
-                || $parents[0].typeFilter()=='Order_Input'
-                || $parents[0].typeFilter()=='Order_Suppliers' -->
+        || $parents[0].typeFilter()=='Order_Channel'
+        || $parents[0].typeFilter()=='Order_ProductSwitch'
+        || $parents[0].typeFilter()=='Order_Input'
+        || $parents[0].typeFilter()=='Order_Suppliers' -->
             <span class="tag">Từ <span data-bind="dateshort: $data.StartDate"></span> đến <span data-bind="dateshort: $data.EndDate"></span>  <button type="button" data-bind="click: $parents[0].RemoveTagFilter" class="close">×</button></span>
+            <!--/ko-->
             <!--/ko-->
             <!--/ko-->
             <!--/ko-->

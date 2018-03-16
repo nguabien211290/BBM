@@ -373,7 +373,6 @@
     <Compile Include="Model\Module\OrderChannelModel.cs" />
     <Compile Include="Model\Module\ProductModel.cs" />
     <Compile Include="Model\Module\RenderMessaging.cs" />
-    <Compile Include="Model\Module\ReportModel.cs" />
     <Compile Include="Model\Module\SuppliersModel.cs" />
     <Compile Include="Model\Module\UserModel.cs" />
     <Compile Include="Model\View\LoginViewModel.cs" />

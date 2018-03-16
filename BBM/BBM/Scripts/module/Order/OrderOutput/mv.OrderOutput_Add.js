@@ -1,11 +1,29 @@
 ﻿var Order = Order || {};
-Order.mvOrderOutputAdd = function () {
+Order.mvOrderOutputAdd = function (Products) {
     var self = this;
 
     self.lstOrder_Output = ko.observableArray();
     self.mOrderOutput = ko.observable(new Order.mOrder);
-    
-    
+    if (Products != undefined) {
+        debugger
+        if (Products != null && Products.length > 0) {
+            var data = JSON.parse(Products);
+            ko.utils.arrayForEach(data, function (result) {
+                var newObj = new Order.mOrderDetail();
+                newObj.ProductName(result.product.tensp);
+                newObj.ProductId(result.product.id);
+                newObj.Code(result.product.masp);
+                if (result.product.SuppliersName)
+                    newObj.SuppliersName(result.product.SuppliersName);
+                if (result.product_stock)
+                    newObj.Stock_Total(result.product_stock.Stock_Total);
+                if (result.product_stocks)
+                    newObj.Stock_Totals(result.product_stocks);
+                self.mOrderOutput().Detail.push(newObj);
+            });
+        }
+    };
+
     self.LstBranches = ko.observableArray();
 
     self.FilterProduct = ko.observable(new Filter.mvFilter_Search_Control('Product_Control'));
@@ -138,7 +156,8 @@ Order.mvOrderOutputAdd = function () {
 
     self.Start = function () {
         ko.applyBindings(self, document.getElementById('OrderOutputAddViewId'));
-        self.mOrderOutput(new Order.mOrder);
+        if (Products == undefined)
+            self.mOrderOutput(new Order.mOrder);
     };
 
     self.PrintModel = ko.observable();

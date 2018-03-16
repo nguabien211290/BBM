@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using AutoMapper;
 namespace BBM.Business.Logic
 {
     public partial class OrderBusiness : IOrderBusiness
@@ -250,6 +250,17 @@ namespace BBM.Business.Logic
                 unitOfWork.SaveChanges();
 
             #endregion
+        }
+
+        public async Task<OrderModel> UpdateStatus(OrderModel model)
+        {
+            var order = unitOfWork.soft_Order.GetById(model.Id);
+
+            unitOfWork.soft_Order.Update(order, o => model.Status);
+
+            await unitOfWork.SaveChanges();
+
+            return Mapper.Map<OrderModel>(unitOfWork.soft_Order.GetById(model.Id));
         }
     }
 }

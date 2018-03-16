@@ -29,17 +29,19 @@ namespace BBM.Business.Repository
                     var key = 0;
                     switch (item.Fiter)
                     {
+                        case "RequestOrder":
+                            if (item.Value.Equals("Request"))
+                            {
+                                lstTmp = lstTmp.Where(o => o.Id_To > 0 && o.Id_To == BranchesId);
+                            }
+                            if (item.Value.Equals("List"))
+                            {
+                                lstTmp = lstTmp.Where(o => o.Id_From > 0 && o.Id_From == BranchesId);
+                            }
+                            break;
                         case "Status":
                             key = int.Parse(item.Value);
                             lstTmp = lstTmp.Where(o => o.Status > 0 && o.Status == key);
-                            break;
-                        case "Brach_From":
-                            key = int.Parse(item.Value);
-                            lstTmp = lstTmp.Where(o => o.Id_From > 0 && o.Id_From == key);
-                            break;
-                        case "Brach_To":
-                            key = int.Parse(item.Value);
-                            lstTmp = lstTmp.Where(o => o.Id_To > 0 && o.Id_To == key);
                             break;
                         case "Time_To_From":
                             var StartDate = new DateTime(item.StartDate.Year, item.StartDate.Month, item.StartDate.Day, 0, 0, 0, 0); //item.StartDate.Date;
@@ -57,20 +59,6 @@ namespace BBM.Business.Repository
                 isSort = true;
                 switch (pageinfo.sortby)
                 {
-                    case "Brach_To":
-                        if (pageinfo.sortbydesc)
-                            lstTmp = lstTmp.OrderByDescending(o => o.Id_To);
-                        else
-                            lstTmp = lstTmp.OrderBy(o => o.Id_To);
-                        break;
-
-                    case "Brach_From":
-                        if (pageinfo.sortbydesc)
-                            lstTmp = lstTmp.OrderByDescending(o => o.Id_From);
-                        else
-                            lstTmp = lstTmp.OrderBy(o => o.Id_From);
-                        break;
-
                     case "DateCreate":
                         if (pageinfo.sortbydesc)
                             lstTmp = lstTmp.OrderByDescending(o => o.DateCreate);

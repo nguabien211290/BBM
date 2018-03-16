@@ -7,7 +7,8 @@ Order.mvOrderSale = function (OrderId) {
     self.OrderCloneId.subscribe(function (val) {
         if (val.length > 0)
             self.OrderSaleId(val);
-    })
+    });
+    self.StatusOrder = ko.observable();
     self.KeywordSearch = ko.observable();
     self.SearchType = ko.observable("Code");
     self.ListProductSearch = ko.observableArray();
@@ -257,6 +258,7 @@ Order.mvOrderSale = function (OrderId) {
                     return
                 if (!data.isError) {
                     self.mOrderSale(ko.mapping.fromJS(data.Data, { 'ignore': ['Detail', 'Customer'] }, new Order.mOrder));
+                    self.StatusOrder(self.mOrderSale().Status());
                     if (self.mOrderSale().Status() == 3 || self.mOrderSale().Status() == 4)
                         self.DisabledStatus(true);
 
@@ -266,7 +268,7 @@ Order.mvOrderSale = function (OrderId) {
                         var newObj = new Order.mOrderSaleDetail();
                         newObj.Id(pro.Id);
                         newObj.ProductName(pro.Product.tensp);
-                        newObj.ProductId(pro.Product.id);
+                        newObj.ProductId(pro.ProductId);
                         newObj.Code(pro.Product.masp);
                         newObj.Price(pro.Price);
                         newObj.PriceFix(pro.Price);
@@ -373,6 +375,7 @@ Order.mvOrderSale = function (OrderId) {
                 if (data == null)
                     return
 
+                self.mOrderSale().Status(self.StatusOrder());
                 if (self.mOrderSale().Status() == 3 || self.mOrderSale().Status() == 4)
                     self.DisabledStatus(true);
 

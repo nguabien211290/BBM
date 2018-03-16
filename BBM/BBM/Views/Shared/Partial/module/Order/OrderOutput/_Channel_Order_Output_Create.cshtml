@@ -1,7 +1,8 @@
 ﻿<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
 <script src=@Url.Content("~/Scripts/module/Order/OrderOutput/mv.OrderOutput_Add.js")></script>
 <script>
-    var orderOutputAdd = new Order.mvOrderOutputAdd();
+     var products = '@Html.Raw(ViewBag.Products)';
+    var orderOutputAdd = new Order.mvOrderOutputAdd(products);
     $(document).ready(function () {
         orderOutputAdd.Start();
     });

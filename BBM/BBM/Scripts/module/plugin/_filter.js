@@ -34,6 +34,7 @@ Filter.mFilterModel = function () {
     self.StartDate = ko.observable();
     self.EndDate = ko.observable();
     self.Type = ko.observable();
+    self.IsDisplay = ko.observable(true);
 };
 
 Filter.mvFilter_Search_Control = function (type, isNotFilter) {

@@ -185,15 +185,9 @@ namespace BBM.Business.Logic
                 {
                     if (hasthis.Soluong != item.Total || hasthis.Dongia != item.Price)
                     {
-                        var OrderChild = new donhang_ct
-                        {
-                            Id = hasthis.Id,
-                            Sodh = order.id,
-                            Dongia = item.Price,
-                            Soluong = item.Total,
-                            IdPro = item.ProductId
-                        };
-                        unitOfWork.OrderSale_DetailRepository.Update(OrderChild, o => o.Soluong, o => o.Dongia);
+                        hasthis.Soluong = item.Total;
+                        hasthis.Dongia = item.Price;
+                        unitOfWork.OrderSale_DetailRepository.Update(hasthis, o => o.Soluong, o => o.Dongia);
                     }
                 }
             }

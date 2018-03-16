@@ -38,8 +38,42 @@ namespace BBM.Controllers
         }
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_OutPut })]
-        public ActionResult RenderViewCreate()
+        public ActionResult RenderViewCreate(int orderId = 0)
         {
+            if (orderId > 0)
+            {
+                var order = _context.soft_Order.FirstOrDefault(o => o.Id == orderId);
+
+                if (order != null)
+                {
+                    var rs = new List<Prodcut_Branches_PriceChannel>();
+                    foreach (var item in order.soft_Order_Child)
+                    {
+                        if (item.shop_sanpham.id > 0)
+                        {
+                            var product = _context.shop_sanpham.Find(item.shop_sanpham.id);
+                            if (product != null)
+                            {
+                                
+                                var stocks = Mapper.Map<List<Product_StockModel>>(_context.soft_Branches_Product_Stock.Where(o => o.ProductId == product.id).ToList());
+                                var stock = stocks.FirstOrDefault(o => o.BranchesId == User.BranchesId);
+
+                                var productInfo = new Prodcut_Branches_PriceChannel
+                                {
+                                    product_stock = stock ?? stock,
+                                    product = Mapper.Map<ProductSampleModel>(product),
+                                    product_stocks = stocks
+                                };
+                                if (product.soft_Suppliers != null)
+                                    productInfo.product.SuppliersName = product.soft_Suppliers.Name;
+                                
+                                rs.Add(productInfo);
+                            }
+                        }
+                    }
+                    ViewBag.Products = Newtonsoft.Json.JsonConvert.SerializeObject(rs);
+                }                
+            }
             return PartialView("~/Views/Shared/Partial/module/Order/OrderOutput/_Channel_Order_Output_Create.cshtml");
         }
 
@@ -322,6 +356,9 @@ namespace BBM.Controllers
         private double Product_Sale_AveragebyChannel(int productId, int brancheId, int totaldateSum)
         {
             var branches = _context.soft_Branches.Find(brancheId);
+
+            if (branches == null)
+                return 0;
 
             var lstChannel = branches.soft_Channel.Select(o => o.Id).ToList();
 

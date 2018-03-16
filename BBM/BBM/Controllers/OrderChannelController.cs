@@ -241,7 +241,7 @@ namespace BBM.Controllers
                 Messaging.isError = false;
                 Messaging.messaging = "Cập nhật đơn hàng thành công.";
             }
-            catch
+            catch(Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Cập nhật đơn hàng không thành công!";

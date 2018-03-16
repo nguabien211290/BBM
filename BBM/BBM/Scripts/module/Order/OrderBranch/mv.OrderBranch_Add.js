@@ -137,7 +137,7 @@ Order.mvOrderOutputAdd = function () {
     });
 
     self.Start = function () {
-        ko.applyBindings(self, document.getElementById('OrderOutputAddViewId'));
+        ko.applyBindings(self, document.getElementById('OrderBranchAddViewId'));
         self.mOrderOutput_Branches(new Order.mOrder);
     };
 

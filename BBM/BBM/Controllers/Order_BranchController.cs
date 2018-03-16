@@ -118,6 +118,21 @@ namespace BBM.Controllers
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
 
+                if (model.Id_To <= 0)
+                {
+                    Messaging.isError = true;
+                    Messaging.messaging = "Vui lòng chọn Kho bạn xuất đến.";
+                    return Json(Messaging, JsonRequestBehavior.AllowGet);
+                }
+
+                
+                if (model.Id_To == User.BranchesId)
+                {
+                    Messaging.isError = true;
+                    Messaging.messaging = "Kho đặt hàng không hơp lệ";
+                    return Json(Messaging, JsonRequestBehavior.AllowGet);
+                }
+
                 if (model.Detail.Count <= 0)
                 {
                     Messaging.isError = true;

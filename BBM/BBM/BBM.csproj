@@ -199,9 +199,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificaitonController.cs" />
     <Compile Include="Controllers\OrderChannelController.cs" />
-    <Compile Include="Controllers\Order_BranchController.cs">
-      <DependentUpon>OrderChannelController.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Controllers\Order_BranchController.cs" />
     <Compile Include="Controllers\Order_InputController.cs">
       <DependentUpon>OrderChannelController.cs</DependentUpon>
     </Compile>
@@ -216,8 +214,6 @@
       <DependentUpon>OrderChannelController.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\ProductController.cs" />
-    <Compile Include="Controllers\_SampleController.cs" />
-    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SaleController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -360,6 +356,7 @@
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

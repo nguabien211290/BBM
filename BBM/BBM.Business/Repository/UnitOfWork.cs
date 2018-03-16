@@ -176,6 +176,9 @@ namespace BBM.Business.Repository
         private Repository<soft_Order_Child> _orderChildRepository;
         private Repository<soft_Order> _orderInputRepository;
         private Repository<soft_Order> _orderBranchesRepository;
+        private Repository<soft_Order> _soft_OrderdRepository;
+
+
         public IRepository<donhang> OrderSaleRepository
         {
             get
@@ -229,6 +232,18 @@ namespace BBM.Business.Repository
                     _orderBranchesRepository = new OrderBranchRepository(context);
                 }
                 return _orderBranchesRepository;
+            }
+        }
+
+        public IRepository<soft_Order> soft_Order
+        {
+            get
+            {
+                if (_soft_OrderdRepository == null)
+                {
+                    _soft_OrderdRepository = new Repository<soft_Order>(context);
+                }
+                return _soft_OrderdRepository;
             }
         }
         #endregion
