@@ -55,11 +55,10 @@
     <thead>
         <tr>
             <th class="sorting" data-bind="click: function(){ Sortby('Id'); SortbyDesc(SortbyDesc()?false:true)}">Mã</th>
-            <th class="sorting" data-bind="click: function(){ Sortby('ChannelsTo'); SortbyDesc(SortbyDesc()?false:true)}">Kho đặt</th>
+            <th data-bind="text: $parents[0].isRequestlistOrder()? 'Kho yêu cầu' : 'Đến kho'"></th>
             <th class="sorting" data-bind="click: function(){ Sortby('DateCreate'),SortbyDesc(SortbyDesc()?false:true)}">Ngày tạo</th>
             <th class="sorting" data-bind="click: function(){ Sortby('Total'),SortbyDesc(SortbyDesc()?false:true)}">Số lượng</th>
-            <th class="sorting" data-bind="click: function(){ Sortby('Note'),SortbyDesc(SortbyDesc()?false:true)}">Ghi chú</th>
-            <th class="sorting" data-bind="click: function(){ Sortby('Status'),SortbyDesc(SortbyDesc()?false:true)}">Trạng thái</th>
+            <th>Ghi chú</th>
         </tr>
     </thead>
     <tbody>
@@ -69,7 +68,7 @@
                 <span data-bind="text: Id"></span>
             </td>
             <td>
-                <span data-bind="text: Name_To()? Name_To() : '---'"></span>
+                <span data-bind="text: $parents[1].isRequestlistOrder()? Name_From() : Name_To()"></span>
             </td>
             <td>
                 <span data-bind="datelong: DateCreate"></span>
@@ -80,7 +79,6 @@
             <td>
                 <span data-bind="text: Note"></span>
             </td>
-            <td data-bind="renderStatus:Status, typeStatus:'Order_Output' "></td>
         </tr>
         <!--ko if: IsViewDetail-->
         <tr>
@@ -99,10 +97,6 @@
                         <span class="span6 text-right">Ngày lập phiếu : </span>
                         <span class="span6 text-left" data-bind="datelong: DateCreate"></span>
                     </div>
-                    <div>
-                        <span class="span6 text-right">Trạng thái : </span>
-                        <div data-bind="renderStatus:Status, typeStatus:'Order_Output' "></div>
-                    </div>
                 </div>
                 <div class="span6">
                     <div>
@@ -113,17 +107,6 @@
                         <span class="span3 text-right">Đến : </span>
                         <span class="span9 text-left" data-bind="text: Name_To"></span>
                     </div>
-                    <!--ko if: EmployeeNameUpdate-->
-                    <div>
-                        <span class="span3 text-right">Người cập nhật : </span>
-                        <span class="span9 text-left" data-bind="text: EmployeeNameUpdate"></span>
-                    </div>
-
-                    <div>
-                        <span class="span3 text-right">Ngày cập nhật : </span>
-                        <span class="span9 text-left" data-bind="datelong: DateUpdate"></span>
-                    </div>
-                    <!--/ko-->
                     <div>
                         <div class="span3 text-right">Ghi chú : </div>
                         <div class="span9 text-left">

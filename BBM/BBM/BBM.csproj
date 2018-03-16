@@ -199,7 +199,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NotificaitonController.cs" />
     <Compile Include="Controllers\OrderChannelController.cs" />
-    <Compile Include="Controllers\Order_BranchController.cs" />
+    <Compile Include="Controllers\Order_BranchController.cs">
+      <DependentUpon>OrderChannelController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\Order_InputController.cs">
       <DependentUpon>OrderChannelController.cs</DependentUpon>
     </Compile>
