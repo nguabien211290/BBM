@@ -350,6 +350,7 @@
     <Compile Include="Model\Entity\sys_tags_Summary.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Enum\TypeView.cs" />
     <Compile Include="Model\Enum\Roles.cs" />
     <Compile Include="Model\Enum\StatusOrder.cs" />
     <Compile Include="Model\Enum\StatusProduct.cs" />

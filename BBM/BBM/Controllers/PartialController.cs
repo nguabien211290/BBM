@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BBM.Business;
 using BBM.Business.Infractstructure;
 using BBM.Business.Infractstructure.Security;
 using BBM.Business.Model.Entity;
@@ -7,21 +8,26 @@ using BBM.Business.Models.Module;
 using BBM.Business.Models.View;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.UI.WebControls;
+
 namespace BBM.Controllers
 {
     public class PartialController : BaseController
     {
         private admin_softbbmEntities _context;
         private CRUD _crud;
+        private ExportExcelBusiness _exportBus;
 
         public PartialController()
         {
             _crud = new CRUD();
             _context = new admin_softbbmEntities();
+            _exportBus = new ExportExcelBusiness();
         }
 
 
@@ -729,6 +735,11 @@ namespace BBM.Controllers
             Messaging.Data = new { result = productInfo };
             Messaging.isError = false;
             return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+        public void Excel(int type = 0)
+        {
+            _exportBus.ToExcel(Response, type);
         }
     }
 }
