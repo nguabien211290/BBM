@@ -11,7 +11,7 @@ Test- Theo rule thì khi có đơn hàng thì stock tự trừ số lượng. Kh
 Test- Khi đơn hàng đó hủy thì điểm cũng bị trừ tưng ứng số tiền đơn hàng
 R-Cỡ chữ hđ CH vẫn chưa chỉnh nha Gi, coi chừng e quên đó
 - Tạo đơn hàng mới từ đơn hang khác
-- Hóa đơn bán hàng không giảm 5% khi xem lại
+R- Hóa đơn bán hàng không giảm 5% khi xem lại
 
 Dat hang NPP:
 R- Them hien thi tên nha phan phoi
