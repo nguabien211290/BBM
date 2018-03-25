@@ -6,16 +6,15 @@
     div {
         border: 1px solid white;
     }
+
     html, body {
+        font-size: 13pt;
         height: auto;
-    }
-    .printable {
-        display: block;
+        font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     }
 
-    table td {
-        font-size: 12px;
-        font-weight: 100;
+    .printable {
+        display: block;
     }
 }
 
@@ -515,11 +514,13 @@ input[type="text"].txtSearchFull {
 }
 
 .m-10-px {
-    margin: 10px!important;
+    margin: 10px !important;
 }
+
 input[type="file"]#file-upload {
     display: none;
 }
+
 .custom-file-upload {
     font-size: 19px;
     padding: 0.2px 7px;
