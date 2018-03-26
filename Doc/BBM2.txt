@@ -12,7 +12,16 @@
 Nhập hàng:
 - Trong trang nhập hàng, hiện tại mình đang để hiện cột giá cơ bản để tính tổng tiền. Em đổi thành giá nhập mới nhé. 
 
+Đăt hang nội bộ:
+- Kho đặt, thì chỗ chọn kho xuất phải là "Kho xuất đi" chứ không phải kho xuất đến như hiện tại, gây nhầm lẫn.
+- Khi bấm tạo phiếu xuất kho từ phiếu đặt thì SL xuất của 1 sp chỉ là 1 (trong khi đặt nhiều hơn 1)
+- Trong ds đơn đặt hàng nội bộ ở kho xuất, Em cho thêm trạng thái "Đã xuất" để phân biệt với đơn đặt hàng chưa xuất nhé 
  
+Phiếu tra hang:
+Việc khách đổi trả nếu làm theo cách hủy hóa đơn và làm lại hđ khác sẽ káh lâu vì tìm hóa đơn, chưa kể hàng Shopee và Lazada trả về không biết trong hóa đơn nào, rất bất tiện nên tốt nhất em làm giùm anh chức năng là Phíêu trả hàng, tương tự như hóa đơn bán hàng thôi, nhưng ngược lại khi hòan thành:
+- Stock: hóa đơn trừ ra, trả hàng cộng vào
+- Doanh số/doanh thu + điểm tích lũy (nếu có): Hóa đơn cộng vào, trả hàng trừ ra
+
 Api Shoppe
 Do sku mình đăng lên các trang TMĐT ngày càng nhiều nên việc quản lý nhiều trang khác nhau sẽ rất tốn thời gian. Do đó anh cần đồng bộ dữ liệu của soft mình và các hệ thống đó để quản lý cho dễ. 
 Các thông tin anh cần đồng bộ trên Shopee (SP) như sau:

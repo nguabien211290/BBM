@@ -9,6 +9,11 @@ Order.mvOrderSale = function (OrderId) {
             self.OrderSaleId(val);
     });
     self.StatusOrder = ko.observable();
+    self.StatusOrder.subscribe(function (val) {
+        debugger
+        if (self.mOrderSale())
+            self.mOrderSale().Status(val);
+    })
     self.KeywordSearch = ko.observable();
     self.SearchType = ko.observable("Code");
     self.ListProductSearch = ko.observableArray();
@@ -258,7 +263,7 @@ Order.mvOrderSale = function (OrderId) {
                     return
                 if (!data.isError) {
                     self.mOrderSale(ko.mapping.fromJS(data.Data, { 'ignore': ['Detail', 'Customer'] }, new Order.mOrder));
-                    self.StatusOrder(self.mOrderSale().Status());
+                    self.StatusOrder(data.Data.Status);
                     if (self.mOrderSale().Status() == 3 || self.mOrderSale().Status() == 4)
                         self.DisabledStatus(true);
 
