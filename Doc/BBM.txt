@@ -6,11 +6,11 @@ R- Ô để ghi ghi chú khá nhỏ, em cho bung qua ô bên trái luôn nhé.
 R- Hóa đơn online khi bấm hòan thành thì khỏi ra trang in nhé
 R- Trang in hóa đơn online: em thay cột STT bằng cột mã số nhé: 6
 R- Em cho tìm theo sđt và tên KH nhé
-Đã có- Em cho đơn hàng trên web test bbm đặt hàng đổ đơn hàng về soft nhé.
+R- Em cho đơn hàng trên web test bbm đặt hàng đổ đơn hàng về soft nhé.
 Test- Theo rule thì khi có đơn hàng thì stock tự trừ số lượng. Khi hủy đơn hàng thì stock tự hòan lại nhé
 Test- Khi đơn hàng đó hủy thì điểm cũng bị trừ tưng ứng số tiền đơn hàng
 R-Cỡ chữ hđ CH vẫn chưa chỉnh nha Gi, coi chừng e quên đó
-- Tạo đơn hàng mới từ đơn hang khác
+R- Tạo đơn hàng mới từ đơn hang khác
 R- Hóa đơn bán hàng không giảm 5% khi xem lại
 
 Dat hang NPP:

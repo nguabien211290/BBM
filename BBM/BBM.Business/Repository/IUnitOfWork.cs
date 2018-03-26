@@ -9,7 +9,8 @@ namespace BBM.Business.Repository
 {
     public interface IUnitOfWork
     {
-      IRepository<shop_sanpham> ProductRepository { get; }
+        IRepository<shop_sanpham> ProductRepositoryV2 { get; }
+        IRepository<shop_sanpham> ProductRepository { get; }
         IRepository<soft_Branches> BrachesRepository { get; }
         IRepository<soft_Branches_Product_Stock> BrachesStockRepository { get; }
         IRepository<soft_Channel> ChannelRepository { get; }

@@ -13,6 +13,7 @@ namespace BBM.Business.Repository
         private admin_softbbmEntities context = new admin_softbbmEntities();
 
         private Repository<shop_sanpham> _productRepository;
+        private Repository<shop_sanpham> _productRepositoryV2;
         private Repository<shop_image> _productImgRepository;
         private Repository<soft_Branches> _brachesRepository;
         private Repository<soft_Branches_Product_Stock> _brachesStockRepository;
@@ -112,6 +113,18 @@ namespace BBM.Business.Repository
                     _productRepository = new ProductRepository(context);
                 }
                 return _productRepository;
+            }
+        }
+
+        public IRepository<shop_sanpham> ProductRepositoryV2
+        {
+            get
+            {
+                if (_productRepositoryV2 == null)
+                {
+                    _productRepositoryV2 = new Repository<shop_sanpham>(context);
+                }
+                return _productRepositoryV2;
             }
         }
         public IRepository<soft_Branches> BrachesRepository

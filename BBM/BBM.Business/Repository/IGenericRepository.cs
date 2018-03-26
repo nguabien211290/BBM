@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using BBM.Business.Models.View;
+using BBM.Business.Model.Module;
 
 namespace BBM.Business.Repository
 {
@@ -37,5 +38,7 @@ namespace BBM.Business.Repository
            string includeProperties = "");
 
         List<T> SearchBy(PagingInfo pageinfo, out int count, out int min, out double totalMoney, int BranchesId = 0);
+
+        //List<T> SearchBy1(PagingInfo pageinfo, out int count, out int min, out Dictionary<string, object> values, UserCurrent User);
     }
 }

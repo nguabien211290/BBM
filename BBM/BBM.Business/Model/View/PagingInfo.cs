@@ -23,5 +23,6 @@ namespace BBM.Business.Models.View
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string[] Values { get; set; }
+        public List<long> Ids { get; set; }
     }
 }
