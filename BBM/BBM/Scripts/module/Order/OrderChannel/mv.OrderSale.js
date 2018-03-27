@@ -13,6 +13,7 @@ Order.mvOrderSale = function (OrderId) {
         debugger
         if (self.mOrderSale())
             self.mOrderSale().Status(val);
+        
     })
     self.KeywordSearch = ko.observable();
     self.SearchType = ko.observable("Code");

@@ -105,7 +105,7 @@
         <!--/ko-->
         <!--ko if: mOrderSale().Id() >0  -->
         <div class="m-20-px text-center">
-            <!--ko if: mOrderSale().Status() != 3 && mOrderSale().Status() != 4 -->
+            <!--ko if: !DisabledStatus() || (mOrderSale().Status() != 3 && mOrderSale().Status() != 4) -->
             <button class="btn btn-info" data-bind="click: UpdateOrderSale">Cập nhật</button>
             <button class="btn btn-warning" data-bind="click: CloneOrder">Đặt lại</button>
             <!--/ko-->

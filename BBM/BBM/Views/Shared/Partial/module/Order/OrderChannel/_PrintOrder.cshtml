@@ -34,15 +34,15 @@
             <thead>
                 <tr>
                     <!--ko if: mOrderSale().isChannelOnline() -->
-                    <td>Mã</td>
+                    <td class="font">Mã</td>
                     <!-- /ko -->
                     <!--ko if: !mOrderSale().isChannelOnline() -->
-                    <td>Stt</td>
+                    <td class="font">Stt</td>
                     <!-- /ko -->
-                    <td style="max-width: 3.5cm">Tên sản phẩm</td>
-                    <td>SL</td>
-                    <td>Giá</td>
-                    <td>T.Tiền</td>
+                    <td class="font" style="max-width: 3.5cm">Tên sản phẩm</td>
+                    <td class="font">SL</td>
+                    <td class="font">Giá</td>
+                    <td class="font">T.Tiền</td>
                 </tr>
             </thead>
             <tbody>
@@ -51,65 +51,65 @@
                 <tr class="odd">
                     <td class="text-center">
                         <!--ko if: !$parents[0].mOrderSale().isChannelOnline() -->
-                        <span data-bind="text: ($index() + 1)"></span>
+                        <span class="font" data-bind="text: ($index() + 1)"></span>
                         <!-- /ko -->
                         <!--ko if: $parents[0].mOrderSale().isChannelOnline() -->
-                        <span data-bind="text: Code"></span>
+                        <span class="font" data-bind="text: Code"></span>
                         <!-- /ko -->
                     </td>
                     <td style="max-width: 3.5cm;">
-                        <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" data-bind="text: ProductName"></div>
+                        <div class="font ellipsis" data-bind="text: ProductName"></div>
                     </td>
                     <td>
-                        <span data-bind="text: Total"></span>
+                        <span class="font" data-bind="text: Total"></span>
                     </td>
                     <td class="text-center">
-                        <span data-bind="textMoney: Price"></span>
+                        <span class="font" data-bind="textMoney: Price"></span>
                     </td>
                     <td>
-                        <span data-bind="textMoney: TotalMoney"></span>
+                        <span class="font" data-bind="textMoney: TotalMoney"></span>
                     </td>
                 </tr>
                 <!-- /ko -->
                 <!-- /ko -->
                 <tr>
-                    <td colspan="3" class="text-right">Tổng thành tiền</td>
+                    <td colspan="3" class="text-right"><span class="font">Tổng thành tiền</span> </td>
                     <td colspan="2">
-                        <span data-bind="textMoneyDefaultSymbol: mOrderSale().TotalMoney()"></span>
+                        <span class="font" data-bind="textMoneyDefaultSymbol: mOrderSale().TotalMoney()"></span>
                     </td>
                 </tr>
                 <!--ko if: mOrderSale().DisscountValue() >0 -->
                 <tr>
-                    <td colspan="3" class="text-right">Giảm giá chung</td>
+                    <td colspan="3" class="text-right"><span class="font">Giảm giá chung</span></td>
                     <td colspan="2">
-                        <span data-bind="textMoneyDefaultSymbol:  mOrderSale().DisscountValue"></span>
+                        <span class="font" data-bind="textMoneyDefaultSymbol:  mOrderSale().DisscountValue"></span>
                     </td>
                 </tr>
                 <!-- /ko -->
                 <!--ko if: mOrderSale().TotalOrther() >0 -->
                 <tr>
-                    <td colspan="3" class="text-right">Phí khác</td>
+                    <td colspan="3" class="text-right"><span class="font">Phí khác</span></td>
                     <td colspan="2">
-                        <span data-bind="textMoneyDefaultSymbol:  mOrderSale().TotalOrther"></span>
+                        <span class="font" data-bind="textMoneyDefaultSymbol:  mOrderSale().TotalOrther"></span>
                     </td>
                 </tr>
                 <!-- /ko -->
                 <tr>
-                    <td colspan="3" class="text-right"><b>Thanh toán</b></td>
+                    <td colspan="3" class="text-right"><b class="font">Thanh toán</b></td>
                     <td colspan="2">
-                        <span data-bind="textMoneyDefaultSymbol: CustommerMoneyTake"></span>
+                        <span class="font" data-bind="textMoneyDefaultSymbol: CustommerMoneyTake"></span>
                     </td>
                 </tr>
                 <!--ko if: mOrderSale().Note() && mOrderSale().Note().length >0 -->
                 <tr>
-                    <td class="text-right">Ghi chú</td>
+                    <td class="text-right"><span class="font">Ghi chú</span></td>
                     <td colspan="4">
-                        <span data-bind="text: mOrderSale().Note"></span>
+                        <span class="font" data-bind="text: mOrderSale().Note"></span>
                     </td>
                 </tr>
                 <!-- /ko -->
             </tbody>
         </table>
-        <h5 style="text-align:right">Xin cảm ơn Quý Khách và hẹn gặp lại.</h5>
+        <h6 style="text-align:right">Xin cảm ơn Quý Khách và hẹn gặp lại.</h6>
     </div>
 </script>

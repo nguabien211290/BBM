@@ -7,7 +7,7 @@
         border: 1px solid white;
     }
 
-    html, body {
+    html, body, .font {
         font-size: 13px;
         height: auto;
         font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
@@ -15,6 +15,20 @@
 
     .printable {
         display: block;
+    }
+
+    .ellipsis {
+        display: block; /* Fallback for non-webkit */
+        display: -webkit-box;
+        max-width: 400px;
+        height: 36.4px; /* Fallback for non-webkit */
+        margin: 0 auto;
+        font-size: 13px;
+        line-height: 1.4;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }
 
