@@ -23,6 +23,8 @@ namespace BBM.Business.Repository
         IRepository<soft_Catalog> CatalogRepository { get; }
         IRepository<shop_image> ImageRepository { get; }
         IRepository<soft_Config> ConfigRepository { get; }
+        IRepository<donhang_chuyenphat_tp> CityRepository { get; }
+        IRepository<donhang_chuyenphat_tinh> DistrictRepository { get; }
         #region Order
         IRepository<soft_Order> OrderBranchesRepository { get; }
         IRepository<donhang> OrderSaleRepository { get; }

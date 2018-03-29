@@ -10,10 +10,9 @@ Order.mvOrderSale = function (OrderId) {
     });
     self.StatusOrder = ko.observable();
     self.StatusOrder.subscribe(function (val) {
-        debugger
         if (self.mOrderSale())
             self.mOrderSale().Status(val);
-        
+
     })
     self.KeywordSearch = ko.observable();
     self.SearchType = ko.observable("Code");
@@ -381,11 +380,14 @@ Order.mvOrderSale = function (OrderId) {
                 if (data == null)
                     return
 
-                self.mOrderSale().Status(self.StatusOrder());
-                if (self.mOrderSale().Status() == 3 || self.mOrderSale().Status() == 4)
-                    self.DisabledStatus(true);
+                //self.mOrderSale().Status(self.StatusOrder());
+                //if (self.mOrderSale().Status() == 3 || self.mOrderSale().Status() == 4)
+                //    self.DisabledStatus(true);
 
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
+
+                self.GetInfoOrder();
+
             }).always(function () {
                 CommonUtils.showWait(false);
             });

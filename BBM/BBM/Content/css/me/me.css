@@ -21,13 +21,14 @@
         display: block; /* Fallback for non-webkit */
         display: -webkit-box;
         max-width: 400px;
-        height: 36.4px; /* Fallback for non-webkit */
+        height: 30.8px; /* $font-size*$line-height*$lines-to-show;  */
         margin: 0 auto;
         line-height: 1.4;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 2; /*$lines-to-show*/
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 11px;
     }
 }
 

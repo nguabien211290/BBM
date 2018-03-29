@@ -22,6 +22,7 @@ namespace BBM.Business.Infractstructure
                 #region don hang
 
                 cfg.CreateMap<donhang, OrderModel>()
+                       .ForMember(a => a.TotalOrther, b => b.MapFrom(c => c.ship.HasValue ? c.ship.Value : 0))
                        .ForMember(a => a.Note, b => b.MapFrom(c => c.ghichu))
                        .ForMember(a => a.Total, b => b.MapFrom(c => (int)c.tongtien))
                        .ForMember(a => a.DateCreate, b => b.MapFrom(c => c.ngaydat))
@@ -46,29 +47,30 @@ namespace BBM.Business.Infractstructure
                        .ForMember(a => a.Customer, b => b.MapFrom(c => c.khachhang));
 
                 cfg.CreateMap<OrderModel, donhang>()
-                 .ForMember(a => a.ghichu, b => b.MapFrom(c => c.Note))
-                 .ForMember(a => a.tongtien, b => b.MapFrom(c => (int)c.Total))
-                 .ForMember(a => a.ngaydat, b => b.MapFrom(c => c.DateCreate))
-                 .ForMember(a => a.donhang_ct, b => b.ResolveUsing(c =>
-                 {
-                     var rs = new List<donhang_ct>();
-                     foreach (var item in c.Detail)
-                     {
-                         rs.Add(new donhang_ct
-                         {
-                             Sodh = item.OrderId,
-                             Dongia = item.Price,
-                             Soluong = item.Total,
+                .ForMember(a => a.ship, b => b.MapFrom(c => c.TotalOrther))
+                .ForMember(a => a.ghichu, b => b.MapFrom(c => c.Note))
+                .ForMember(a => a.tongtien, b => b.MapFrom(c => (int)c.Total))
+                .ForMember(a => a.ngaydat, b => b.MapFrom(c => c.DateCreate))
+                .ForMember(a => a.donhang_ct, b => b.ResolveUsing(c =>
+                {
+                    var rs = new List<donhang_ct>();
+                    foreach (var item in c.Detail)
+                    {
+                        rs.Add(new donhang_ct
+                        {
+                            Sodh = item.OrderId,
+                            Dongia = item.Price,
+                            Soluong = item.Total,
 
-                             Discount = item.Discount,
-                             IdPro = (long)item.ProductId
-                         });
-                     }
-                     return rs;
-                 }))
-                 .ForMember(a => a.Channeld, b => b.MapFrom(c => c.Id_From))
-                 .ForMember(a => a.makh, b => b.MapFrom(c => c.Id_Customer))
-                 .ForMember(a => a.khachhang, b => b.MapFrom(c => c.Customer));
+                            Discount = item.Discount,
+                            IdPro = (long)item.ProductId
+                        });
+                    }
+                    return rs;
+                }))
+                .ForMember(a => a.Channeld, b => b.MapFrom(c => c.Id_From))
+                .ForMember(a => a.makh, b => b.MapFrom(c => c.Id_Customer))
+                .ForMember(a => a.khachhang, b => b.MapFrom(c => c.Customer));
 
                 cfg.CreateMap<donhang_ct, Order_DetialModel>()
                      .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))

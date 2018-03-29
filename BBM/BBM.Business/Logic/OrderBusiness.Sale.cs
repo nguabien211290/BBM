@@ -165,6 +165,39 @@ namespace BBM.Business.Logic
                 return new Tuple<bool, string>(false, error);
             }
 
+            #region Customer
+            if (order.makh != null)
+            {
+                var customer = unitOfWork.CutomerRepository.GetById(order.makh);
+                if (customer != null)
+                {
+                    if (order.Status != (int)StatusOrder_Sale.Done
+                         && order.Status != (int)StatusOrder_Sale.Cancel
+                         && model.Status == (int)StatusOrder_Sale.Cancel)
+                    {
+                        switch (model.Status)
+                        {
+                            case (int)StatusOrder_Sale.Cancel:
+                                var mark = double.Parse(customer.diem) - (order.tongtien/1000);
+                                customer.diem = mark.ToString();
+                                break;
+                        }
+                    }
+                    if (!model.Customer.Address.Equals(customer.duong) || !model.Customer.Name.Equals(customer.hoten))
+                    {
+                        var cus = new khachhang
+                        {
+                            MaKH = customer.MaKH,
+                            hoten = model.Customer.Name,
+                            duong = model.Customer.Address,
+                            diem = customer.diem
+                        };
+                        unitOfWork.CutomerRepository.Update(cus, o => o.hoten, o => o.duong, o => o.diem);
+                    }
+                }
+            }
+            #endregion
+
             #region Order
 
             foreach (var item in model.Detail)
@@ -210,45 +243,7 @@ namespace BBM.Business.Logic
             }
 
             unitOfWork.OrderSaleRepository.Update(order, o => o.Status, o => o.ghichu, o => o.EmployeeShip);
-
-            #region Customer
-            if (order.makh != null)
-            {
-                var customer = unitOfWork.CutomerRepository.GetById(order.makh);
-                if (customer != null)
-                {
-                    if (!model.Customer.Address.Equals(customer.duong) || !model.Customer.Name.Equals(customer.hoten))
-                    {
-                        var cus = new khachhang
-                        {
-                            MaKH = customer.MaKH,
-                            hoten = model.Customer.Name,
-                            duong = model.Customer.Address,
-                            diem = customer.diem
-                        };
-
-                        if ((order.Status != (int)StatusOrder_Sale.Done
-                            && model.Status == (int)StatusOrder_Sale.Done)
-                               || model.Status == (int)StatusOrder_Sale.Cancel
-                               || model.Status == (int)StatusOrder_Sale.ShipCancel
-                               || model.Status == (int)StatusOrder_Sale.Refund)
-                        {
-                            switch (order.Status)
-                            {
-                                case (int)StatusOrder_Sale.Cancel:
-                                case (int)StatusOrder_Sale.Refund:
-                                case (int)StatusOrder_Sale.ShipCancel:
-                                    var mark = double.Parse(customer.diem) - order.tongtien;
-                                    customer.diem = mark.ToString();
-                                    break;
-                            }
-                        }
-                        unitOfWork.CutomerRepository.Update(cus, o => o.hoten, o => o.duong, o => o.diem);
-                    }
-                }
-            }
-            #endregion
-
+            
             #endregion
 
             if ((order.Status != (int)StatusOrder_Sale.Done
@@ -268,12 +263,13 @@ namespace BBM.Business.Logic
         {
             var rs = unitOfWork.OrderSaleRepository.GetById(Id);
 
-            var order = Mapper.Map<OrderModel>(rs);
-
-            if (order == null)
+            if (rs == null)
             {
                 return null;
             }
+
+            var order = Mapper.Map<OrderModel>(rs);
+
 
             if (rs.Channeld != null)
             {

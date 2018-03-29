@@ -26,7 +26,31 @@ namespace BBM.Business.Repository
         private Repository<soft_Suppliers> _suppliersRepository;
         private Repository<soft_Catalog> _catalogRepository;
         private Repository<soft_Config> _configRepository;
+        private Repository<donhang_chuyenphat_tp> _cityRepository;
+        private Repository<donhang_chuyenphat_tinh> _districtRepository;
 
+        public IRepository<donhang_chuyenphat_tp> CityRepository
+        {
+            get
+            {
+                if (_cityRepository == null)
+                {
+                    _cityRepository = new Repository<donhang_chuyenphat_tp>(context);
+                }
+                return _cityRepository;
+            }
+        }
+        public IRepository<donhang_chuyenphat_tinh> DistrictRepository
+        {
+            get
+            {
+                if (_districtRepository == null)
+                {
+                    _districtRepository = new Repository<donhang_chuyenphat_tinh>(context);
+                }
+                return _districtRepository;
+            }
+        }
         public IRepository<soft_Config> ConfigRepository
         {
             get
