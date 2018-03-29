@@ -1,9 +1,9 @@
 ﻿Đơn hàng trên web:
 - Thêm tỉnh thành và quận huyện trong khung địa chỉ
-- Đưa ghi chú đơn hàng vào khung ghi chú
+R- Đưa ghi chú đơn hàng vào khung ghi chú
 - Đưa thông tin phương thức thanh toán và thời gian giao hàng cho hiển thị trong hóa đơn nhé
-- Còn cái nữa là Giang cho tất cả phí (vận chuyển, ngòaii giờ, thu hộ, phí đơn hàng chưa đủ 200k,...) vào ô phí khác nhé
-- Khi khách đặt hàng thì tích lũy điểm cho khách- Khi đơn hàng đó hủy thì điểm cũng bị trừ tưng ứng số tiền đơn hàng. Hiện tại đơn hủy nhưng điểm không trừ, vd đơn 50195, em xem lại nhé
+R- Còn cái nữa là Giang cho tất cả phí (vận chuyển, ngòaii giờ, thu hộ, phí đơn hàng chưa đủ 200k,...) vào ô phí khác nhé
+R- Khi khách đặt hàng thì tích lũy điểm cho khách- Khi đơn hàng đó hủy thì điểm cũng bị trừ tưng ứng số tiền đơn hàng. Hiện tại đơn hủy nhưng điểm không trừ, vd đơn 50195, em xem lại nhé
 - Bên ngoài danh sách đơn hàng em cho cập nhật trạng thái luôn được không, theo dạng dropdown list rồi chọn trạng thái. Chứ mỗi lần đổi trạng thái khác phải bấm vào đơn hàng, rồi đóng tab khá mất công.
 
 
