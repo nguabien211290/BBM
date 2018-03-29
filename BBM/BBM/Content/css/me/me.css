@@ -8,7 +8,7 @@
     }
 
     html, body, .font {
-        font-size: 13px;
+        font-size: 11px;
         height: auto;
         font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
     }
@@ -23,7 +23,6 @@
         max-width: 400px;
         height: 36.4px; /* Fallback for non-webkit */
         margin: 0 auto;
-        font-size: 13px;
         line-height: 1.4;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
