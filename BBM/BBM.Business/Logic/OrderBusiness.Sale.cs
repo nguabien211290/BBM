@@ -137,7 +137,7 @@ namespace BBM.Business.Logic
 
             model.Status = objOrder.Status.Value;
 
-            UpdateStockByBranches(model, User);
+            UpdateStockByBranches(model, User, true);
 
             await unitOfWork.SaveChanges();
 
@@ -246,13 +246,7 @@ namespace BBM.Business.Logic
             
             #endregion
 
-            if ((order.Status != (int)StatusOrder_Sale.Done
-                && model.Status == (int)StatusOrder_Sale.Done)
-                || model.Status == (int)StatusOrder_Sale.Cancel
-                || model.Status == (int)StatusOrder_Sale.Refund
-                || model.Status == (int)StatusOrder_Sale.ShipCancel)
-                UpdateStockByBranches(model, User);
-
+            UpdateStockByBranches(model, User);
 
             await unitOfWork.SaveChanges();
 

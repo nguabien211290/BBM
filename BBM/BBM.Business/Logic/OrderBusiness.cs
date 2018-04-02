@@ -21,7 +21,7 @@ namespace BBM.Business.Logic
             unitOfWork = _unitOfWork;
         }
 
-        private void UpdateStockByBranches(OrderModel order, UserCurrent User)
+        private void UpdateStockByBranches(OrderModel order, UserCurrent User, bool is_create = false)
         {
             foreach (var item in order.Detail)
             {
@@ -158,48 +158,69 @@ namespace BBM.Business.Logic
                     if (stockBraches != null)
                     {
                         double total_stock = 0;
-                        switch (order.Status)
+                        bool isUpdate = false;
+
+                        if (!is_create)
+                            switch (order.Status)
+                            {
+                                case (int)StatusOrder_Sale.Cancel:
+                                    total_stock = stockBraches.Stock_Total + item.Total;
+                                    isUpdate = true;
+                                    break;
+                                case (int)StatusOrder_Sale.Done:
+                                    total_stock = stockBraches.Stock_Total - item.Total;
+                                    isUpdate = true;
+                                    break;
+                            }
+                        else
                         {
-                            case (int)StatusOrder_Sale.Cancel:
-                            case (int)StatusOrder_Sale.Refund:
-                            case (int)StatusOrder_Sale.ShipCancel:
-                                total_stock = stockBraches.Stock_Total + item.Total;
-                                break;
-                            case (int)StatusOrder_Sale.Done:
-                            case (int)StatusOrder_Sale.Process:
-                                total_stock = stockBraches.Stock_Total - item.Total;
-                                break;
+                            total_stock = stockBraches.Stock_Total - item.Total;
+                            isUpdate = true;
                         }
 
-                        stockBraches.Stock_Total = total_stock;
+                        if (isUpdate)
+                        {
+                            stockBraches.Stock_Total = total_stock;
 
-                        unitOfWork.BrachesStockRepository.Update(stockBraches, o => o.Stock_Total);
+                            unitOfWork.BrachesStockRepository.Update(stockBraches, o => o.Stock_Total);
+                        }
                     }
                     else
                     {
                         double total_stock = 0;
-                        switch (order.Status)
+                        bool isUpdate = false;
+
+                        if (!is_create)
+                            switch (order.Status)
+                            {
+                                case (int)StatusOrder_Sale.Cancel:
+                                    total_stock = 0;
+                                    isUpdate = true;
+                                    break;
+                                case (int)StatusOrder_Sale.Done:
+                                    total_stock = 0 - item.Total;
+                                    isUpdate = true;
+                                    break;
+                            }
+                        else
                         {
-                            case (int)StatusOrder_Sale.Cancel:
-                            case (int)StatusOrder_Sale.Refund:
-                                total_stock = 0;
-                                break;
-                            case (int)StatusOrder_Sale.Done:
-                            case (int)StatusOrder_Sale.Process:
-                                total_stock = 0 - item.Total;
-                                break;
+                            total_stock = 0 - item.Total;
+                            isUpdate = true;
                         }
 
-                        var newstock = new soft_Branches_Product_Stock
+                        if (isUpdate)
                         {
-                            BranchesId = User.BranchesId,
-                            ProductId = item.ProductId,
-                            Stock_Total = total_stock,
-                            DateCreate = DateTime.Now,
-                            EmployeeCreate = User.UserId
-                        };
+                            var newstock = new soft_Branches_Product_Stock
+                            {
+                                BranchesId = User.BranchesId,
+                                ProductId = item.ProductId,
+                                Stock_Total = total_stock,
+                                DateCreate = DateTime.Now,
+                                EmployeeCreate = User.UserId
+                            };
 
-                        unitOfWork.BrachesStockRepository.Add(newstock);
+                            unitOfWork.BrachesStockRepository.Add(newstock);
+                        }
                     }
                     #endregion                 
                 }
