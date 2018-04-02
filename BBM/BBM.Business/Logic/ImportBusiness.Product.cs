@@ -58,6 +58,8 @@ namespace BBM.Business.Logic
 
                     var imgage = new shop_image();
 
+                    bool isUpdatePriceChanle = false;
+
                     try
                     {
                         foreach (DataColumn col in data.Tables[0].Columns)
@@ -174,39 +176,42 @@ namespace BBM.Business.Logic
                                     }
                                     break;
                             }
-                            if (columnName.StartsWith(perfixChannel))
+                            if (columnName.StartsWith(perfixChannel) && !isUpdatePriceChanle)
                             {
                                 var codeChannel = columnName.Substring(perfixChannel.Length);
 
                                 var channel = channel_lst.FirstOrDefault(o => o.Code.Equals(codeChannel));
 
-                                var priceDisscount_Value = 0;
-                                DateTime? priceDisscount_StarDate = null;
-                                DateTime? priceDisscount_EndDate = null;
-                                try
-                                {
-                                    DataRow dr = data.Tables[0].Select("Code='" + masp + "'").FirstOrDefault();
-
-                                    if (dr != null)
-                                    {
-                                        priceDisscount_Value = int.Parse(dr[perfixPriceChannel + channel.Code].ToString());
-
-                                        var StarDate = Convert.ToDateTime(dr[perfixPriceChannel_StartDate + channel.Code].ToString());
-                                        var EndDate = Convert.ToDateTime(dr[perfixPriceChannel_EndDate + channel.Code].ToString());
-
-                                        priceDisscount_StarDate = StarDate.AddHours(23).AddMinutes(59).AddSeconds(59).AddDays(-1);
-                                        priceDisscount_EndDate = EndDate.AddHours(23).AddMinutes(59).AddSeconds(59);
-                                    }
-                                }
-                                catch
-                                {
-                                    priceDisscount_Value = 0;
-                                    priceDisscount_StarDate = null;
-                                    priceDisscount_EndDate = null;
-                                }
-
                                 if (channel != null)
                                 {
+                                    bool isupdate_disscount = true;
+
+                                    var priceDisscount_Value = 0;
+                                    DateTime? priceDisscount_StarDate = null;
+                                    DateTime? priceDisscount_EndDate = null;
+                                    try
+                                    {
+                                        DataRow dr = data.Tables[0].Select("Code='" + masp + "'").FirstOrDefault();
+
+                                        if (dr != null)
+                                        {
+                                            priceDisscount_Value = int.Parse(dr[perfixPriceChannel + channel.Code].ToString());
+
+                                            var StarDate = Convert.ToDateTime(dr[perfixPriceChannel_StartDate + channel.Code].ToString());
+                                            var EndDate = Convert.ToDateTime(dr[perfixPriceChannel_EndDate + channel.Code].ToString());
+
+                                            priceDisscount_StarDate = StarDate.AddHours(23).AddMinutes(59).AddSeconds(59).AddDays(-1);
+                                            priceDisscount_EndDate = EndDate.AddHours(23).AddMinutes(59).AddSeconds(59);
+                                        }
+                                    }
+                                    catch
+                                    {
+                                        priceDisscount_Value = 0;
+                                        priceDisscount_StarDate = null;
+                                        priceDisscount_EndDate = null;
+                                        isupdate_disscount = false;
+                                    }
+
                                     if (product.id <= 0)
                                     {
                                         var newobj = new soft_Channel_Product_Price
@@ -220,7 +225,7 @@ namespace BBM.Business.Logic
                                             StartDate_Discount = priceDisscount_StarDate,
                                             Enddate_Discount = priceDisscount_EndDate
                                         };
-
+                                        isUpdatePriceChanle = true;
                                         unitOfWork.ChanelPriceRepository.Add(newobj);
                                     }
                                     else
@@ -241,6 +246,7 @@ namespace BBM.Business.Logic
                                                 Enddate_Discount = priceDisscount_EndDate
                                             };
 
+                                            isUpdatePriceChanle = true;
                                             unitOfWork.ChanelPriceRepository.Add(newobj);
                                         }
                                         else
@@ -250,12 +256,74 @@ namespace BBM.Business.Logic
                                             channelPrice.StartDate_Discount = priceDisscount_StarDate;
                                             channelPrice.Enddate_Discount = priceDisscount_EndDate;
 
-                                            unitOfWork.ChanelPriceRepository.Update(channelPrice,
-                                                o => o.Price,
-                                                o => o.Price_Discount,
-                                                o => o.StartDate_Discount,
-                                                o => o.Enddate_Discount);
+                                            isUpdatePriceChanle = true;
+                                            if (isupdate_disscount)
+                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
+                                                    o => o.Price,
+                                                    o => o.Price_Discount,
+                                                    o => o.StartDate_Discount,
+                                                    o => o.Enddate_Discount);
+                                            else
+                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
+                                                  o => o.Price);
                                         }
+                                    }
+                                }
+                            }
+                            if (columnName.StartsWith(perfixPriceChannel) && !isUpdatePriceChanle)
+                            {
+                                var codeChannel = columnName.Substring(perfixPriceChannel.Length);
+
+                                var channel = unitOfWork.ChannelRepository.FindBy(o => o.Code == codeChannel).FirstOrDefault();// channel_lst.FirstOrDefault(o => o.Code.Equals(codeChannel));
+
+                                if (channel != null)
+                                {
+                                    var priceDisscount_Value = 0;
+                                    DateTime? priceDisscount_StarDate = null;
+                                    DateTime? priceDisscount_EndDate = null;
+                                    try
+                                    {
+                                        DataRow dr = data.Tables[0].Select("Code='" + masp + "'").FirstOrDefault();
+
+                                        if (dr != null)
+                                        {
+                                            priceDisscount_Value = int.Parse(dr[perfixPriceChannel + channel.Code].ToString());
+
+                                            string startDate = perfixPriceChannel_StartDate + channel.Code;
+                                            string endDate = perfixPriceChannel_EndDate + channel.Code;
+
+                                            var StarDate = Convert.ToDateTime(dr[startDate].ToString());
+                                            var EndDate = Convert.ToDateTime(dr[endDate].ToString());
+
+                                            priceDisscount_StarDate = StarDate.AddHours(23).AddMinutes(59).AddSeconds(59).AddDays(-1);
+                                            priceDisscount_EndDate = EndDate.AddHours(23).AddMinutes(59).AddSeconds(59);
+                                        }
+
+
+                                        if (product.id > 0)
+                                        {
+                                            var channelPrice = unitOfWork.ChanelPriceRepository.FindBy(o => o.ChannelId == channel.Id
+                                                                                            && o.ProductId == product.id).FirstOrDefault();
+
+                                            if (channelPrice != null)
+                                            {
+                                                channelPrice.Price_Discount = priceDisscount_Value;
+                                                channelPrice.StartDate_Discount = priceDisscount_StarDate;
+                                                channelPrice.Enddate_Discount = priceDisscount_EndDate;
+
+                                                isUpdatePriceChanle = true;
+                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
+                                                    o => o.Price_Discount,
+                                                    o => o.StartDate_Discount,
+                                                    o => o.Enddate_Discount);
+                                            }
+                                        }
+                                    }
+                                    catch(Exception ex)
+                                    {
+                                        priceDisscount_Value = 0;
+                                        priceDisscount_StarDate = null;
+                                        priceDisscount_EndDate = null;
                                     }
                                 }
                             }
