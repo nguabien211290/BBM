@@ -101,9 +101,8 @@ Order.mvOrderSale = function (OrderId) {
         var hasDiscount = ko.utils.arrayFirst(self.mOrderSale().Detail(), function (pro) {
             return pro.isDiscountForMember();
         })
-
         if (hasDiscount)
-            self.mOrderSale().Customer().MarkTmp(parseInt(parseInt(self.mOrderSale().Customer().Mark()) - 1000));
+            self.mOrderSale().Customer().MarkTmp(parseInt(parseInt(self.mOrderSale().Customer().Mark()) - 1000 + (self.CustommerMoneyTake() / 1000)));
         else
             self.mOrderSale().Customer().MarkTmp(parseInt(parseInt(self.mOrderSale().Customer().Mark()) + (sum / 1000)));
     });

@@ -183,7 +183,8 @@ namespace BBM.Business.Logic
                                 break;
                         }
                     }
-                    if (!model.Customer.Address.Equals(customer.duong) || !model.Customer.Name.Equals(customer.hoten))
+                    if (!model.Customer.Address.Equals(customer.duong) 
+                        || !model.Customer.Name.Equals(customer.hoten))
                     {
                         var cus = new khachhang
                         {
@@ -200,30 +201,30 @@ namespace BBM.Business.Logic
 
             #region Order
 
-            foreach (var item in model.Detail)
-            {
-                var hasthis = order.donhang_ct.FirstOrDefault(o => o.IdPro == item.ProductId);
-                if (hasthis == null)
-                {
-                    var OrderChild = new donhang_ct
-                    {
-                        Sodh = order.id,
-                        Dongia = item.Price,
-                        Soluong = item.Total,
-                        IdPro = item.ProductId
-                    };
-                    unitOfWork.OrderSale_DetailRepository.Add(OrderChild);
-                }
-                else
-                {
-                    if (hasthis.Soluong != item.Total || hasthis.Dongia != item.Price)
-                    {
-                        hasthis.Soluong = item.Total;
-                        hasthis.Dongia = item.Price;
-                        unitOfWork.OrderSale_DetailRepository.Update(hasthis, o => o.Soluong, o => o.Dongia);
-                    }
-                }
-            }
+            //foreach (var item in model.Detail)
+            //{
+            //    var hasthis = order.donhang_ct.FirstOrDefault(o => o.IdPro == item.ProductId);
+            //    if (hasthis == null)
+            //    {
+            //        var OrderChild = new donhang_ct
+            //        {
+            //            Sodh = order.id,
+            //            Dongia = item.Price,
+            //            Soluong = item.Total,
+            //            IdPro = item.ProductId
+            //        };
+            //        unitOfWork.OrderSale_DetailRepository.Add(OrderChild);
+            //    }
+            //    else
+            //    {
+            //        if (hasthis.Soluong != item.Total || hasthis.Dongia != item.Price)
+            //        {
+            //            hasthis.Soluong = item.Total;
+            //            hasthis.Dongia = item.Price;
+            //            unitOfWork.OrderSale_DetailRepository.Update(hasthis, o => o.Soluong, o => o.Dongia);
+            //        }
+            //    }
+            //}
 
             order.ghichu = model.Note;
 
