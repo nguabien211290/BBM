@@ -319,7 +319,7 @@ namespace BBM.Business.Logic
                                             }
                                         }
                                     }
-                                    catch(Exception ex)
+                                    catch (Exception ex)
                                     {
                                         priceDisscount_Value = 0;
                                         priceDisscount_StarDate = null;
@@ -484,6 +484,202 @@ namespace BBM.Business.Logic
             catch (Exception ex)
             {
                 return 0;
+            }
+        }
+
+        public async Task<List<shop_sanpham>> ImportData2(DataSet data, int UserId)
+        {
+            var masp = string.Empty;
+
+            var line = 1;
+
+            var lstError = new List<shop_sanpham>();
+
+            await Update_is_import(true, null, 0, true);
+
+            int percent = 0;
+
+            try
+            {
+                var supplie_lst = unitOfWork.SuppliersRepository.GetAll().ToList();
+
+                var catalog_lst = unitOfWork.CatalogRepository.GetAll().ToList();
+
+                var channel_lst = unitOfWork.ChannelRepository.GetAll().ToList();
+
+                var braches_lst = unitOfWork.BrachesRepository.GetAll().ToList();
+
+                foreach (DataRow row in data.Tables[0].Rows)
+                {
+                    line++;
+
+                    bool isError = false;
+
+                    percent = (int)Math.Round(100.0 * line / data.Tables[0].Rows.Count);
+
+                    var product = new shop_sanpham();
+
+                    var imgage = new shop_image();
+                    
+
+                    try
+                    {
+                        foreach (DataColumn col in data.Tables[0].Columns)
+                        {
+                            var columnName = col.ColumnName;
+
+                            var value = row[col.ColumnName].ToString();
+
+                            if (columnName.Equals("Mã sp"))
+                            {
+                                masp = value.Trim();
+
+                                if (string.IsNullOrEmpty(masp))
+                                {
+                                    isError = true;
+                                    break;
+                                }
+
+
+                                product = unitOfWork.ProductRepository.FindBy(o => o.masp.Equals(masp)).FirstOrDefault();
+
+                                if (product == null || product.id <= 0)
+                                {
+                                    product = new shop_sanpham();
+                                    product.masp = value.Trim();
+                                }
+                            }
+
+                            if (string.IsNullOrEmpty(value))
+                                continue;
+
+                            if (columnName.StartsWith("Giá KM"))
+                            {
+
+                                var channelOL = unitOfWork.ChannelRepository.FindBy(o => o.Code == "OL").FirstOrDefault();// channel_lst.FirstOrDefault(o => o.Code.Equals(codeChannel));
+
+                                if (channelOL != null)
+                                {
+                                    try
+                                    {
+
+                                        if (product.id > 0)
+                                        {
+                                            var channelPrice = unitOfWork.ChanelPriceRepository.FindBy(o => o.ChannelId == channelOL.Id
+                                                                                            && o.ProductId == product.id).FirstOrDefault();
+
+                                            if (channelPrice != null)
+                                            {
+                                                channelPrice.Price_Discount = int.Parse(value);
+                                                
+                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
+                                                    o => o.Price_Discount);
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                    }
+                                }
+
+                                var channelCH = unitOfWork.ChannelRepository.FindBy(o => o.Code == "CH").FirstOrDefault();// channel_lst.FirstOrDefault(o => o.Code.Equals(codeChannel));
+
+                                if (channelOL != null)
+                                {
+                                    try
+                                    {
+
+                                        if (product.id > 0)
+                                        {
+                                            var channelPrice = unitOfWork.ChanelPriceRepository.FindBy(o => o.ChannelId == channelCH.Id
+                                                                                            && o.ProductId == product.id).FirstOrDefault();
+
+                                            if (channelPrice != null)
+                                            {
+                                                channelPrice.Price_Discount = int.Parse(value);
+
+                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
+                                                    o => o.Price_Discount);
+                                            }
+                                            else
+                                            {
+
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        lstError.Add(new shop_sanpham
+                        {
+                            tensp = product.tensp,
+                            masp = product.masp,
+                            id = line
+                        });
+
+                        isError = true;
+                    }
+
+                    if (isError)
+                        continue;
+                    try
+                    {
+                        await unitOfWork.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        lstError.Add(new shop_sanpham
+                        {
+                            tensp = product.tensp,
+                            masp = product.masp,
+                            id = line
+                        });
+
+                    }
+                }
+                var error = string.Empty;
+
+                if (lstError != null && lstError.Count > 0)
+                    error = new JavaScriptSerializer().Serialize(lstError.Select(o => new { masp = o.masp, tensp = o.tensp, id = o.id }));
+
+                await Update_is_import(false, error, percent, true);
+
+                return lstError;
+            }
+            catch (Exception ex)
+            {
+
+                lstError.Add(new shop_sanpham
+                {
+                    tensp = ex.Message,
+                    masp = masp,
+                    id = line
+                });
+
+                var error = new JavaScriptSerializer().Serialize(lstError.Select(o => new { masp = o.masp, tensp = o.tensp, id = o.id }));
+
+                await Update_is_import(false, error, -1, true);
+
+                return null;
             }
         }
     }

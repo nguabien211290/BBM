@@ -11,5 +11,6 @@ namespace BBM.Business.Logic
     public interface IImportBusiness
     {
         Task<List<shop_sanpham>> ImportData(DataSet data, int UserId);
+        Task<List<shop_sanpham>> ImportData2(DataSet data, int UserId);
     }
 }

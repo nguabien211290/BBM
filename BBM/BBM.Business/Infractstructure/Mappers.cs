@@ -44,7 +44,21 @@ namespace BBM.Business.Infractstructure
                            }
                            return rs;
                        }))
-                       .ForMember(a => a.Customer, b => b.MapFrom(c => c.khachhang));
+                       .ForMember(a => a.Customer, b => b.MapFrom(c => c.khachhang))
+                       .ForMember(a => a.DisscountValue, b => b.ResolveUsing(c =>
+                       {
+                           if (string.IsNullOrEmpty(c.Code) && c.Channeld == 2
+                                && c.datru_diem.HasValue && c.datru_diem.Value > 0)
+                               return c.datru_diem.Value;
+
+                           return c.DisscountValue;
+                       }))
+                       .ForMember(a => a.TotalOrther, b => b.ResolveUsing(c =>
+                       {
+                           if (c.ship.HasValue && c.ship.Value > 0)
+                               return c.ship.Value;
+                           return c.TotalOrther;
+                       }));
 
                 cfg.CreateMap<OrderModel, donhang>()
                 .ForMember(a => a.ship, b => b.MapFrom(c => c.TotalOrther))
