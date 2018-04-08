@@ -1,6 +1,8 @@
 ﻿var Product = Product || {};
 Product.mvProduct = function () {
     var self = this;
+    self.mNewProduct = ko.observable(new Product.mProductSample);
+    self.LstError = ko.observable();
     self.lstStatusVAT = ko.observableArray(lstStatusVAT);
     self.mDisplayProductSample = ko.observable(new Product.mDisplayProductSample());
     /*********************************Filter********************************/
@@ -120,7 +122,7 @@ Product.mvProduct = function () {
     }
     /*********************************End Paging***********************************/
 
-
+    /*------Start Update Price -------*/
     self.EventClick_Price = function (val) {
         ko.utils.arrayForEach(self.listData(), function (o) {
             o.product_price().IsChangePrice(false);
@@ -134,154 +136,115 @@ Product.mvProduct = function () {
             o.product_price().IsChangePrice_Discount(false);
             o.product_price().IsChangePrice(false);
         });
-
+        debugger
+        val.product_price().StartDate_Discount(val.product_price().StartDate_Discount() ? CommonUtils.ConverToDate(val.product_price().StartDate_Discount()) : new Date());
+        val.product_price().Enddate_Discount(val.product_price().Enddate_Discount() ? CommonUtils.ConverToDate(val.product_price().Enddate_Discount()) : new Date());
         val.product_price().IsChangePrice_Discount(true);
     };
-
 
     self.selectedPrice = ko.observable({ "Name": "", "Code": "", "Value": 0, "Id": 0 });
     self.selectedPrice.subscribe(function (val) {
         var product = ko.utils.arrayFirst(self.listData(), function (o) {
-            return o.product().Id() == val.Id;
+            return o.product().id() == val.Id;
         });
-        if (product != undefined)
-            product.product_price().PriceChange(val.Value);
+        debugger
+        if (product != undefined) {
+            if (product.product_price().IsChangePrice())
+                product.product_price().Price(val.Value);
+            if (product.product_price().IsChangePrice_Discount())
+                product.product_price().Price_Discount(val.Value);
+        }        
     });
     self.calculator = ko.observable('+');
     self.money_percent = ko.observable('vnd');
     self.intCalculator = ko.observable(0);
-    self.calculatorPrice = function (val) {
 
-        var resultSelect = ko.utils.arrayFirst(val.product_price().OptionPrice(), function (o) {
-            return o.Code == self.selectedPrice().Code;
-        });
-        if (resultSelect == undefined)
-            return;
+    self.CalculatorPrice = function (val, type) {
+        if (self.intCalculator().length <= 0 || !CommonUtils.IsNumeric(self.intCalculator()))
+            return
+
+        var disscountValue = 0;
+
+        var intCalculator = parseInt(self.intCalculator());
+
+        var selectedPrice = parseInt(self.selectedPrice().Value);
 
         if (self.calculator() == "+") {
             if (self.money_percent() == "percent") {
-                var tmp = (parseInt(self.intCalculator()) / 100) * parseInt(resultSelect.Value);
-                val.product_price().PriceChange(resultSelect.Value + tmp);
+                disscountValue = self.selectedPrice().Value + ((intCalculator / 100) * selectedPrice);
             }
             else
-                val.product_price().PriceChange(parseInt(resultSelect.Value) + parseInt(self.intCalculator()))
+                disscountValue = selectedPrice + intCalculator
         }
+
         if (self.calculator() == "-") {
             if (self.money_percent() == "percent") {
-                var tmp = (parseInt(self.intCalculator()) / 100) * parseInt(resultSelect.Value);
-                val.product_price().PriceChange(resultSelect.Value - tmp);
+                disscountValue = selectedPrice - ((intCalculator / 100) * selectedPrice);
             }
             else
-                val.product_price().PriceChange(parseInt(resultSelect.Value) - parseInt(self.intCalculator()))
+                disscountValue = selectedPrice - intCalculator;
         }
-
+        if (type == 'PriceChannel')
+            val.product_price().Price(disscountValue);
+        if (type == 'PriceChannel_Disscount')
+            val.product_price().Price_Discount(disscountValue);
     };
+
     self.EventChange_InputPrice = function (val) {
-        self.calculatorPrice(val);
+        self.CalculatorPrice(val, 'PriceChannel');
     };
-    self.submitPrice = function (val, isAppRuleAll) {
+    self.EventChange_InputPriceDisscount = function (val) {
+        debugger
+        self.CalculatorPrice(val, 'PriceChannel_Disscount');
+    };
+    self.SubmitPrice = function (val) {
         CommonUtils.showWait(true);
-        val.product_price().Price(val.product_price().PriceChange());
-        if (isAppRuleAll) {
-            ko.utils.arrayForEach(self.listData(), function (o) {
-                self.calculatorPrice(o);
-            });
-        }
-        //var model = isAppRuleAll ? self.listData() : [val];
-
-
-        var model = [];
-
-        if (isAppRuleAll) {
-            ko.utils.arrayForEach(self.listData(), function (p) {
-                p.product_price().ProductId(p.product().id());
-                model.push(p.product_price());
-            });
-        }
-        else {
-            val.product_price().ProductId(val.product().id());
-            model.push(val.product_price());
-        }
+        val.product_price().ProductId(val.product().id());
         $.ajax({
             type: "POST",
             url: CommonUtils.url("/Product/ChangePrice"),
             cache: false,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON(model),
+            data: ko.toJSON(val.product_price()),
         }).done(function (data) {
-            self.LoadListProduct();
+
+            self.CountFilter(self.CountFilter() + 1);
+
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
         }).always(function () {
             CommonUtils.showWait(false);
         });
     };
 
-    self.submitPrice_Discount = function (val, isAppRuleAll) {
+    self.SubmitPrice_Discount = function (val) {
         CommonUtils.showWait(true);
-        val.product_price().Price_Discount(val.product_price().PriceChange());
-        if (isAppRuleAll) {
-            ko.utils.arrayForEach(self.listData(), function (o) {
-                self.calculatorPrice(o);
-            });
-        };
-
-        var model = [];
-
-        if (isAppRuleAll) {
-            ko.utils.arrayForEach(self.listData(), function (p) {
-                p.product_price().ProductId(p.product().id());
-                p.product_price().StartDate_Discount(val.product_price().StartDate_Discount());
-                p.product_price().Enddate_Discount(val.product_price().Enddate_Discount());
-                p.product_price().Channels(self.Channels());
-
-                model.push(p.product_price());
-            });
-        }
-        else {
-            val.product_price().ProductId(val.product().id());
-            val.product_price().Channels(self.Channels());
-            model.push(val.product_price());
-        }
-
-
-        // var model = isAppRuleAll ? obj : [val];
+        val.product_price().ProductId(val.product().id());
         $.ajax({
             type: "POST",
             url: CommonUtils.url("/Product/ChangePrice_Discount"),
             cache: false,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON(model),
+            data: ko.toJSON(val.product_price()),
         }).done(function (data) {
-            self.LoadListProduct();
+
+            self.CountFilter(self.CountFilter() + 1);
+
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
         }).always(function () {
             CommonUtils.showWait(false);
         });
     };
 
-
-    //------Price-------
-    self.appRuleRriceAll = ko.observable(false);
-
+    /*------End Update Price ------- */
+    /*------Start Get, Update Add Product-------*/
     self.GetDetail = function (obj) {
         ko.utils.arrayForEach(self.listData(), function (v) {
             v.product().IsEdit(false)
         })
         obj.product().IsEdit(true);
     };
-
-    self.select_Channel = ko.observableArray();
-    self.Channels = ko.observableArray();
-    self.select_Channel.subscribe(function (o) {
-        self.Channels([]);
-        ko.utils.arrayForEach(o, function (v) {
-            var newobjt = new Product.mChannel();
-            newobjt.Id(v);
-            self.Channels.push(newobjt);
-        });
-    });
     self.UpdateProduct = function (obj) {
         CommonUtils.showWait(true);
         $.ajax({
@@ -298,18 +261,9 @@ Product.mvProduct = function () {
             CommonUtils.showWait(false);
         });
     };
-
     self.AddProductModal = function () {
         self.AddProduct(self.mNewProduct());
-        //CommonUtils.showModal('#AddProductModal');
-        //, function () {
-        //    self.AddProduct(self.mNewProduct());
-
-        //});
     }
-
-    self.mNewProduct = ko.observable(new Product.mProductSample);
-    self.LstError = ko.observable();
     self.AddProduct = function (obj) {
         CommonUtils.showWait(true);
         $.ajax({
@@ -334,7 +288,6 @@ Product.mvProduct = function () {
             CommonUtils.showWait(false);
         });
     };
-
     self.DeleteProduct = function (val) {
         CommonUtils.confirm("Thông báo", "Bạn có muốn xóa sản phẩm " + val.product().tensp(), function () {
             CommonUtils.showWait(true);
@@ -352,6 +305,8 @@ Product.mvProduct = function () {
         })
 
     };
+    /*------End Update Add Product-------*/
+    /*---------------Start Import-----------------------*/
     self.fileName = ko.observable();
     self.fileError = ko.observableArray([]);
     self.Percent_Process = ko.observable('0');
@@ -393,7 +348,6 @@ Product.mvProduct = function () {
             }, 1000);
 
         if (val) {
-            //self.GetProductLog();
             clearInterval(inteval_sync);
             inteval_sync = null;
         }
@@ -423,6 +377,7 @@ Product.mvProduct = function () {
         });;
     };
     self.IsImport = ko.observable(false);
+    /*---------------End Import-----------------------*/
 
     self.Resfesh = function () {
         self.CountFilter(self.CountFilter() + 1);

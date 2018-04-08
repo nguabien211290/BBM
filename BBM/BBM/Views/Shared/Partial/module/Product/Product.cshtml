@@ -286,102 +286,20 @@
                     <td class="text-center position-relative">
                         <input class="span8" data-bind="moneyMaskWithSymbol: product_price().Price, click: $parents[0].EventClick_Price" />
                         <!--ko if: product_price().IsChangePrice() -->
-                        <div class="alert alert-block alert-success notify">
-                            <button type="button" class="close" data-dismiss="alert">
-                                <i class="icon-remove"></i>
-                            </button>
-                            <div class="row-fluid">
-                                <strong data-bind="text: 'Giá mới ' + '['+ product_price().PriceChange() +']'"></strong>
-                                <select class="span4" data-bind="options: product_price().OptionPrice,optionsText: 'Name',value:  $parents[0].selectedPrice"></select>
-                                <button data-bind="click:function(){$parents[0].calculator('+'), $parents[0].calculatorPrice($data)}, attr:{'class':$parents[0].calculator()=='+'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="icon-plus bigger-120"></i>
-                                </button>
-                                <button data-bind="click:function(){$parents[0].calculator('-'), $parents[0].calculatorPrice($data)}, attr:{'class':$parents[0].calculator()=='-'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="icon-minus bigger-120"></i>
-                                </button>
-                                <input type="text" class="span2 m-b-none" data-bind="value: $parents[0].intCalculator, event: { change: $parents[0].EventChange_InputPrice($data) },valueUpdate: 'afterkeydown'" />
-                                <button data-bind="click:function(){$parents[0].money_percent('vnd')}, attr:{'class':$parents[0].money_percent()=='vnd'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="icon-money bigger-120"></i>
-                                </button>
-                                <button data-bind="click:function(){$parents[0].money_percent('percent')}, attr:{'class':$parents[0].money_percent()=='percent'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="bigger-120">%</i>
-                                </button>
-                                <div class="controls text-center">
-                                    <label>
-                                        <input type="checkbox" data-bind="checked: $parents[0].appRuleRriceAll">
-                                        <span class="lbl">Áp dụng công thức cho <strong data-bind="text: $parents[0].listData().length"></strong> sản phẩm trong bảng giá?</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <p class="p-t20 text-right">
-                                <button class="btn btn-small btn-success" data-bind="click:function(){ $parents[0].submitPrice($data,$parents[0].appRuleRriceAll())}">OK</button>
-                            </p>
-                        </div>
+                        <!--ko template: {name: 'PriceChannel_Product'} --><!--/ko-->
                         <!-- /ko -->
                     </td>
                     <!-- /ko-->
                     <!-- ko if: $parents[0].mDisplayProductSample().IsPrice_Discount() -->
                     <td class="text-center position-relative">
                         <input class="span8" data-bind="moneyMaskWithSymbol: product_price().Price_Discount, click: $parents[0].EventClick_Price_Discount" />
-                        <!--ko if: product_price().Price_Discount()>0 -->
+                        <!--ko if: product_price().Price_Discount()>0 && product_price().StartDate_Discount() && product_price().Enddate_Discount()  -->
                         <p class="text-danger">
-                            (<span data-bind="datelong:  product_price().StartDate_Discount"></span> - <span data-bind="datelong:  product_price().Enddate_Discount"></span>)
+                            (<span data-bind="dateshort:  product_price().StartDate_Discount"></span> - <span data-bind="dateshort:  product_price().Enddate_Discount"></span>)
                         </p>
                         <!--/ko-->
                         <!--ko if: product_price().IsChangePrice_Discount() -->
-                        <div class="alert alert-block alert-success notify">
-                            <button type="button" class="close" data-dismiss="alert">
-                                <i class="icon-remove"></i>
-                            </button>
-                            <div class="row-fluid">
-                                <strong class="alert-danger" data-bind="text: 'Giá mới ' + '['+ product_price().PriceChange() +']'"></strong>
-                                <select class="span4" data-bind="options: product_price().OptionPrice,optionsText: 'Name',value:  $parents[0].selectedPrice"></select>
-                                <button data-bind="click:function(){$parents[0].calculator('+'), $parents[0].calculatorPrice($data)}, attr:{'class':$parents[0].calculator()=='+'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="icon-plus bigger-120"></i>
-                                </button>
-                                <button data-bind="click:function(){$parents[0].calculator('-'), $parents[0].calculatorPrice($data)}, attr:{'class':$parents[0].calculator()=='-'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="icon-minus bigger-120"></i>
-                                </button>
-                                <input type="text" class="span2 m-b-none" data-bind="value: $parents[0].intCalculator, event: { change: $parents[0].EventChange_InputPrice($data) },valueUpdate: 'afterkeydown'" />
-                                <button data-bind="click:function(){$parents[0].money_percent('vnd')}, attr:{'class':$parents[0].money_percent()=='vnd'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="icon-money bigger-120"></i>
-                                </button>
-                                <button data-bind="click:function(){$parents[0].money_percent('percent')}, attr:{'class':$parents[0].money_percent()=='percent'?'btn btn-mini btn-danger':'btn btn-mini btn-success'}">
-                                    <i class="bigger-120">%</i>
-                                </button>
-                                <div class="controls text-center">
-                                    <label>
-                                        <input type="checkbox" data-bind="checked: $parents[0].appRuleRriceAll">
-                                        <span class="lbl">Áp dụng công thức cho <strong data-bind="text: $parents[0].listData().length"></strong> sản phẩm trong bảng giá?</span>
-                                    </label>
-                                </div>
-                                <div class="span6 controls text-center">
-                                    <strong>
-                                        Ngày bắt đầu
-                                    </strong>
-                                    <input type="text" readonly="readonly" data-bind="datepicker: product_price().StartDate_Discount" class="input datepicker" data-date-format="dd-mm-yyyy">
-
-                                </div>
-                                <div class="span5 controls text-center">
-                                    <strong>
-                                        Ngày kết thúc
-                                    </strong>
-                                    <input type="text" readonly="readonly" data-bind="datepicker: product_price().Enddate_Discount" class="input datepicker" data-date-format="dd-mm-yyyy">
-
-                                </div>
-                                <div class="controls text-center">
-                                    <!--ko foreach:  common.lstChannel() -->
-                                    <label class="span4 m-auto text-left">
-                                        <input type="checkbox" data-bind="checked: $parents[1].select_Channel, value:$data.Id">
-                                        <span class="lbl" data-bind="text: $data.Channel"></span>
-                                    </label>
-                                    <!--/ko-->
-                                </div>
-                            </div>
-                            <p class="p-t20 text-right">
-                                <button class="btn btn-small btn-success" data-bind="click:function(){ $parents[0].submitPrice_Discount($data,$parents[0].appRuleRriceAll())}">OK</button>
-                            </p>
-                        </div>
+                        <!--ko template: {name: 'PriceChannel_Product'} --><!--/ko-->
                         <!-- /ko -->
                     </td>
                     <!-- /ko-->
@@ -588,5 +506,90 @@
         <!--ko if:listData().length <=0-->
         <h4 class="text-center">Không có sản phẩm nào trong điều kiện lọc này.</h4>
         <!-- /ko -->
+    </div>
+</script>
+<script type="text/html" id="PriceChannel_Product">
+    <div class="alert alert-block alert-success notify">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="icon-remove"></i>
+        </button>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="span3 text-right">
+                    <!--ko if: product_price().IsChangePrice() -->
+                    <strong> Giá mới:</strong>
+                    <!--/ko-->
+                    <!--ko if: product_price().IsChangePrice_Discount() -->
+                    <strong> Giá KM mới:</strong>
+                    <!--/ko-->
+                </div>
+                <div class="span9 text-left">
+                    <!--ko if: $parents[0].selectedPrice()-->
+                    <span class="font20px text-warning" data-bind="textMoneyDefaultSymbol: $parents[0].selectedPrice().Value"></span>
+                    <span class="font20px text-danger" data-bind="text: $parents[0].calculator()"></span>
+                    <!--ko if: $parents[0].money_percent()=='vnd'-->
+                    <span class="font20px text-warning" data-bind="textMoneyDefaultSymbol: $parents[0].intCalculator"></span>
+                    <!--/ko-->
+                    <!--ko if: $parents[0].money_percent()=='percent'-->
+                    <span class="font20px text-warning" data-bind="text: $parents[0].intCalculator()"></span>
+                    <span class="font20px text-warning">%</span>
+                    <!--/ko-->
+                    <span class="font20px text-warning">=</span>
+                    <!--ko if: product_price().IsChangePrice_Discount() -->
+                    <span class="font20px text-danger" data-bind="textMoneyDefaultSymbol: product_price().Price_Discount()"></span>
+                    <!--/ko-->
+                    <!--ko if: product_price().IsChangePrice() -->
+                    <span class="font20px text-danger" data-bind="textMoneyDefaultSymbol: product_price().Price()"></span>
+                    <!--/ko-->
+                    <!--/ko-->
+                </div>
+            </div>
+            <div class="span12">
+                <div class="span3 text-right"></div>
+                <div class="span9 text-left m-l-0">
+                    <select class="span3" data-bind="options: product_price().OptionPrice,optionsText: 'Name',value:  $parents[0].selectedPrice"></select>
+                    <button data-bind="click:function(){$parents[0].calculator('+'), $parents[0].CalculatorPrice($data,product_price().IsChangePrice_Discount()?'PriceChannel_Disscount':'PriceChannel')}, attr:{'class':$parents[0].calculator()=='+'?'btn btn-mini btn-danger btn-select':'btn btn-mini btn-warning'}">
+                        <i class="icon-plus bigger-120"></i>
+                    </button>
+                    <button data-bind="click:function(){$parents[0].calculator('-'), $parents[0].CalculatorPrice($data,product_price().IsChangePrice_Discount()?'PriceChannel_Disscount':'PriceChannel')}, attr:{'class':$parents[0].calculator()=='-'?'btn btn-mini btn-danger btn-select':'btn btn-mini btn-warning'}">
+                        <i class="icon-minus bigger-120"></i>
+                    </button>
+                    <!--ko if: product_price().IsChangePrice_Discount() -->
+                    <input type="text" class="span2 m-b-none" data-bind="value: $parents[0].intCalculator, event: { change: $parents[0].EventChange_InputPriceDisscount($data) },valueUpdate: 'afterkeydown'" />
+                    <!--/ko-->
+                    <!--ko if: product_price().IsChangePrice() -->
+                    <input type="text" class="span2 m-b-none" data-bind="value: $parents[0].intCalculator, event: { change: $parents[0].EventChange_InputPrice($data) },valueUpdate: 'afterkeydown'" />
+                    <!--/ko-->
+                    <button data-bind="click:function(){$parents[0].money_percent('vnd')}, attr:{'class':$parents[0].money_percent()=='vnd'?'btn btn-mini btn-danger btn-select':'btn btn-mini btn-warning'}">
+                        <i class="icon-money bigger-120"></i>
+                    </button>
+                    <button data-bind="click:function(){$parents[0].money_percent('percent')}, attr:{'class':$parents[0].money_percent()=='percent'?'btn btn-mini btn-danger btn-select':'btn btn-mini btn-warning'}">
+                        <i class="bigger-120">%</i>
+                    </button>
+                </div>
+            </div>
+            <!--ko if: product_price().IsChangePrice_Discount() -->
+            <div class="span12 controls text-center">
+                <div class="span3 text-right p-10"><strong>Bắt đầu:</strong></div>
+                <div class="span9 text-left m-l-0">
+                    <input type="text" data-bind="datepicker: product_price().StartDate_Discount" class="input datepicker" data-date-format="dd-mm-yyyy">
+                </div>
+            </div>
+            <div class="span12 controls text-center">
+                <div class="span3 text-right p-10"><strong>Kết thúc:</strong></div>
+                <div class="span9 text-left m-l-0">
+                    <input type="text" data-bind="datepicker: product_price().Enddate_Discount" class="input datepicker" data-date-format="dd-mm-yyyy">
+                </div>
+            </div>
+            <!--/ko-->
+        </div>
+        <p class="p-t20 text-right">
+            <!--ko if: product_price().IsChangePrice() -->
+            <button class="btn btn-small btn-success" data-bind="click:function(){ $parents[0].SubmitPrice($data)}, attr:{'disabled':CommonUtils.IsNumeric($parents[0].intCalculator())?false:true}">OK</button>
+            <!--/ko-->
+            <!--ko if: product_price().IsChangePrice_Discount() -->
+            <button class="btn btn-small btn-success" data-bind="click:function(){ $parents[0].SubmitPrice_Discount($data)}, attr:{'disabled':CommonUtils.IsNumeric($parents[0].intCalculator())?false:true}">OK</button>
+            <!--/ko-->
+        </p>
     </div>
 </script>

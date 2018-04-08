@@ -102,6 +102,16 @@ var CommonUtils = {
         else
             return null;
     },
+    ConverToDate: function (value) {
+        if (value) {
+            if (value.constructor === Date)
+                return value;
+            else
+                return new Date(parseInt(value.substr(6)));
+        }
+        else
+            return null;
+    },
     showModal: function (nameModal, callback, cancelCallback, closeCallback) {
         $(nameModal).on('show.bs.modal', function () {
             $(nameModal + ' .btnCancel').bind('click', function () {
@@ -415,9 +425,9 @@ var CommonUtils = {
     },
     Groupbycol: function (data, count) {
         var index, length, group,
-                    result = [],
-                    count = +ko.utils.unwrapObservable(count) || 1,
-                    items = ko.utils.unwrapObservable(data);
+            result = [],
+            count = +ko.utils.unwrapObservable(count) || 1,
+            items = ko.utils.unwrapObservable(data);
 
         //create an array of arrays (rows/columns)
         for (index = 0, length = items.length; index < length; index++) {
@@ -471,5 +481,8 @@ var CommonUtils = {
         }
 
         return tempArray;
+    },
+    IsNumeric(value) {
+        return /^-{0,1}\d+$/.test(value);
     }
 }

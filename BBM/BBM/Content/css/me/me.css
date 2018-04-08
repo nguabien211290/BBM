@@ -221,9 +221,9 @@ ul li {
 
     .position-relative .notify {
         position: absolute;
-        left: -567px;
+        left: -455px;
         z-index: 19;
-        width: 604px;
+        width: 500px;
     }
 
 .text-center {
@@ -335,7 +335,9 @@ table tr.footerDetail {
 .font10px {
     font-size: 10px;
 }
-
+.font20px {
+    font-size: 20px;
+}
 .notication {
     padding: 7px !important;
     border-bottom: 1px solid #d4adfb !important;
@@ -539,4 +541,10 @@ input[type="file"]#file-upload {
     font-size: 19px;
     padding: 0.2px 7px;
     margin-top: -1px;
+}
+
+.btn-select {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
 }

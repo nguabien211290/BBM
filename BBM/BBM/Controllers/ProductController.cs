@@ -15,6 +15,7 @@ using BBM.Business.Logic;
 using BBM.Business.Model.Module;
 using BBM.Business.Repository;
 using BBM.Business.Model.Enum;
+using System.Threading.Tasks;
 
 namespace BBM.Controllers
 {
@@ -371,72 +372,6 @@ namespace BBM.Controllers
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
 
-        [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Products_Price })]
-        [HttpPost]
-        public JsonResult ChangePrice(List<Product_PriceModel> model)
-        {
-            var Messaging = new RenderMessaging();
-            try
-            {
-                var lstChangePrice = new List<int>();
-
-                foreach (var item in model)
-                {
-
-                    var pricechannel = _context.soft_Channel_Product_Price.FirstOrDefault(o => o.ProductId == item.ProductId && o.ChannelId == User.ChannelId);
-                    if (pricechannel != null)
-                    {
-                        if (pricechannel.Price != item.Price)
-                        {
-                            lstChangePrice.Add(item.ProductId);
-
-                             var data = new soft_Channel_Product_Price
-                            {
-                                Id = pricechannel.Id,
-                                Price = item.PriceChange,
-                                DateUpdate = DateTime.Now,
-                                EmployeeUpdate = User.UserId,
-                            };
-
-                            _crud.Update<soft_Channel_Product_Price>(data, o => o.Price, o => o.DateUpdate, o => o.EmployeeUpdate);
-                        }
-                    }
-                    else
-                    {
-                        lstChangePrice.Add(item.ProductId);
-
-                        var data = new soft_Channel_Product_Price
-                        {
-                            Price = item.PriceChange,
-                            ChannelId = User.ChannelId,
-                            ProductId = item.ProductId,
-                            DateCreate = DateTime.Now,
-                            EmployeeCreate = User.UserId
-
-                        };
-                        _crud.Add<soft_Channel_Product_Price>(data);
-                    }
-                }
-
-                _crud.SaveChanges();
-
-                foreach(var item in lstChangePrice)
-                {
-                    var user = Mapper.Map<UserCurrent>(User);
-                    var product = _unitOW.ProductRepository.FindBy(o => o.id == item).FirstOrDefault();
-                    _IOrderBus.UpdatePriceWholesale(product, user, true);
-                }
-
-                Messaging.messaging = "Đã thay đổi giá thành công!";
-            }
-            catch
-            {
-                Messaging.isError = true;
-                Messaging.messaging = "Thay đổi giá không thành công!";
-            }
-            return Json(Messaging, JsonRequestBehavior.AllowGet);
-        }
-
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Products })]
         public JsonResult UpdateProduct(ProductSampleModel model)
         {
@@ -547,7 +482,7 @@ namespace BBM.Controllers
                     Status = model.Status,
                     Note = model.Note,
                     DateCreate = DateTime.Now,
-                    FromCreate=(int)TypeFromCreate.Soft
+                    FromCreate = (int)TypeFromCreate.Soft
                 };
 
                 _crud.Add<shop_sanpham>(data);
@@ -739,32 +674,136 @@ namespace BBM.Controllers
             return null;
         }
 
-        [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Products_Price_Discount })]
+        [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Products_Price })]
         [HttpPost]
-        public JsonResult ChangePrice_Discount(List<Product_PriceModel> model)
+        public async Task<JsonResult> ChangePrice(Product_PriceModel model)
         {
             var Messaging = new RenderMessaging();
             try
             {
 
-                foreach (var item in model)
+                var pricechannel = _unitOW.ChanelPriceRepository.FindBy(o => o.ProductId == model.ProductId && o.ChannelId == User.ChannelId).FirstOrDefault();
+                if (pricechannel != null)
                 {
-                    foreach (var channel in item.Channels)
+                    if (pricechannel.Price != model.Price)
                     {
-                        var newobj = item;
-                        newobj.ChannelId = channel.Id;
-                        var errr = UpdatePrice_Discount(newobj);
-                        if (!string.IsNullOrEmpty(errr))
-                        {
-                            {
-                                Messaging.isError = true;
-                                Messaging.messaging = errr;
-                                return Json(Messaging, JsonRequestBehavior.AllowGet);
-                            }
-                        }
+                        pricechannel.Price = model.Price;
+                        pricechannel.DateUpdate = DateTime.Now;
+                        pricechannel.EmployeeUpdate = User.UserId;
+
+                        _unitOW.ChanelPriceRepository.Update(pricechannel, o => o.Price, o => o.DateUpdate, o => o.EmployeeUpdate);
+
+                        await _unitOW.SaveChanges();
                     }
                 }
-                _crud.SaveChanges();
+                else
+                {
+                    var data = new soft_Channel_Product_Price
+                    {
+                        Price = model.Price,
+                        ChannelId = User.ChannelId,
+                        ProductId = model.ProductId,
+                        DateCreate = DateTime.Now,
+                        EmployeeCreate = User.UserId
+                    };
+
+                    _unitOW.ChanelPriceRepository.Add(data);
+                    await _unitOW.SaveChanges();
+                }
+
+
+                #region gia si
+                var user = Mapper.Map<UserCurrent>(User);
+                var product = _unitOW.ProductRepository.FindBy(o => o.id == model.ProductId).FirstOrDefault();
+                _IOrderBus.UpdatePriceWholesale(product, user, true);
+                #endregion
+
+                Messaging.messaging = "Đã thay đổi giá thành công!";
+            }
+            catch
+            {
+                Messaging.isError = true;
+                Messaging.messaging = "Thay đổi giá không thành công!";
+            }
+            return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Products_Price_Discount })]
+        [HttpPost]
+        public async Task<JsonResult> ChangePrice_Discount(Product_PriceModel item)
+        {
+            var Messaging = new RenderMessaging();
+            try
+            {
+                if (User == null || User.UserId < 0)
+                {
+                    Messaging.isError = true;
+                    Messaging.messaging = "Vui lòng đăng nhập lại!";
+                    return Json(Messaging, JsonRequestBehavior.AllowGet);
+                }
+
+                if (item.Price_Discount <= 0)
+                {
+                    Messaging.messaging = "Giá giảm không hợp lệ!";
+                    Messaging.isError = true;
+                }
+
+                if (!item.StartDate_Discount.HasValue
+                   || !item.Enddate_Discount.HasValue
+                   || item.StartDate_Discount.Value > item.Enddate_Discount.Value
+                   || item.StartDate_Discount.Value < DateTime.Now)
+                {
+                    Messaging.messaging = "Ngày áp dụng không hợp lệ!"; ;
+                    Messaging.isError = true;
+                }
+
+                if (Messaging.isError)
+                    return Json(Messaging, JsonRequestBehavior.AllowGet);
+
+
+                item.ChannelId = User.ChannelId;
+                item.StartDate_Discount = new DateTime(item.StartDate_Discount.Value.Year, item.StartDate_Discount.Value.Month, item.StartDate_Discount.Value.Day, 0, 0, 0, 0);
+                item.Enddate_Discount = new DateTime(item.Enddate_Discount.Value.Year, item.Enddate_Discount.Value.Month, item.Enddate_Discount.Value.Day, 23, 59, 59, 999);
+
+                var pricechannel = _unitOW.ChanelPriceRepository.FindBy(o => o.ProductId == item.ProductId && o.ChannelId == User.ChannelId).FirstOrDefault();
+
+                if (pricechannel != null)
+                {
+                    pricechannel.Price_Discount = item.Price_Discount;
+                    pricechannel.StartDate_Discount = item.StartDate_Discount;
+                    pricechannel.Enddate_Discount = item.Enddate_Discount;
+                    pricechannel.DateUpdate = DateTime.Now;
+                    pricechannel.EmployeeUpdate = User.UserId;
+
+                    _unitOW.ChanelPriceRepository.Update(pricechannel,
+                        o => o.Price_Discount,
+                        o => o.StartDate_Discount,
+                        o => o.Enddate_Discount,
+                        o => o.DateUpdate,
+                        o => o.EmployeeUpdate);
+
+                    await _unitOW.SaveChanges();
+                }
+                else
+                {
+                    var data = new soft_Channel_Product_Price
+                    {
+                        ChannelId = item.ChannelId,
+                        ProductId = item.ProductId,
+
+                        Price_Discount = item.Price_Discount,
+                        StartDate_Discount = item.StartDate_Discount,
+                        Enddate_Discount = item.Enddate_Discount,
+
+                        DateCreate = DateTime.Now,
+                        EmployeeCreate = User.UserId
+                    };
+                    _unitOW.ChanelPriceRepository.Add(data);
+
+                    await _unitOW.SaveChanges();
+                }
+
                 Messaging.messaging = "Đã thay đổi giá khuyến mãi thành công!";
             }
             catch (Exception ex)
@@ -774,72 +813,5 @@ namespace BBM.Controllers
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
-
-        private string UpdatePrice_Discount(Product_PriceModel item)
-        {
-
-            if (item.PriceChange <= 0)
-            {
-                return "Giá giảm không hợp lệ!";
-            }
-
-            if (item.ChannelId <= 0)
-            {
-                return "Vui lòng chọn Kênh muốn giảm giá.";
-            }
-
-            if (item.StartDate_Discount > item.Enddate_Discount
-               || item.StartDate_Discount < DateTime.Now
-               )
-            {
-                return "Ngày áp dụng không hợp lệ!";
-            }
-
-
-            item.StartDate_Discount = new DateTime(item.StartDate_Discount.Year, item.StartDate_Discount.Month, item.StartDate_Discount.Day, 0, 0, 0, 0);
-            item.Enddate_Discount = new DateTime(item.Enddate_Discount.Year, item.Enddate_Discount.Month, item.Enddate_Discount.Day, 23, 59, 59, 999);
-
-            var pricechannel = _context.soft_Channel_Product_Price.FirstOrDefault(o => o.ProductId == item.ProductId && o.ChannelId == item.ChannelId);
-            if (pricechannel != null)
-            {
-                var data = new soft_Channel_Product_Price
-                {
-                    Id = pricechannel.Id,
-                    Price_Discount = item.PriceChange,
-                    StartDate_Discount = item.StartDate_Discount,
-                    Enddate_Discount = item.Enddate_Discount,
-                    DateUpdate = DateTime.Now,
-                    EmployeeUpdate = User.UserId,
-                };
-
-
-                _crud.Update<soft_Channel_Product_Price>(data, o => o.Price_Discount,
-                    o => o.StartDate_Discount,
-                    o => o.Enddate_Discount,
-                    o => o.DateUpdate,
-                    o => o.EmployeeUpdate);
-            }
-            else
-            {
-                var data = new soft_Channel_Product_Price
-                {
-                    //Price = item.PriceChange,
-                    ChannelId = item.ChannelId,
-                    ProductId = item.ProductId,
-
-                    Price_Discount = item.PriceChange,
-                    StartDate_Discount = item.StartDate_Discount,
-                    Enddate_Discount = item.Enddate_Discount,
-
-
-                    DateCreate = DateTime.Now,
-                    EmployeeCreate = User.UserId
-
-                };
-                _crud.Add<soft_Channel_Product_Price>(data);
-            }
-            return string.Empty;
-        }
-
     }
 }

@@ -57,11 +57,10 @@ namespace BBM.Business.Models.Module
         public int ProductId { get; set; }
         public int ChannelId { get; set; }
         public int Price { get; set; }
-        public int PriceChange { get; set; }
 
         public int Price_Discount { get; set; }
-        public DateTime StartDate_Discount { get; set; }
-        public DateTime Enddate_Discount { get; set; }
+        public DateTime? StartDate_Discount { get; set; }
+        public DateTime? Enddate_Discount { get; set; }
 
         public string Note { get; set; }
         public int EmployeeCreate { get; set; }
