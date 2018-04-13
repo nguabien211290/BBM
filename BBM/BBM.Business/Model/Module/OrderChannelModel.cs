@@ -42,6 +42,10 @@ namespace BBM.Business.Models.Module
         public CustomerModel Customer { get; set; }
 
         public string StatusPrint { get; set; }
+
+        public int phithuho { get; set; }
+        public int pttt { get; set; }
+        public string tenptgh { get; set; }
     }
     public class Order_InputTmpModel
     {

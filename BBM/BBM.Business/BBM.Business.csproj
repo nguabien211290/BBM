@@ -364,6 +364,7 @@
     <Compile Include="Model\Module\BranchesModel.cs" />
     <Compile Include="Model\Module\CatalogModel.cs" />
     <Compile Include="Model\Module\ChannelModel.cs" />
+    <Compile Include="Model\Module\CityModel.cs" />
     <Compile Include="Model\Module\ConfigModel.cs" />
     <Compile Include="Model\Module\CustomerModel.cs" />
     <Compile Include="Model\Module\DisscountModel.cs" />

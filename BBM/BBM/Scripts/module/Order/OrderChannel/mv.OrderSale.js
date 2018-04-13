@@ -2,6 +2,7 @@
 Order.mvOrderSale = function (OrderId) {
     var self = this;
 
+    self.isChannelOnline = ko.observable(false);
     self.OrderCloneId = ko.observable(OrderCloneId);
     self.OrderSaleId = ko.observable(OrderId);
     self.OrderCloneId.subscribe(function (val) {
@@ -12,8 +13,7 @@ Order.mvOrderSale = function (OrderId) {
     self.StatusOrder.subscribe(function (val) {
         if (self.mOrderSale())
             self.mOrderSale().Status(val);
-
-    })
+    });
     self.KeywordSearch = ko.observable();
     self.SearchType = ko.observable("Code");
     self.ListProductSearch = ko.observableArray();
@@ -153,7 +153,7 @@ Order.mvOrderSale = function (OrderId) {
                 return;
             }
             if (!data.isError && data.Data != null) {
-                self.mOrderSale().Customer(ko.mapping.fromJS(data.Data, {}, new Order.mCustomer));
+                self.mOrderSale().Customer(ko.mapping.fromJS(data.Data, { 'ignore': ['DistrictName', 'ProvinceName'] }, new Order.mCustomer));
             } else {
                 var phone = self.mOrderSale().Customer().Phone();
                 self.mOrderSale().Customer(new Order.mCustomer);
@@ -248,7 +248,7 @@ Order.mvOrderSale = function (OrderId) {
         var item = new Order.mOrderSaleDetail();
         self.mOrderSale().Detail.push(item);
     };
-    self.isChannelOnline = ko.observable(false);
+
     self.GetInfoOrder = function () {
         if (self.OrderSaleId() && self.OrderSaleId() > 0) {
             CommonUtils.showWait(true);
@@ -282,7 +282,7 @@ Order.mvOrderSale = function (OrderId) {
                         if (pro.Discount > 0)
                             self.IsDisscountbyMark(true);
                     });
-                    self.mOrderSale().Customer(ko.mapping.fromJS(data.Data.Customer, {}, new Order.mCustomer));
+                    self.mOrderSale().Customer(ko.mapping.fromJS(data.Data.Customer, { 'ignore': ['DistrictName', 'ProvinceName'] }, new Order.mCustomer));
                     self.CustommerofMoney(self.CustommerMoneyTake());
                     self.InputDisscount(data.Data.DisscountValue);
                 } else
@@ -356,8 +356,8 @@ Order.mvOrderSale = function (OrderId) {
                 self.mOrderSale().Code(data.Data.Code);
                 if (data.Data.isPrint)
                     CommonUtils.Print("printordersales_" + self.OrderSaleId());
-
-                self.GetInfoOrder();
+                debugger
+                //self.GetInfoOrder();
             }
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
         }).always(function () {

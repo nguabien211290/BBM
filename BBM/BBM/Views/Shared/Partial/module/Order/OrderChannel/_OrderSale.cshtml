@@ -2,10 +2,7 @@
 <script src=@Url.Content("~/Scripts/module/Order/OrderChannel/mv.OrderSale.js")></script>
 <script>
     var valueDiscountFormember = 5;
-    var statausOrder = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Sale>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Sale)))');
-
     var orderSale_@Html.Raw(ViewBag.OrderId) = new Order.mvOrderSale(@Html.Raw(ViewBag.OrderId));
-
     var IsClone = "@Html.Raw(ViewBag.IsClone)";
     var OrderCloneId= "@Html.Raw(ViewBag.OrderCloneId)";
     var OrderId = "@Html.Raw(ViewBag.OrderId)";

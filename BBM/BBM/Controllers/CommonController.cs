@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 using System.Transactions;
 using BBM.Business;
 using BBM.Business.Logic;
+using BBM.Business.Repository;
+using BBM.Business.Model.Module;
 
 namespace BBM.Controllers
 {
@@ -28,12 +30,14 @@ namespace BBM.Controllers
         private admin_softbbmEntities _context;
         private ImportExcelBusiness _importBus;
         private IImportBusiness _ImportBus;
-        public CommonController(ImportBusiness ImportBus)
+        private IUnitOfWork _unitOW;
+        public CommonController(ImportBusiness ImportBus, IUnitOfWork unitOW)
         {
             _crud = new CRUD();
             _context = new admin_softbbmEntities();
             _importBus = new ImportExcelBusiness();
             _ImportBus = ImportBus;
+            _unitOW = unitOW;
         }
 
 
@@ -94,7 +98,7 @@ namespace BBM.Controllers
             });
 
             branches.AddRange(Mapper.Map<List<BranchesModel>>(_context.soft_Branches.ToList()));
-            
+
             return Json(branches, JsonRequestBehavior.AllowGet);
         }
 
@@ -171,6 +175,14 @@ namespace BBM.Controllers
             }
 
             return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetCity_District()
+        {
+            var city = Mapper.Map<List<CityModel>>(_unitOW.CityRepository.GetAll());
+            var district = Mapper.Map<List<DistrictModel>>(_unitOW.DistrictRepository.GetAll());
+
+            return Json(new { city = city, district = district }, JsonRequestBehavior.AllowGet);
         }
 
     }

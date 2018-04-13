@@ -1,7 +1,6 @@
 ﻿<script src=@Url.Content("~/Scripts/module/Branches/m.Branches.js")></script>
 <script src=@Url.Content("~/Scripts/module/Branches/mv.Branches.js")></script>
 <script>
-    var typeChannel = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypeChannel>.ToJson(typeof(BBM.Business.Models.Enum.TypeChannel)))');
     var branches = new Branches.mvBranches();
     $(document).ready(function () {
         branches.Start();
@@ -101,7 +100,7 @@
                                                     <button class="btn btn-primary btn-small" data-bind="click: $parents[0].addBrandes"><i class="icon-plus"></i></button>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="row-fluid">
                                                 <!--ko foreach: soft_Channel-->
                                                 <div class="span5">

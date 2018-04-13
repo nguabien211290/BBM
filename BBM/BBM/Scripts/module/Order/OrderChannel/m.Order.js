@@ -18,8 +18,11 @@ Order.mProduct = function () {
     self.soft_Channel = ko.observable();
     self.PriceChannel = ko.observable();
 };
-
-
+Order.mTableCustomer = function () {
+    var self = this;
+    self.Id = ko.observable();
+    self.Name = ko.observable();
+};
 Order.mCustomer = function () {
     var self = this;
     self.Id = ko.observable();
@@ -30,6 +33,33 @@ Order.mCustomer = function () {
     self.Code = ko.observable();
     self.DistrictId = ko.observable();
     self.ProvinceId = ko.observable();
+    self.District_lst = ko.observableArray();
+    self.ProvinceName = ko.observable();
+    self.ProvinceName.subscribe(function (val) {
+        debugger
+    })
+
+    self.DistrictName = ko.observable();
+    self.DistrictName.subscribe(function (val) {
+        debugger
+    })
+    self.ProvinceId.subscribe(function (val) {
+        self.District_lst([]);
+        debugger
+        var city = ko.utils.arrayFirst(common.mvCity().City(), function (x) { return x.id == val })
+        if (city)
+            self.ProvinceName(city.tentp);
+        ko.utils.arrayForEach(common.mvCity().Districts(), function (x) {
+            if (x.idtp == val)
+                self.District_lst.push(x);
+        })
+    });
+    self.DistrictId.subscribe(function (val) {
+        debugger
+        var districts = ko.utils.arrayFirst(common.mvCity().Districts(), function (x) { return x.id == val })
+        if (districts)
+            self.DistrictName(districts.tentinh);
+    })
 
     self.Mark = ko.observable(0);
     self.MarkTmp = ko.observable(0);
@@ -38,6 +68,23 @@ Order.mCustomer = function () {
     self.PhoneShip = ko.observable();
     self.DistrictIdShip = ko.observable();
     self.ProvinceIdShip = ko.observable();
+};
+Order.mTableOrder = function () {
+    var self = this;
+    var index = 0;
+
+    self.Code = ko.observable();
+    self.Id = ko.observable(0);
+    self.Status = ko.observable();
+
+    self.Total = ko.observable(0);
+    self.Note = ko.observable();
+    self.TypeOrder = ko.observable();
+    self.IsViewDetail = ko.observable(false);
+    self.Customer = ko.observable(new Order.mTableCustomer);
+    self.EmployeeNameShip = ko.observable();
+    self.EmployeeNameCreate = ko.observable();
+    self.DateCreate = ko.observable(new Date());
 };
 Order.mOrder = function () {
     var self = this;
@@ -77,8 +124,11 @@ Order.mOrder = function () {
     self.EmployeeShip = ko.observable();
     self.isChannelOnline = ko.observable(false);
     self.StatusPrint = ko.observable();
-
+    self.phithuho = ko.observable();
     self.StatusPrint = ko.observable();
+
+    self.pttt = ko.observable();
+    self.tenptgh = ko.observable();
 };
 Order.mOrderSaleDetail = function () {
     var self = this;
@@ -115,7 +165,6 @@ Order.mOrderSaleDetail = function () {
     });
 
     self.Discount.subscribe(function (val) {
-        debugger
         if (val > 0 && self.Id() > 0)
             self.isDiscountForMember(true)
     })

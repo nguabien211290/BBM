@@ -51,7 +51,7 @@
                 <span data-bind="text: Id"></span>
             </td>
             <td>
-                <span data-bind="text:Customer().Name"></span>
+                <span data-bind="text:Customer()? Customer().Name:'Khách vãng lai'"></span>
             </td>
             <td>
                 <span data-bind="datelong: DateCreate"></span>
@@ -78,7 +78,7 @@
 
             </td>
             <td>
-                <button class="btn btn-primary" data-bind="click: function(){ CommonUtils.addTabDynamic('Đơn bán hàng số '+ Code()+'-'+ Id(), CommonUtils.url('/OrderChannel/RenderViewOrder'), '#contentX',true,{ OrderId : Id }) }"><i class="icon-eye-open"></i></button>
+                <button class="btn btn-primary" data-bind="click: function(){ CommonUtils.addTabDynamic('Đơn bán hàng '+ Code() + Id(), CommonUtils.url('/OrderChannel/RenderViewOrder'), '#contentX',true,{ OrderId : Id }) }"><i class="icon-eye-open"></i></button>
             </td>
         </tr>
         <!--/ko-->

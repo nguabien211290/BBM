@@ -23,11 +23,25 @@ Common.mvBranches = function () {
 Common.mvCommon = function () {
     var self = this;
     self.mvBranches = ko.observable(new Common.mvBranches);
+    self.mvCity = ko.observable(new Common.mvCity);
+
     self.lstChannel = ko.observableArray();
     self.lstEmployess = ko.observableArray();
     self.lstNotification = ko.observableArray();
     self.isFistLoad = ko.observable(true);
     self.mConfig = ko.observable();
+    self.NotifiCount = ko.observable(0);
+    self.ReturnLink = function (val) {
+        switch (val.Type) {
+            case 1:
+                if (val.Href)
+                    CommonUtils.addTabDynamic('Danh sách nhập hàng', val.Href, '#contentX')
+                break;
+            case 2:
+                break;
+        }
+    };
+
     self.ConfigSystem = function () {
         $.ajax({
             type: "GET",
@@ -71,17 +85,6 @@ Common.mvCommon = function () {
             self.isFistLoad(false);
         });
     };
-    self.NotifiCount = ko.observable(0);
-    self.ReturnLink = function (val) {
-        switch (val.Type) {
-            case 1:
-                if (val.Href)
-                    CommonUtils.addTabDynamic('Danh sách nhập hàng', val.Href, '#contentX')
-                break;
-            case 2:
-                break;
-        }
-    };
     self.Notification = function () {
         $.ajax({
             type: "GET",
@@ -116,27 +119,23 @@ Common.mvCommon = function () {
         ko.applyBindings(self);
         self.ConfigSystem();
         self.Notification();
+        self.mvCity().GetCity();
     };
 };
-Common.mvProvince = function () {
+Common.mvCity = function () {
     var self = this;
-    self.District = ko.observableArray([
-        { value: 1, name: 'Quận 1' },
-        { value: 2, name: 'Quận 2' }
-    ]);
-    self.Provinceslst = ko.observableArray([
-    { value: 1, name: 'Phường tân thới hòa', province: 1 },
-    { value: 2, name: 'Phường tân thới hòa 12', province: 1 },
-    { value: 3, name: 'Phường tân an', province: 2 }
-    ]);
-    self.Provinces = function (districtId) {
-        var rs = [];
-        if (districtId) {
-            ko.utils.arrayForEach(self.Provinceslst(), function (o) {
-                if (o.province == districtId)
-                    rs.push(o);
-            });
-        }
-        return rs;
-    }
+    self.City = ko.observableArray();
+    self.Districts = ko.observableArray();
+
+    self.GetCity = function () {
+        $.ajax({
+            type: "GET",
+            url: CommonUtils.url("/Common/GetCity_District"),
+            cache: false,
+            dataType: 'json',
+        }).done(function (data) {
+            self.City(data.city);
+            self.Districts(data.district);
+        })
+    };
 };

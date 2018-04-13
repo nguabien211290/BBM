@@ -49,4 +49,18 @@ namespace BBM.Business.Models.Enum
         [Display(Name = "Giao hàng thất bại", ShortName = "ShipCancel")]
         ShipCancel = 6            
     }
+
+    public enum PTTT
+    {
+        [Display(Name = "Tiền mặt")]
+        Cash = 1,
+        [Display(Name = "Chuyển khoản")]
+        BankTransfer = 2,
+        [Display(Name = "Tiền mặt tỉnh")]
+        CashOutHCM = 3,
+        [Display(Name = "Thanh toán trực tuyến")]
+        OnlinePayment = 4,
+        [Display(Name = "Bằng thẻ ngân hàng khi nhận hàng")]
+        BankCardOnDelivery = 5
+    }
 }

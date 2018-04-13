@@ -27,6 +27,8 @@ namespace BBM.Business.Models.Module
         public int DistrictIdShip { get; set; }
         public int ProvinceIdShip { get; set; }
 
+        public int idtp { get; set; }
+        public int idquan { get; set; }
         public List<OrderModel> Orders { get; set; }
 
     }

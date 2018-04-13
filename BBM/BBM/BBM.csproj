@@ -636,6 +636,7 @@
     <Content Include="Views\Shared\Partial\module\Order\OrderBranch\_Branch_Order_Output_List.cshtml" />
     <Content Include="Views\Shared\Partial\module\Report\Report.cshtml" />
     <Content Include="Views\Shared\Partial\module\_Sample\Sample.cshtml" />
+    <Content Include="Views\Shared\Utils.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

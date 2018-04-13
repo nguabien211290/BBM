@@ -298,6 +298,7 @@ namespace BBM.Business.Logic
                         if (product != null)
                         {
                             it.Product = product;
+                            it.ProductId = product.id;
                         }
                     }
 

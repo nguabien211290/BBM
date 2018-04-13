@@ -105,6 +105,22 @@
                         </span>
                     </div>
                 </div>
+                <!--ko if:mOrderSale().Customer().ProvinceId()>0 || OrderSaleId() == 0 -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Tỉnh/Thành</div>
+                    <div class="profile-info-value">
+                        <select data-bind="options: common.mvCity().City(), optionsText: 'tentp',optionsValue:'id', value: mOrderSale().Customer().ProvinceId" style="width:90%!important"></select>
+                    </div>
+                </div>
+                <!--/ko-->
+                <!--ko if:mOrderSale().Customer().DistrictId()>0 ||  OrderSaleId() == 0 -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Quận/Huyện</div>
+                    <div class="profile-info-value">
+                        <select data-bind="options: mOrderSale().Customer().District_lst(), optionsText: 'tentinh',optionsValue:'id', value: mOrderSale().Customer().DistrictId" style="width:90%!important"></select>
+                    </div>
+                </div>
+                <!--/ko-->
                 <div class="profile-info-row">
                     <div class="profile-info-name">Điểm tích lũy</div>
                     <div class="profile-info-value">
@@ -125,6 +141,25 @@
                     </div>
                 </div>
                 <!-- /ko -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">PT Giao hàng</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click" data-bind="text: mOrderSale().tenptgh()?mOrderSale().tenptgh():'GH tại HCM'"></span>
+
+                    </div>
+                </div>
+                <!--ko if: mOrderSale().pttt()-->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">PT Thanh toán</div>
+                    <div class="profile-info-value">
+                        <!-- ko foreach: typePTTT-->
+                        <!-- ko if: $data.Key == $parents[0].mOrderSale().pttt() -->
+                        <span class="editable editable-click" data-bind="text: $data.Value"></span>
+                        <!--/ko-->
+                        <!--/ko-->
+                    </div>
+                </div>
+                <!--/ko-->
             </div>
         </div>
         <div class="span3">
@@ -213,6 +248,14 @@
                     <div class="profile-info-value">
                         <span class="editable editable-click">
                             <input type="text" class="input-small" data-bind="moneyMaskWithSymbol:  mOrderSale().TotalOrther" />
+                        </span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Phí thu hộ</div>
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            <input type="text" class="input-small" data-bind="moneyMaskWithSymbol:  mOrderSale().phithuho" />
                         </span>
                     </div>
                 </div>

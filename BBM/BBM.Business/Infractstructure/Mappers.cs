@@ -9,6 +9,7 @@ using BBM.Business.Models.Enum;
 using BBM.Business.Infractstructure.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using BBM.Business.Model.Module;
 
 namespace BBM.Business.Infractstructure
 {
@@ -45,6 +46,12 @@ namespace BBM.Business.Infractstructure
                            return rs;
                        }))
                        .ForMember(a => a.Customer, b => b.MapFrom(c => c.khachhang))
+                       .ForMember(a => a.Code, b => b.ResolveUsing(c =>
+                        {
+                            if (string.IsNullOrEmpty(c.Code))
+                                return "";
+                            return c.Code + " - ";
+                        }))
                        .ForMember(a => a.DisscountValue, b => b.ResolveUsing(c =>
                        {
                            if (string.IsNullOrEmpty(c.Code) && c.Channeld == 2
@@ -189,6 +196,9 @@ namespace BBM.Business.Infractstructure
                 cfg.CreateMap<soft_Branches, BranchesModel>();
                 cfg.CreateMap<BranchesModel, soft_Branches>();
                 cfg.CreateMap<CustomPrincipal, Config_UserModel>();
+
+                cfg.CreateMap<donhang_chuyenphat_tp, CityModel>();
+                cfg.CreateMap<donhang_chuyenphat_tinh, DistrictModel>();
             });
         }
     }

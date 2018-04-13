@@ -1,7 +1,6 @@
 ﻿<script src=@Url.Content("~/Scripts/module/Order/m.Order.js")></script>
 <script src=@Url.Content("~/Scripts/module/Order/OrderInput/mv.OrderInput_List.js")></script>
 <script>
-    var lstTypeOrder = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypeOrder>.ToJson(typeof(BBM.Business.Models.Enum.TypeOrder)))');
     var orderInputList = new Order.mvOrderInputList();
     $(document).ready(function () {
         orderInputList.Start();
