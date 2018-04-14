@@ -1,6 +1,8 @@
 ﻿var Order = Order || {};
 Order.mvOrderSaleList = function () {
     var self = this;
+    self.SelectAllIds = ko.observable();
+    self.SelectIds = ko.observableArray();
     self.CountFilter = ko.observable(0);
     self.SearchReLoad = ko.computed(function () {
         if (self.CountFilter() > 0) {
@@ -77,12 +79,6 @@ Order.mvOrderSaleList = function () {
     });
     self.TmpTable().nameTemplate('table_OrderSale');
     //----------------------Filter-------------------
-    self.GetDetail = function (val) {
-        ko.utils.arrayForEach(self.TmpTable().listData(), function (v) {
-            v.IsViewDetail(false);
-        })
-        val.IsViewDetail(true);
-    };
     self.UpdateOrder = function (val) {
         CommonUtils.showWait(true);
         $.ajax({
@@ -111,5 +107,39 @@ Order.mvOrderSaleList = function () {
     self.GetDetailOrderSale = function (val) {
         var data = { order: val.Detail() }
         CommonUtils.addTabDynamic('Nhập hàng', CommonUtils.url('/Order_Input/RenderViewCreate'), '#contentX', true, data);
+    };
+
+    self.SelectAllIds.subscribe(function (ischek) {
+        self.SelectIds([])
+        if (ischek)
+            ko.utils.arrayForEach(self.lstOrder_Sale(), function (it) {
+                self.SelectIds.push(it.Id().toString());
+            })
+    });
+    self.UpdateStatus = function (stt) {
+        CommonUtils.confirm("Thông báo", "Bạn có muốn cập nhật <b>" + self.SelectIds().length + " đơn hàng</b> này sang trạng thái <b>" + stt.Value + "</b> không?", function () {
+            if (self.SelectIds().length > 0) {
+                CommonUtils.showWait(true);
+                $.ajax({
+                    type: "POST",
+                    url: CommonUtils.url("/OrderChannel/UpdateStautsOrder"),
+                    cache: false,
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: ko.toJSON({ ids: self.SelectIds(), stt: stt.Key }),
+                }).done(function (data) {
+                    if (data == null)
+                        return
+
+                    CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
+
+                    self.CountFilter(self.CountFilter() + 1);
+
+                    self.SelectIds([]);
+                }).always(function () {
+                    CommonUtils.showWait(false);
+                });
+            }
+        });
     };
 };

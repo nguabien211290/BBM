@@ -160,22 +160,24 @@ namespace BBM.Business.Logic
                         double total_stock = 0;
                         bool isUpdate = false;
 
-                        if (!is_create)
+                        if (is_create)
+                        {
+                            total_stock = stockBraches.Stock_Total - item.Total;
+                            isUpdate = true;
+                        }
+                        else
+                        {
                             switch (order.Status)
                             {
                                 case (int)StatusOrder_Sale.Cancel:
                                     total_stock = stockBraches.Stock_Total + item.Total;
                                     isUpdate = true;
                                     break;
-                                case (int)StatusOrder_Sale.Done:
-                                    total_stock = stockBraches.Stock_Total - item.Total;
-                                    isUpdate = true;
-                                    break;
+                                //case (int)StatusOrder_Sale.Done:
+                                //    total_stock = stockBraches.Stock_Total - item.Total;
+                                //    isUpdate = true;
+                                //    break;
                             }
-                        else
-                        {
-                            total_stock = stockBraches.Stock_Total - item.Total;
-                            isUpdate = true;
                         }
 
                         if (isUpdate)

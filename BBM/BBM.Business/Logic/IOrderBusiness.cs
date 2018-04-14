@@ -1,5 +1,6 @@
 ﻿using BBM.Business.Model.Entity;
 using BBM.Business.Model.Module;
+using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
 using BBM.Business.Models.View;
 using System;
@@ -34,7 +35,7 @@ namespace BBM.Business.Logic
 
         void UpdatePriceWholesale(shop_sanpham product, UserCurrent User, bool isCommit = false);
 
-        Task<bool> CancelOrder(int id);
+        Task<bool> UpdateStatusOrders(List<long> ids, StatusOrder_Sale status, UserCurrent User);
         #endregion
 
         #region Order Braches

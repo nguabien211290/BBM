@@ -29,10 +29,41 @@
 <script id="table_OrderSale" type="text/html">
     <thead>
         <tr>
-            <th colspan="8" class="text-right"><h4>Tổng</h4></th>
+            <th colspan="9" class="text-right"><h4>Tổng</h4></th>
             <th><h4 data-bind="textMoneyDefaultSymbol: TotalMoney"></h4></th>
         </tr>
         <tr>
+            <th>
+                <label>
+                    <input type="checkbox" data-bind="value: true, checked: $root.SelectAllIds">
+                    <span class="lbl"></span>
+                </label>
+            </th>
+            <!-- ko if: $root.SelectIds().length >0 -->
+            <th class="position-relative" colspan="9">
+                <div class="lable_bulk">
+                    Có <span data-bind="text: $root.SelectIds().length"></span> đơn hàng được chọn
+                </div>
+                <div class="position-relative left open">
+                    <a data-toggle="dropdown" class="btn btn-small btn-primary dropdown-toggle">
+                        Chọn thao tác <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a href="#" tabindex="-1">Cập nhật trạng thái</a>
+                            <ul class="dropdown-menu overflow_y">
+                                <!--ko foreach: statusOrder_Sale-->
+                                <li>
+                                    <a data-bind="text: $data.Value, click: function(){ $root.UpdateStatus($data)}" class="cursor-pointer"></a>
+                                </li>
+                                <!--/ko-->
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </th>
+            <!--/ko-->
+            <!-- ko if: $root.SelectIds().length <=0 -->
             <th class="sorting" data-bind="click: function(){ Sortby('Id'); SortbyDesc(SortbyDesc()?false:true)}">Mã</th>
             <th class="sorting" data-bind="click: function(){ Sortby('ChannelsTo'); SortbyDesc(SortbyDesc()?false:true)}">Khách hàng</th>
             <th class="sorting" data-bind="click: function(){ Sortby('DateCreate'),SortbyDesc(SortbyDesc()?false:true)}">Ngày tạo</th>
@@ -42,11 +73,17 @@
             <th class="sorting" data-bind="click: function(){ Sortby('Note'),SortbyDesc(SortbyDesc()?false:true)}">Ghi chú</th>
             <th class="sorting" data-bind="click: function(){ Sortby('Status'),SortbyDesc(SortbyDesc()?false:true)}">Trạng thái</th>
             <th></th>
+            <!--/ko-->
         </tr>
     </thead>
-    <tbody>
-        <!--ko foreach: listData() -->
-        <tr data-bind="click: $parents[1].GetDetail" class="cursor-pointer">
+    <tbody data-bind="foreach:listData">
+        <tr class="cursor-pointer">
+            <td>
+                <label>
+                    <input type="checkbox" data-bind="value: Id, checked: $parents[1].SelectIds">
+                    <span class="lbl"></span>
+                </label>
+            </td>
             <td>
                 <span data-bind="text: Id"></span>
             </td>
@@ -81,6 +118,5 @@
                 <button class="btn btn-primary" data-bind="click: function(){ CommonUtils.addTabDynamic('Đơn bán hàng '+ Code() + Id(), CommonUtils.url('/OrderChannel/RenderViewOrder'), '#contentX',true,{ OrderId : Id }) }"><i class="icon-eye-open"></i></button>
             </td>
         </tr>
-        <!--/ko-->
     </tbody>
 </script>

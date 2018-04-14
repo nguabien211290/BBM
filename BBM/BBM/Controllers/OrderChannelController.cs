@@ -50,7 +50,12 @@ namespace BBM.Controllers
             ViewBag.IsClone = IsClone;
             if (IsClone)
             {
-                var rs = await _IOrderBus.CancelOrder(OrderId);
+                List<long> Ids = new List<long>();
+                Ids.Add((long)OrderId);
+
+                var user = Mapper.Map<UserCurrent>(User);
+
+                var rs = await _IOrderBus.UpdateStatusOrders(Ids, StatusOrder_Sale.Cancel, user);
                 if (rs)
                 {
                     ViewBag.OrderId = 0;
@@ -241,7 +246,7 @@ namespace BBM.Controllers
                 Messaging.isError = false;
                 Messaging.messaging = "Cập nhật đơn hàng thành công.";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Cập nhật đơn hàng không thành công!";
@@ -326,6 +331,30 @@ namespace BBM.Controllers
             {
                 Messaging.isError = true;
                 Messaging.messaging = "In đơn hàng không thành công!";
+            }
+            return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateStautsOrder(List<long> ids, int stt)
+        {
+            var Messaging = new RenderMessaging();
+            try
+            {
+                StatusOrder_Sale status = (StatusOrder_Sale)stt;
+
+                var user = Mapper.Map<UserCurrent>(User);
+
+                var rs = await _IOrderBus.UpdateStatusOrders(ids, status, user);
+
+                Messaging.isError = !rs;
+                Messaging.messaging = rs ? "Cập nhật đơn hàng thành công." : "Cập nhật đơn hàng không thành công !";
+
+            }
+            catch (Exception ex)
+            {
+                Messaging.isError = true;
+                Messaging.messaging = "Cập nhật đơn hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }

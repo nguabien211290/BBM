@@ -548,3 +548,10 @@ input[type="file"]#file-upload {
     height: 35px;
     font-size: 20px;
 }
+.lable_bulk {
+    border: 1px solid #13121257;
+    padding: 5px;
+    margin-top: 0px;
+    float: left;
+    background: white;
+}

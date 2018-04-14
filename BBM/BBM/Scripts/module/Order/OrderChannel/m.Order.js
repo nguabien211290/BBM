@@ -35,18 +35,10 @@ Order.mCustomer = function () {
     self.ProvinceId = ko.observable();
     self.District_lst = ko.observableArray();
     self.ProvinceName = ko.observable();
-    self.ProvinceName.subscribe(function (val) {
-        debugger
-    })
-
     self.DistrictName = ko.observable();
-    self.DistrictName.subscribe(function (val) {
-        debugger
-    })
     self.ProvinceId.subscribe(function (val) {
         self.District_lst([]);
-        debugger
-        var city = ko.utils.arrayFirst(common.mvCity().City(), function (x) { return x.id == val })
+         var city = ko.utils.arrayFirst(common.mvCity().City(), function (x) { return x.id == val })
         if (city)
             self.ProvinceName(city.tentp);
         ko.utils.arrayForEach(common.mvCity().Districts(), function (x) {
@@ -55,7 +47,6 @@ Order.mCustomer = function () {
         })
     });
     self.DistrictId.subscribe(function (val) {
-        debugger
         var districts = ko.utils.arrayFirst(common.mvCity().Districts(), function (x) { return x.id == val })
         if (districts)
             self.DistrictName(districts.tentinh);
@@ -85,6 +76,10 @@ Order.mTableOrder = function () {
     self.EmployeeNameShip = ko.observable();
     self.EmployeeNameCreate = ko.observable();
     self.DateCreate = ko.observable(new Date());
+    self.SelectId = ko.observable(false);
+    self.SelectId.subscribe(function (v) {
+        debugger
+    })
 };
 Order.mOrder = function () {
     var self = this;

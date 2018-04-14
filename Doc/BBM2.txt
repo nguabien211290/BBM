@@ -1,7 +1,7 @@
 ﻿Đơn hàng trên web:
-- Bên ngoài danh sách đơn hàng em cho cập nhật trạng thái luôn được không,theo dạng dropdown list rồi chọn trạng thái. Chứ mỗi lần đổi trạng thái khác phải bấm vào đơn hàng, rồi đóng tab khá mất công.
+R- Bên ngoài danh sách đơn hàng em cho cập nhật trạng thái luôn được không,theo dạng dropdown list rồi chọn trạng thái. Chứ mỗi lần đổi trạng thái khác phải bấm vào đơn hàng, rồi đóng tab khá mất công.
 R- Đơn hành đặt lại không cập nhật được
-- Thêm tỉnh thành và quận huyện trong khung địa chỉ
+R- Thêm tỉnh thành và quận huyện trong khung địa chỉ
 R- Đưa thông tin phương thức thanh toán và thời gian giao hàng cho hiển thị trong hóa đơn nhé
 R- Đưa ghi chú đơn hàng vào khung ghi chú
 R- Còn cái nữa là Giang cho tất cả phí (vận chuyển, ngòaii giờ, thu hộ, phí đơn hàng chưa đủ 200k,...) vào ô phí khác nhé
@@ -33,8 +33,7 @@ Các thông tin anh cần đồng bộ trên Shopee (SP) như sau:
 
 Sản pham
 -và mấy giá kênh lúc trc a nói em làm tròn số hàng ngàn
--cái áp dụng công thức hàng lọat k work hả e
--giá = 0,mất nhà PP,giá nhập cũ, mới, cơ bản
+
 
 IN
 -mà sao phíêu xuất kho chữ to quá

@@ -178,12 +178,12 @@ namespace BBM.Business.Logic
                         switch (model.Status)
                         {
                             case (int)StatusOrder_Sale.Cancel:
-                                var mark = double.Parse(customer.diem) - (order.tongtien/1000);
+                                var mark = double.Parse(customer.diem) - (order.tongtien / 1000);
                                 customer.diem = mark.ToString();
                                 break;
                         }
                     }
-                    if (!model.Customer.Address.Equals(customer.duong) 
+                    if (!model.Customer.Address.Equals(customer.duong)
                         || !model.Customer.Name.Equals(customer.hoten))
                     {
                         var cus = new khachhang
@@ -200,31 +200,6 @@ namespace BBM.Business.Logic
             #endregion
 
             #region Order
-
-            //foreach (var item in model.Detail)
-            //{
-            //    var hasthis = order.donhang_ct.FirstOrDefault(o => o.IdPro == item.ProductId);
-            //    if (hasthis == null)
-            //    {
-            //        var OrderChild = new donhang_ct
-            //        {
-            //            Sodh = order.id,
-            //            Dongia = item.Price,
-            //            Soluong = item.Total,
-            //            IdPro = item.ProductId
-            //        };
-            //        unitOfWork.OrderSale_DetailRepository.Add(OrderChild);
-            //    }
-            //    else
-            //    {
-            //        if (hasthis.Soluong != item.Total || hasthis.Dongia != item.Price)
-            //        {
-            //            hasthis.Soluong = item.Total;
-            //            hasthis.Dongia = item.Price;
-            //            unitOfWork.OrderSale_DetailRepository.Update(hasthis, o => o.Soluong, o => o.Dongia);
-            //        }
-            //    }
-            //}
 
             order.ghichu = model.Note;
 
@@ -244,7 +219,7 @@ namespace BBM.Business.Logic
             }
 
             unitOfWork.OrderSaleRepository.Update(order, o => o.Status, o => o.ghichu, o => o.EmployeeShip);
-            
+
             #endregion
 
             UpdateStockByBranches(model, User);
@@ -308,22 +283,50 @@ namespace BBM.Business.Logic
             return order;
         }
 
-        public async Task<bool> CancelOrder(int id)
+        public async Task<bool> UpdateStatusOrders(List<long> ids, StatusOrder_Sale status, UserCurrent User)
         {
-            var order = unitOfWork.OrderSaleRepository.GetById(id);
-
-            if (order == null)
-            {
+            if (ids.Count < 0)
                 return false;
+
+            bool isCommit = false;
+
+            foreach (var id in ids)
+            {
+                var order = unitOfWork.OrderSaleRepository.GetById(id);
+                if (order != null
+                    && order.Status != (int)StatusOrder_Sale.Cancel
+                    && order.Status != (int)StatusOrder_Sale.Done)
+                {
+
+                    order.Status = (int)status;
+
+                    unitOfWork.OrderSaleRepository.Update(order, o => o.Status);
+
+                    var model = Mapper.Map<OrderModel>(order);
+
+                    foreach(var pro in model.Detail)
+                    {
+                        var thisDetal = order.donhang_ct.FirstOrDefault(o => o.Id == pro.Id);
+
+                        pro.ProductId = thisDetal.shop_bienthe.shop_sanpham.id;
+                    }
+
+                    model.TypeOrder = (int)TypeOrder.Sale;
+
+                    UpdateStockByBranches(model, User);
+
+                    isCommit = true;
+                }
             }
 
-            order.Status = (int)StatusOrder_Sale.Cancel;
+            if (isCommit)
+            {
+                await unitOfWork.SaveChanges();
 
-            unitOfWork.OrderSaleRepository.Update(order, o => o.Status);
+                return true;
+            }
 
-            await unitOfWork.SaveChanges();
-
-            return true;
+            return false;
         }
     }
 }
