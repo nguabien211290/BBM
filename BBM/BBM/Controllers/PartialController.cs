@@ -618,6 +618,7 @@ namespace BBM.Controllers
                           || (!string.IsNullOrEmpty(o.Barcode) && o.Barcode.ToLower().Contains(keyword))
                           || (!string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Contains(keyword))
                          )
+                         .OrderBy(o => o.tensp).ThenBy(o => o.masp)
                          .Select(product => new ProductSampleModel
                          {
                              id = product.id,
@@ -632,6 +633,7 @@ namespace BBM.Controllers
                     {
                         var products = _context.shop_sanpham
                          .Where(o => !string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Equals(keyword))
+                         .OrderBy(o=>o.tensp).ThenBy(o=>o.masp)
                          .Select(product => new ProductSampleModel
                          {
                              id = product.id,

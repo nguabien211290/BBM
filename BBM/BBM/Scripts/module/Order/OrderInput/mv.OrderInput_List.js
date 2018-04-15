@@ -21,7 +21,7 @@ Order.mvOrderInputList = function () {
 
     self.GetListOrderInput = function () {
         self.lstOrder_Input([]);
-        self.type_Output(ko.utils.arrayFirst(lstTypeOrder, function (ob) {
+        self.type_Output(ko.utils.arrayFirst(typeOrder, function (ob) {
             return ob.Value == 'Output'
         }));
         var model = {

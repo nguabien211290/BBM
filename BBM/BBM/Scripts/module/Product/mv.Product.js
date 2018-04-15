@@ -3,7 +3,7 @@ Product.mvProduct = function () {
     var self = this;
     self.mNewProduct = ko.observable(new Product.mProductSample);
     self.LstError = ko.observable();
-    self.lstStatusVAT = ko.observableArray(lstStatusVAT);
+    self.statusVAT = ko.observableArray(statusVAT);
     self.mDisplayProductSample = ko.observable(new Product.mDisplayProductSample());
     /*********************************Filter********************************/
     self.FilterProduct = ko.observable(new Filter.mvFilter_Search_Control('Product'));

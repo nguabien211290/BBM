@@ -1,6 +1,15 @@
 ﻿<script type="text/javascript">
-    var lstTypeOrder = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypeOrder>.ToJson(typeof(BBM.Business.Models.Enum.TypeOrder)))');
-    var statausOrder = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Sale>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Sale)))');
+    var statusProducts = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusProduct>.ToJson(typeof(BBM.Business.Models.Enum.StatusProduct)))');
+    var statusVAT = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusVATProduct>.ToJson(typeof(BBM.Business.Models.Enum.StatusVATProduct)))');
+
+    var statusOrder_Sale = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Sale>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Sale)))');
+    var statusOrder_Input = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Input>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Input)))');
+    var statusOrder_Output = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Output>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Output)))');
+    var statusOrder_Suppliers = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Suppliers>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Suppliers)))');
+    var statusOrder_Switch = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Switch>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Switch)))');
+    var statusOrder_Braches = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.StatusOrder_Branches>.ToJson(typeof(BBM.Business.Models.Enum.StatusOrder_Branches)))');
+
+    var typeOrder = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypeOrder>.ToJson(typeof(BBM.Business.Models.Enum.TypeOrder)))');
     var typeChannel = JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypeChannel>.ToJson(typeof(BBM.Business.Models.Enum.TypeChannel)))');
-    var typePTTT=JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.PTTT>.ToJson(typeof(BBM.Business.Models.Enum.PTTT)))');
+    var typePaymentMethods=JSON.parse('@Html.Raw(BBM.Business.Infractstructure.EnumHelper<BBM.Business.Models.Enum.TypePaymentMethods>.ToJson(typeof(BBM.Business.Models.Enum.TypePaymentMethods)))');
 </script>

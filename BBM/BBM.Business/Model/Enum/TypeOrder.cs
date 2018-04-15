@@ -21,4 +21,17 @@ namespace BBM.Business.Models.Enum
         [Display(Name = "OrderBranches")]
         OrderBranches = 6
     }
+    public enum TypePaymentMethods
+    {
+        [Display(Name = "Tiền mặt")]
+        Cash = 1,
+        [Display(Name = "Chuyển khoản")]
+        BankTransfer = 2,
+        [Display(Name = "Tiền mặt tỉnh")]
+        CashOutHCM = 3,
+        [Display(Name = "Thanh toán trực tuyến")]
+        OnlinePayment = 4,
+        [Display(Name = "Bằng thẻ ngân hàng khi nhận hàng")]
+        BankCardOnDelivery = 5
+    }
 }

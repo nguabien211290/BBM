@@ -6,10 +6,12 @@ using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
 using BBM.Business.Models.View;
+using BBM.Business.Repository;
 using BBM.Infractstructure.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,10 +21,12 @@ namespace BBM.Controllers
     {
         private CRUD _crud;
         private admin_softbbmEntities _context;
+        private IUnitOfWork _unitOW;
         private NotificaitonBusiness notiBus = new NotificaitonBusiness();
-        public Order_OutputController()
+        public Order_OutputController(IUnitOfWork unitOW)
         {
             _crud = new CRUD();
+            _unitOW = unitOW;
             _context = new admin_softbbmEntities();
 
         }
@@ -38,7 +42,7 @@ namespace BBM.Controllers
         }
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_OutPut })]
-        public ActionResult RenderViewCreate(int orderId = 0)
+        public ActionResult RenderViewCreate(long orderId = 0)
         {
             if (orderId > 0)
             {
@@ -54,7 +58,7 @@ namespace BBM.Controllers
                             var product = _context.shop_sanpham.Find(item.shop_sanpham.id);
                             if (product != null)
                             {
-                                
+
                                 var stocks = Mapper.Map<List<Product_StockModel>>(_context.soft_Branches_Product_Stock.Where(o => o.ProductId == product.id).ToList());
                                 var stock = stocks.FirstOrDefault(o => o.BranchesId == User.BranchesId);
 
@@ -62,17 +66,19 @@ namespace BBM.Controllers
                                 {
                                     product_stock = stock ?? stock,
                                     product = Mapper.Map<ProductSampleModel>(product),
-                                    product_stocks = stocks
+                                    product_stocks = stocks,
+                                    Total = item.Total.HasValue ? item.Total.Value : 1,
+                                    OrderFromId = orderId
                                 };
                                 if (product.soft_Suppliers != null)
                                     productInfo.product.SuppliersName = product.soft_Suppliers.Name;
-                                
+
                                 rs.Add(productInfo);
                             }
                         }
                     }
                     ViewBag.Products = Newtonsoft.Json.JsonConvert.SerializeObject(rs);
-                }                
+                }
             }
             return PartialView("~/Views/Shared/Partial/module/Order/OrderOutput/_Channel_Order_Output_Create.cshtml");
         }
@@ -240,7 +246,7 @@ namespace BBM.Controllers
         }
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Order_OutPut })]
-        public JsonResult CreateOrder_Output(OrderModel model)
+        public async Task<JsonResult> CreateOrder_Output(OrderModel model)
         {
             var Messaging = new RenderMessaging();
             try
@@ -329,6 +335,19 @@ namespace BBM.Controllers
                 });
 
                 Messaging.messaging = "Đã tạo phiếu xuất hàng.";
+
+
+                if (model.OrderFromId.HasValue)
+                {
+                    var orderFromBranches = _unitOW.OrderBranchesRepository.FindBy(o => o.Id == model.OrderFromId.Value && o.TypeOrder == (int)TypeOrder.OrderBranches).FirstOrDefault();
+
+                    if (orderFromBranches != null)
+                    {
+                        orderFromBranches.Status = (int)StatusOrder_Branches.Exported;
+                        _unitOW.OrderBranchesRepository.Update(orderFromBranches, o => o.Status);
+                        await _unitOW.SaveChanges();
+                    }
+                }
             }
             catch
             {

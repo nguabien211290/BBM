@@ -8,6 +8,7 @@ namespace BBM.Business.Models.Module
     public class OrderModel
     {
         public long Id { get; set; }
+        public long? OrderFromId { get; set; }
         public string Code { get; set; }
         public int Status { get; set; }
         public string Note { get; set; }

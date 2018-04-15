@@ -20,11 +20,11 @@
                 var selectPickerOptions = allBindingsAccessor().selectPickerOptions;
                 if (typeof selectPickerOptions !== 'undefined' && selectPickerOptions !== null) {
                     var options = selectPickerOptions.optionsArray,
-                      optionsText = selectPickerOptions.optionsText,
-                      optionsValue = selectPickerOptions.optionsValue,
-                      optionsCaption = selectPickerOptions.optionsCaption,
-                      isDisabled = selectPickerOptions.disabledCondition || false,
-                      resetOnDisabled = selectPickerOptions.resetOnDisabled || false;
+                        optionsText = selectPickerOptions.optionsText,
+                        optionsValue = selectPickerOptions.optionsValue,
+                        optionsCaption = selectPickerOptions.optionsCaption,
+                        isDisabled = selectPickerOptions.disabledCondition || false,
+                        resetOnDisabled = selectPickerOptions.resetOnDisabled || false;
                     if (ko.utils.unwrapObservable(options).length > 0) {
                         // call the default Knockout options binding
                         ko.bindingHandlers.options.update(element, options, allBindingsAccessor);
@@ -122,7 +122,7 @@
     ko.bindingHandlers.numericTotal = {
         init: function (element, valueAccessor) {
             $(element).on("keydown", function (event) {
-               // Allow: backspace, delete, tab, escape, and enter
+                // Allow: backspace, delete, tab, escape, and enter
                 if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
                     // Allow: Ctrl+A
                     (event.keyCode == 65 && event.ctrlKey === true) ||
@@ -343,67 +343,58 @@
     };
     ko.bindingHandlers.renderStatus = {
         update: function (element, valueAccessor, allBindings) {
+            debugger
             var typeStatus = allBindings().typeStatus || {};
 
             var value = ko.utils.unwrapObservable(valueAccessor());
             var html = "";
+            var listStt = [];
             switch (typeStatus) {
                 case "Order_Output":
+                    listStt = statusOrder_Output;
+                    break;
                 case "Order_Input":
+                    listStt = statusOrder_Input;
+                    break;
                 case "Order_Suppliers":
-                    var listStt = [];
-                    switch (typeStatus) {
-                        case "Order_Output":
-                            listStt = statusOrder_Output;
-                            break;
-                        case "Order_Input":
-                            listStt = statusOrder_Input;
-                            break;
-                        case "Order_Suppliers":
-                            listStt = statusOrder_Suppliers;
-                            break;
-                    }
-                    var status = ko.utils.arrayFirst(listStt, function (stt) {
-                        return stt.Key == value;
-                    });
-                    if (status) {
-                        switch (status.Code) {
-                            case "Process":
-                                html = '<span class="label label-important arrowed">' + status.Value + '</span>';
-                                break;
-                            case "Done":
-                                html = '<span class="label label-success arrowed-in arrowed-in-right">' + status.Value + '</span>';
-                                break;
-                        }
-                    }
+                    listStt = statusOrder_Suppliers;
                     break;
                 case "Order_Channel":
-                    var statusOrder_Channel = ko.utils.arrayFirst(statusOrder_Sale, function (stt) {
-                        return stt.Key == value;
-                    });
-                    if (statusOrder_Channel) {
-                        switch (statusOrder_Channel.Code) {
-                            case "Process":
-                                html = '<span class="label label-important arrowed">' + statusOrder_Channel.Value + '</span>';
-                                break;
-                            case "Shipped":
-                                html = '<span class="label label-info arrowed">' + statusOrder_Channel.Value + '</span>';
-                                break;
-                            case "Done":
-                                html = '<span class="label label-success arrowed-in arrowed-in-right">' + statusOrder_Channel.Value + '</span>';
-                                break;
-                            case "Cancel":
-                                html = '<span class="label label-gray arrowed">' + statusOrder_Channel.Value + '</span>';
-                                break;
-                            case "Refund":
-                                html = '<span class="label label-important arrowed">' + statusOrder_Channel.Value + '</span>';
-                                break;
-                            case "ShipCancel":
-                                html = '<span class="label label-important arrowed">' + statusOrder_Channel.Value + '</span>';
-                                break;
-                        }
-                    }
+                    listStt = statusOrder_Sale;
                     break;
+                case "Order_Braches":
+                    listStt = statusOrder_Braches;
+                    break;
+                case "Order_Switch":
+                    listStt = statusOrder_Switch;
+                    break;
+            }
+            var status = ko.utils.arrayFirst(listStt, function (stt) {
+                return stt.Key == value;
+            });
+
+            if (status) {
+                switch (status.Code) {
+                    case "Process":
+                        html = '<span class="label label-important arrowed">' + status.Value + '</span>';
+                        break;
+                    case "Done":
+                    case "Exported":
+                        html = '<span class="label label-success arrowed-in arrowed-in-right">' + status.Value + '</span>';
+                        break;
+                    case "Shipped":
+                        html = '<span class="label label-info arrowed">' + status.Value + '</span>';
+                        break;
+                    case "Cancel":
+                        html = '<span class="label label-gray arrowed">' + status.Value + '</span>';
+                        break;
+                    case "Refund":
+                        html = '<span class="label label-important arrowed">' + status.Value + '</span>';
+                        break;
+                    case "ShipCancel":
+                        html = '<span class="label label-important arrowed">' + status.Value + '</span>';
+                        break;
+                }
             }
             $(element).html(html);
         }

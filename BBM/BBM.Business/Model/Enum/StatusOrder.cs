@@ -6,7 +6,12 @@ using System.Web;
 
 namespace BBM.Business.Models.Enum
 {
-    public enum StatusProductsSwitch
+    public enum StatusOrder_Branches
+    {
+        [Display(Name = "Đã xuất", ShortName = "Exported")]
+        Exported = 1,
+    }
+    public enum StatusOrder_Switch
     {
         [Display(Name = "Đang xử lý", ShortName = "Process")]
         Process = 1,
@@ -48,19 +53,5 @@ namespace BBM.Business.Models.Enum
         Refund = 5,
         [Display(Name = "Giao hàng thất bại", ShortName = "ShipCancel")]
         ShipCancel = 6            
-    }
-
-    public enum PTTT
-    {
-        [Display(Name = "Tiền mặt")]
-        Cash = 1,
-        [Display(Name = "Chuyển khoản")]
-        BankTransfer = 2,
-        [Display(Name = "Tiền mặt tỉnh")]
-        CashOutHCM = 3,
-        [Display(Name = "Thanh toán trực tuyến")]
-        OnlinePayment = 4,
-        [Display(Name = "Bằng thẻ ngân hàng khi nhận hàng")]
-        BankCardOnDelivery = 5
     }
 }

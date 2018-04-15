@@ -93,7 +93,7 @@ Filter.mvFilter_Search_Control = function (type, isNotFilter) {
             self.LstBranches(data);
         });
         self.listStatus(statusProducts);
-        self.listStatusVAT(lstStatusVAT);
+        self.listStatusVAT(statusVAT);
         self.ValueFilter(0);
     }
     if (self.typeFilter() == 'Order_Output'

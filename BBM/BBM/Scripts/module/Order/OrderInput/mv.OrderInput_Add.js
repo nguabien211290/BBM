@@ -64,7 +64,7 @@ Order.mvOrderInputAdd = function (Products, OrderSuppliersId) {
                     newObj.Code(data.Data.result.product.masp);
                     if (data.Data.result.product.SuppliersName)
                         newObj.SuppliersName(data.Data.result.product.SuppliersName);
-                    newObj.Price(data.Data.result.product.PriceBase);
+                    newObj.Price(data.Data.result.product.PriceInput);
                     newObj.PriceCompare(data.Data.result.product.PriceCompare);
                     newObj.Stock_Total(data.Data.result.product.Stock_Total);
                     newObj.PriceBase(data.Data.result.product.PriceBase);

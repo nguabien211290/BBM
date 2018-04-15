@@ -316,7 +316,7 @@
                     <!-- /ko-->
                     <!-- ko if: $parents[0].mDisplayProductSample().IsVAT() -->
                     <td>
-                        <!--ko foreach: $parents[0].lstStatusVAT -->
+                        <!--ko foreach: $parents[0].statusVAT -->
                         <!--ko if:  $parents[0].product().StatusVAT() == $data.Key && $parents[0].product().StatusVAT() != 0 -->
                         <span data-bind="text: $data.Value"></span>
                         <!--/ko -->
@@ -414,7 +414,7 @@
                                                     <div class="profile-info-row">
                                                         <div class="profile-info-name">VAT</div>
                                                         <div class="profile-info-value text-left">
-                                                            <select class="span12" data-bind="options: $parents[0].lstStatusVAT , value: product().StatusVAT, optionsText:'Value',optionsValue:'Key'"></select>
+                                                            <select class="span12" data-bind="options: $parents[0].statusVAT , value: product().StatusVAT, optionsText:'Value',optionsValue:'Key'"></select>
                                                         </div>
                                                     </div>
                                                 </div>

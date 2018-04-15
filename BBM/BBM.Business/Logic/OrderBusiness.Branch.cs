@@ -25,7 +25,6 @@ namespace BBM.Business.Logic
             model.TypeOrder = (int)TypeOrder.OrderBranches;
             model.DateCreate = DateTime.Now;
             model.EmployeeCreate = User.UserId;
-            model.Status = (int)StatusOrder_Input.Process;
 
             var objOrder = Mapper.Map<soft_Order>(model);
 

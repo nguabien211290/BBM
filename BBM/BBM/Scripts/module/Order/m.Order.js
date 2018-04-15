@@ -48,7 +48,7 @@ Order.mOrder = function () {
     self.DisscountValue = ko.observable();
     self.DisscountCode = ko.observable();
     self.StatusPrint = ko.observable();
-
+    self.OrderFromId = ko.observable();
 };
 Order.mOrderDetail = function () {
     var self = this;

@@ -58,6 +58,9 @@
             <th data-bind="text: $parents[0].isRequestlistOrder()? 'Kho yêu cầu' : 'Đến kho'"></th>
             <th class="sorting" data-bind="click: function(){ Sortby('DateCreate'),SortbyDesc(SortbyDesc()?false:true)}">Ngày tạo</th>
             <th class="sorting" data-bind="click: function(){ Sortby('Total'),SortbyDesc(SortbyDesc()?false:true)}">Số lượng</th>
+            <!--ko if: !$parents[0].isRequestlistOrder() -->
+            <th>Trạng thái</th>
+            <!--/ko-->
             <th>Ghi chú</th>
         </tr>
     </thead>
@@ -76,6 +79,11 @@
             <td>
                 <span data-bind="text: Total"></span>
             </td>
+            <!--ko if: !$parents[1].isRequestlistOrder() -->
+            <td>
+                <span data-bind="renderStatus:Status, typeStatus:'Order_Braches'"></span>
+            </td>
+            <!--/ko -->
             <td>
                 <span data-bind="text: Note"></span>
             </td>

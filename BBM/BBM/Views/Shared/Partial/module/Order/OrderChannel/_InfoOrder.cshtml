@@ -50,7 +50,7 @@
                 <div class="profile-info-row">
                     <div class="profile-info-name">Trạng thái</div>
                     <div class="profile-info-value">
-                        <select data-bind="options: statausOrder, optionsText: 'Value',optionsValue:'Key', value: StatusOrder, attr : {'disabled' : DisabledStatus}" style="width:90%!important"></select>
+                        <select data-bind="options: statusOrder_Sale, optionsText: 'Value',optionsValue:'Key', value: StatusOrder, attr : {'disabled' : DisabledStatus}" style="width:90%!important"></select>
                         @*<span data-bind="renderStatus:mOrderSale().Status, typeStatus:'Order_Channel'"></span>*@
                     </div>
                 </div>
@@ -152,7 +152,7 @@
                 <div class="profile-info-row">
                     <div class="profile-info-name">PT Thanh toán</div>
                     <div class="profile-info-value">
-                        <!-- ko foreach: typePTTT-->
+                        <!-- ko foreach: typePaymentMethods-->
                         <!-- ko if: $data.Key == $parents[0].mOrderSale().pttt() -->
                         <span class="editable editable-click" data-bind="text: $data.Value"></span>
                         <!--/ko-->

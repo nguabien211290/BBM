@@ -175,7 +175,7 @@ namespace BBM.Controllers
                 objOrder.EmployeeCreate = User.UserId;
                 objOrder.TypeOrder = (int)TypeOrder.Switch;
 
-                objOrder.Status = (int)StatusProductsSwitch.Done;
+                objOrder.Status = (int)StatusOrder_Switch.Done;
 
                 _crud.Add<soft_Order>(objOrder);
 

@@ -12,13 +12,17 @@ R- Hủy đơn k hồi stock
 R- Trong logic phần mềm, khi trừ 5% cho khách, e có tích lũy điểm, đơn đó không? tích điểm mặc dù đã giảm 5% cái sau giảm có nghĩa trả tiển bn thì tích bấy nhiu
 
 Nhập hàng:
-- Trong trang nhập hàng, hiện tại mình đang để hiện cột giá cơ bản để tính tổng tiền. Em đổi thành giá nhập mới nhé. 
+R- Trong trang nhập hàng, hiện tại mình đang để hiện cột giá cơ bản để tính tổng tiền. Em đổi thành giá nhập mới nhé. 
 
 Đăt hang nội bộ:
-- Kho đặt, thì chỗ chọn kho xuất phải là "Kho xuất đi" chứ không phải kho xuất đến như hiện tại, gây nhầm lẫn.
-- Khi bấm tạo phiếu xuất kho từ phiếu đặt thì SL xuất của 1 sp chỉ là 1 (trong khi đặt nhiều hơn 1)
-- Trong ds đơn đặt hàng nội bộ ở kho xuất, Em cho thêm trạng thái "Đã xuất" để phân biệt với đơn đặt hàng chưa xuất nhé 
+R- Kho đặt, thì chỗ chọn kho xuất phải là "Kho xuất đi" chứ không phải kho xuất đến như hiện tại, gây nhầm lẫn.
+R- Khi bấm tạo phiếu xuất kho từ phiếu đặt thì SL xuất của 1 sp chỉ là 1 (trong khi đặt nhiều hơn 1)
+R- Trong ds đơn đặt hàng nội bộ ở kho xuất, Em cho thêm trạng thái "Đã xuất" để phân biệt với đơn đặt hàng chưa xuất nhé 
  
+R -Em cho xếp theo thứ tự ưu tiên sau nhé:
+- Tên sp
+- Nếu tên trùng thì Mã sp
+
 Phiếu tra hang:
 Việc khách đổi trả nếu làm theo cách hủy hóa đơn và làm lại hđ khác sẽ káh lâu vì tìm hóa đơn, chưa kể hàng Shopee và Lazada trả về không biết trong hóa đơn nào, rất bất tiện nên tốt nhất em làm giùm anh chức năng là Phíêu trả hàng, tương tự như hóa đơn bán hàng thôi, nhưng ngược lại khi hòan thành:
 - Stock: hóa đơn trừ ra, trả hàng cộng vào

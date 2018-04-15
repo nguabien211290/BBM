@@ -49,6 +49,8 @@ namespace BBM.Business.Models.Module
         public Product_StockModel product_stock { get; set; }
         public ProductSampleModel product { get; set; }
         public int orderedSaleAdvbyChannel { get; set; }
+        public double Total { get; set; }
+        public long? OrderFromId { get; set; }
     }
 
     public class Product_PriceModel

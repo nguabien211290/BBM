@@ -314,7 +314,7 @@ namespace BBM.Controllers
                 if (quantity > 0)
                 {
                     if (string.IsNullOrEmpty(pageinfo.sortby))
-                        products = Mapper.Map<List<ProductSampleModel>>(lstTmp.OrderBy(o => o.tensp).Skip(min).Take(quantity));
+                        products = Mapper.Map<List<ProductSampleModel>>(lstTmp.OrderBy(o => o.tensp).ThenBy(o => o.masp).Skip(min).Take(quantity));
                     else
                         products = Mapper.Map<List<ProductSampleModel>>(lstTmp.Skip(min).Take(quantity));
                 }
