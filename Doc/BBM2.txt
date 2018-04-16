@@ -11,6 +11,10 @@ R- phí vận chuyển, ngòaii giờ, thu hộ, phí đơn hàng chưa đủ 20
 R- Hủy đơn k hồi stock
 R- Trong logic phần mềm, khi trừ 5% cho khách, e có tích lũy điểm, đơn đó không? tích điểm mặc dù đã giảm 5% cái sau giảm có nghĩa trả tiển bn thì tích bấy nhiu
 - đơn hàng anh đặt lại, khi in lại in đơn cũ?
+-1 đơn hàng a nhập mới, khi bấm đặt hàng xong nó k mất thông tin để nhập đơn mới
+
+
+
 Nhập hàng:
 - Trong trang nhập hàng, hiện tại mình đang để hiện cột giá cơ bản để tính tổng tiền. Em đổi thành giá nhập mới nhé. 
 
