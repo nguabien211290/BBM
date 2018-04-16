@@ -1,5 +1,5 @@
 ﻿Đơn hàng trên web:
-R- Bên ngoài danh sách đơn hàng em cho cập nhật trạng thái luôn được không,theo dạng dropdown list rồi chọn trạng thái. Chứ mỗi lần đổi trạng thái khác phải bấm vào đơn hàng, rồi đóng tab khá mất công.
+- Bên ngoài danh sách đơn hàng em cho cập nhật trạng thái luôn được không,theo dạng dropdown list rồi chọn trạng thái. Chứ mỗi lần đổi trạng thái khác phải bấm vào đơn hàng, rồi đóng tab khá mất công.
 R- Đơn hành đặt lại không cập nhật được
 R- Thêm tỉnh thành và quận huyện trong khung địa chỉ
 R- Đưa thông tin phương thức thanh toán và thời gian giao hàng cho hiển thị trong hóa đơn nhé
@@ -10,19 +10,15 @@ R- Trên soft không giảm 5% của khách web và cũng không trừ 1000 đi�
 R- phí vận chuyển, ngòaii giờ, thu hộ, phí đơn hàng chưa đủ 200k 
 R- Hủy đơn k hồi stock
 R- Trong logic phần mềm, khi trừ 5% cho khách, e có tích lũy điểm, đơn đó không? tích điểm mặc dù đã giảm 5% cái sau giảm có nghĩa trả tiển bn thì tích bấy nhiu
-
+- đơn hàng anh đặt lại, khi in lại in đơn cũ?
 Nhập hàng:
-R- Trong trang nhập hàng, hiện tại mình đang để hiện cột giá cơ bản để tính tổng tiền. Em đổi thành giá nhập mới nhé. 
+- Trong trang nhập hàng, hiện tại mình đang để hiện cột giá cơ bản để tính tổng tiền. Em đổi thành giá nhập mới nhé. 
 
 Đăt hang nội bộ:
-R- Kho đặt, thì chỗ chọn kho xuất phải là "Kho xuất đi" chứ không phải kho xuất đến như hiện tại, gây nhầm lẫn.
-R- Khi bấm tạo phiếu xuất kho từ phiếu đặt thì SL xuất của 1 sp chỉ là 1 (trong khi đặt nhiều hơn 1)
-R- Trong ds đơn đặt hàng nội bộ ở kho xuất, Em cho thêm trạng thái "Đã xuất" để phân biệt với đơn đặt hàng chưa xuất nhé 
+- Kho đặt, thì chỗ chọn kho xuất phải là "Kho xuất đi" chứ không phải kho xuất đến như hiện tại, gây nhầm lẫn.
+- Khi bấm tạo phiếu xuất kho từ phiếu đặt thì SL xuất của 1 sp chỉ là 1 (trong khi đặt nhiều hơn 1)
+- Trong ds đơn đặt hàng nội bộ ở kho xuất, Em cho thêm trạng thái "Đã xuất" để phân biệt với đơn đặt hàng chưa xuất nhé 
  
-R -Em cho xếp theo thứ tự ưu tiên sau nhé:
-- Tên sp
-- Nếu tên trùng thì Mã sp
-
 Phiếu tra hang:
 Việc khách đổi trả nếu làm theo cách hủy hóa đơn và làm lại hđ khác sẽ káh lâu vì tìm hóa đơn, chưa kể hàng Shopee và Lazada trả về không biết trong hóa đơn nào, rất bất tiện nên tốt nhất em làm giùm anh chức năng là Phíêu trả hàng, tương tự như hóa đơn bán hàng thôi, nhưng ngược lại khi hòan thành:
 - Stock: hóa đơn trừ ra, trả hàng cộng vào
@@ -37,7 +33,8 @@ Các thông tin anh cần đồng bộ trên Shopee (SP) như sau:
 
 Sản pham
 -và mấy giá kênh lúc trc a nói em làm tròn số hàng ngàn
-
+-cái áp dụng công thức hàng lọat k work hả e
+-giá = 0,mất nhà PP,giá nhập cũ, mới, cơ bản
 
 IN
 -mà sao phíêu xuất kho chữ to quá
@@ -58,5 +55,3 @@ Cho nên anh có ý thế này, em xem làm giùm anh nhé:
 Là khi màn hình in ten còn sẵn mấy cái tem chưa in, khi chuyển in tem từ đơn hàng khác qua thì em cho xếp tiếp theo bên dưới, chứ đừng đè lên các tên đang có. Có nghĩa là số tem cộng dồn nhé, khi nào in xong cái nào thì xóa cái đó thôi.
 Nếu em chưa rõ thì cứ gọi anh giải thích nhé
 
-229 bà hat f13	q10 01293613456 Vietnammobile
-291A Tô Hiến Thành, Q. 10 Mobile phone
