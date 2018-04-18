@@ -1,7 +1,7 @@
 ﻿var Order = Order || {};
 Order.mvOrderSale = function (OrderId) {
     var self = this;
-
+    debugger
     self.isChannelOnline = ko.observable(false);
     self.OrderCloneId = ko.observable(OrderCloneId);
     self.OrderSaleId = ko.observable(OrderId);
@@ -355,9 +355,11 @@ Order.mvOrderSale = function (OrderId) {
             if (!data.isError) {
                 self.mOrderSale().Code(data.Data.Code);
                 if (data.Data.isPrint)
-                    CommonUtils.Print("printordersales_" + self.OrderSaleId());
+                    CommonUtils.Print("printordersales_" + OrderId);
                 debugger
-                //self.GetInfoOrder();
+                if (OrderId == 0)
+                    self.OrderSaleId(OrderId);
+                self.GetInfoOrder();
             }
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
         }).always(function () {
@@ -408,7 +410,7 @@ Order.mvOrderSale = function (OrderId) {
                 if (data == null)
                     return
                 if (!data.isError) {
-                    CommonUtils.Print("printordersales_" + self.OrderSaleId());
+                    CommonUtils.Print("printordersales_" + OrderId);
                 }
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
             }).always(function () {

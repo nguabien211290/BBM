@@ -139,3 +139,25 @@ Common.mvCity = function () {
         })
     };
 };
+Common.mvProvince = function () {
+    var self = this;
+    self.District = ko.observableArray([
+        { value: 1, name: 'Quận 1' },
+        { value: 2, name: 'Quận 2' }
+    ]);
+    self.Provinceslst = ko.observableArray([
+    { value: 1, name: 'Phường tân thới hòa', province: 1 },
+    { value: 2, name: 'Phường tân thới hòa 12', province: 1 },
+    { value: 3, name: 'Phường tân an', province: 2 }
+    ]);
+    self.Provinces = function (districtId) {
+        var rs = [];
+        if (districtId) {
+            ko.utils.arrayForEach(self.Provinceslst(), function (o) {
+                if (o.province == districtId)
+                    rs.push(o);
+            });
+        }
+        return rs;
+    }
+};
