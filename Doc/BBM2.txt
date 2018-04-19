@@ -18,9 +18,6 @@ Các thông tin anh cần đồng bộ trên Shopee (SP) như sau:
 Sản pham
 -và mấy giá kênh lúc trc a nói em làm tròn số hàng ngàn
 
-IN
--mà sao phíêu xuất kho chữ to quá
-- ‌linghhieght in hoa don giam	
 
 Report
 1. Tổng doanh số bán hàng các kênh (tính tổng thanh tóan trên các đơn hàng), lọc theo ngày, người bán, ngừơi giao hàng,...: 1
