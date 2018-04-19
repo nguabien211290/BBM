@@ -75,5 +75,23 @@ namespace BBM.Business.Infractstructure
             return role;
 
         }
+
+        public static double Round_Double(double value, int digits)
+        {
+            if (digits >= 0)
+                return Math.Round(value, digits);
+
+            double n = Math.Pow(10, -digits);
+            return Math.Round(value / n, 0) * n;
+        }
+
+        public static decimal Round_Decimal(decimal d, int decimals)
+        {
+            if (decimals >= 0)
+                return decimal.Round(d, decimals);
+
+            decimal n = (decimal)Math.Pow(10, -decimals);
+            return decimal.Round(d / n, 0) * n;
+        }  
     }
 }

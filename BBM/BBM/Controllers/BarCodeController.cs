@@ -28,9 +28,9 @@ namespace BBM.Controllers
                 var rs = new List<Prodcut_Branches_PriceChannel>();
                 foreach (var item in products)
                 {
-                    if (item.Product.id > 0)
+                    if (item.ProductId > 0)
                     {
-                        var product = _context.shop_sanpham.Find(item.Product.id);
+                        var product = _context.shop_sanpham.Find(item.ProductId);
                         if (product != null)
                         {
                             var pro = Mapper.Map<ProductSampleModel>(product);

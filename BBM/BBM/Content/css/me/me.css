@@ -3,8 +3,8 @@
 }
 
 @media print {
-    div {
-        border: 1px solid white;
+    .row-fluid div {
+       min-height:20px !important
     }
 
     html, body, .font {
@@ -554,4 +554,7 @@ input[type="file"]#file-upload {
     margin-top: 0px;
     float: left;
     background: white;
+}
+.line_height_min {
+    line-height: 0.1;
 }

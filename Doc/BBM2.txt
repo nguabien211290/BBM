@@ -1,28 +1,8 @@
 ﻿Đơn hàng trên web:
-- Bên ngoài danh sách đơn hàng em cho cập nhật trạng thái luôn được không,theo dạng dropdown list rồi chọn trạng thái. Chứ mỗi lần đổi trạng thái khác phải bấm vào đơn hàng, rồi đóng tab khá mất công.
-R- Đơn hành đặt lại không cập nhật được
-R- Thêm tỉnh thành và quận huyện trong khung địa chỉ
-R- Đưa thông tin phương thức thanh toán và thời gian giao hàng cho hiển thị trong hóa đơn nhé
-R- Đưa ghi chú đơn hàng vào khung ghi chú
-R- Còn cái nữa là Giang cho tất cả phí (vận chuyển, ngòaii giờ, thu hộ, phí đơn hàng chưa đủ 200k,...) vào ô phí khác nhé
-R- Khi khách đặt hàng thì tích lũy điểm cho khách- Khi đơn hàng đó hủy thì điểm cũng bị trừ tưng ứng số tiền đơn hàng. Hiện tại đơn hủy nhưng điểm không trừ, vd đơn 50195, em xem lại nhé
-R- Trên soft không giảm 5% của khách web và cũng không trừ 1000 điểm luôn
-R- phí vận chuyển, ngòaii giờ, thu hộ, phí đơn hàng chưa đủ 200k 
-R- Hủy đơn k hồi stock
-R- Trong logic phần mềm, khi trừ 5% cho khách, e có tích lũy điểm, đơn đó không? tích điểm mặc dù đã giảm 5% cái sau giảm có nghĩa trả tiển bn thì tích bấy nhiu
-- đơn hàng anh đặt lại, khi in lại in đơn cũ?
--1 đơn hàng a nhập mới, khi bấm đặt hàng xong nó k mất thông tin để nhập đơn mới
+- Theo quy định thì các sp đang KM giảm giá nếu khách đủ điểm cũng không được tính vào giảm 5% thành viên
+- Nhưng trên hóa đơn tính tiền thì không thể bíêt sp KM vì chỉ hiện giá KM chứ không hiện giá gốc, nên các bạn tính tiền sẽ không biết và giảm thêm 5% cho khách.
+  Vây làm cách nào mình thêm giá gốc vào hóa đơn đựơc không Giang? và thêm dấu gạch ngang cái giá đó
 
-
-
-Nhập hàng:
-- Trong trang nhập hàng, hiện tại mình đang để hiện cột giá cơ bản để tính tổng tiền. Em đổi thành giá nhập mới nhé. 
-
-Đăt hang nội bộ:
-- Kho đặt, thì chỗ chọn kho xuất phải là "Kho xuất đi" chứ không phải kho xuất đến như hiện tại, gây nhầm lẫn.
-- Khi bấm tạo phiếu xuất kho từ phiếu đặt thì SL xuất của 1 sp chỉ là 1 (trong khi đặt nhiều hơn 1)
-- Trong ds đơn đặt hàng nội bộ ở kho xuất, Em cho thêm trạng thái "Đã xuất" để phân biệt với đơn đặt hàng chưa xuất nhé 
- 
 Phiếu tra hang:
 Việc khách đổi trả nếu làm theo cách hủy hóa đơn và làm lại hđ khác sẽ káh lâu vì tìm hóa đơn, chưa kể hàng Shopee và Lazada trả về không biết trong hóa đơn nào, rất bất tiện nên tốt nhất em làm giùm anh chức năng là Phíêu trả hàng, tương tự như hóa đơn bán hàng thôi, nhưng ngược lại khi hòan thành:
 - Stock: hóa đơn trừ ra, trả hàng cộng vào
@@ -37,8 +17,6 @@ Các thông tin anh cần đồng bộ trên Shopee (SP) như sau:
 
 Sản pham
 -và mấy giá kênh lúc trc a nói em làm tròn số hàng ngàn
--cái áp dụng công thức hàng lọat k work hả e
--giá = 0,mất nhà PP,giá nhập cũ, mới, cơ bản
 
 IN
 -mà sao phíêu xuất kho chữ to quá
@@ -50,12 +28,5 @@ Report
 - Doanh thu từng hóa đơn = tổng doanh thu từng sp trong hóa đơn đó
 - Doanh thu theo ngày của 1 kênh = Tổng doanh thu của các hóa đơn trong ngày đó (tính từng kênh). Chuỗi ngày (từ ... đến...) cũng tương tự.
 
-In
-- Trong tất cả các giao diện mà có in, khi xem lại em cho thêm nút in nhé. Vd hóa đơn CH hoặc hóa đơn xuất kho, in đc có 1 lần, lỡ in sai là bó tay, không in lại được: 2
-- In tem don hang nhap: Em cho in tem từ đơn hàng nhập là khá tốt, nếu cải thiện được việc này nữa là tuyệt vời:
-Có nghĩa là, khi chưa đủ 30 tem thì anh chưa in, chừa tem đó khi nào đủ 1 tờ tem là 20 cái anh mới in.
-Khi nhập hàng có 20 sp chẳng hạn, chuyển qua in tem thì chưa in được, mà để cũng không được, vì đơn hàng khác mà chuyển qua in tem sẽ mất tem đơn hàng cũ, có nghĩa là màn hình in tem chỉ hiện đơn hàng mới nhất.
-Cho nên anh có ý thế này, em xem làm giùm anh nhé:
-Là khi màn hình in ten còn sẵn mấy cái tem chưa in, khi chuyển in tem từ đơn hàng khác qua thì em cho xếp tiếp theo bên dưới, chứ đừng đè lên các tên đang có. Có nghĩa là số tem cộng dồn nhé, khi nào in xong cái nào thì xóa cái đó thôi.
-Nếu em chưa rõ thì cứ gọi anh giải thích nhé
+
 

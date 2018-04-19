@@ -90,7 +90,7 @@ Order.mvOrderInputList = function () {
             contentType: 'application/json; charset=utf-8',
             data: ko.toJSON({ id: val.Id() }),
         }).done(function (data) {
-           if (data.isError)
+            if (data.isError)
                 CommonUtils.notify("Thông báo", data.messaging, 'error');
             else
                 ko.utils.arrayForEach(self.lstOrder_Input(), function (o) {
@@ -103,7 +103,14 @@ Order.mvOrderInputList = function () {
         });
     };
     self.ReturnViewBarcode = function (val) {
-        var data = { products: val.Detail() }
+        var dataPush = [];
+        ko.utils.arrayForEach(val.Detail(), function (obj) {
+            dataPush.push({
+                ProductId: obj.ProductId(),
+                Total: obj.Total()
+            });
+        })
+        var data = { products: dataPush }
         CommonUtils.addTabDynamic('In Tem', CommonUtils.url('/Barcode/RenderView'), '#contentX', true, data);
     };
 

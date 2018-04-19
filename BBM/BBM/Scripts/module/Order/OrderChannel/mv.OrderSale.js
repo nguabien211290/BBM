@@ -122,7 +122,7 @@ Order.mvOrderSale = function (OrderId) {
     });
 
     self.CustommerMoneyTake = ko.computed(function () {
-        var sum = (self.mOrderSale().TotalMoney() + self.mOrderSale().TotalOrther());
+        var sum = (self.mOrderSale().TotalMoney() + self.mOrderSale().TotalOrther() + self.mOrderSale().phithuho());
         if (self.DisscountType() == 'Code') {
             if (self.mOrderSale().DisscountType() == 1)
                 return sum - self.mOrderSale().DisscountValue();
