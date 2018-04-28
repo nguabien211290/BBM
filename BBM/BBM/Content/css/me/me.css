@@ -558,3 +558,4 @@ input[type="file"]#file-upload {
 .line_height_min {
     line-height: 0.1;
 }
+.text-linethrough{text-decoration:line-through}

@@ -22,6 +22,7 @@ namespace BBM.Business.Models.Module
         public double Stock_Total { get; set; }
         public double Stock_Sum { get; set; }
 
+        public int Price { get; set; }
         public int PriceBase { get; set; }
         public int PriceBase_Old { get; set; }
         public int PriceInput { get; set; }

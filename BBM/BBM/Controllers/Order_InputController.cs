@@ -439,54 +439,5 @@ namespace BBM.Controllers
             }
 
         }
-
-        private void UpdatePriceCompare(OrderModel order)
-        {
-            foreach (var item in order.Detail)
-            {
-                var product = _context.shop_sanpham.Find(item.ProductId);
-                if (product != null)
-                {
-                    var newProduct = new shop_sanpham
-                    {
-                        id = product.id
-                    };
-
-                    newProduct.PriceCompare = item.PriceCompare;
-
-                    _crud.Update<shop_sanpham>(newProduct, o => o.PriceCompare);
-                }
-            }
-        }
-
-        private void UpdatePrice_Channel(OrderModel order)
-        {
-            foreach (var item in order.Detail)
-            {
-                if (item.PriceChannels != null && item.PriceChannels.Count > 0)
-                    foreach (var pricechannel in item.PriceChannels)
-                    {
-                        var product = _context.shop_sanpham.Find(item.ProductId);
-                        if (product != null)
-                        {
-                            var hasprice = product.soft_Channel_Product_Price.FirstOrDefault(o => o.ChannelId == pricechannel.Id && o.ProductId == item.ProductId);
-                            if (hasprice != null)
-                            {
-                                var obj = new soft_Channel_Product_Price
-                                {
-                                    Price = pricechannel.Price,
-                                    Id = hasprice.Id,
-                                    ChannelId = hasprice.ChannelId,
-                                    ProductId = item.ProductId,
-                                    DateCreate = hasprice.DateCreate,
-                                    EmployeeCreate = hasprice.EmployeeCreate,
-                                };
-                                _crud.Update<soft_Channel_Product_Price>(obj, o => o.Price);
-                            }
-                        }
-                    }
-            }
-
-        }
     }
 }

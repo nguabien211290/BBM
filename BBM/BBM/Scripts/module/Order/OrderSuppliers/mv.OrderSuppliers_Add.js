@@ -40,7 +40,7 @@ Order.mvOrderSuppliersAdd = function () {
             CommonUtils.showWait(true);
             $.ajax({
                 type: "GET",
-                url: CommonUtils.url("/Partial/GetProductbyId"),
+                url: CommonUtils.url("/Product/GetProductbyId"),
                 cache: false,
                 data: { productId: val },
             }).done(function (data) {

@@ -37,27 +37,6 @@ namespace BBM.Controllers
         {
             return PartialView("~/Views/Shared/Partial/module/Product/Product.cshtml");
         }
-        public JsonResult GetProductbyId(int Id)
-        {
-            var Messaging = new RenderMessaging();
-            try
-            {
-                var product = _context.shop_sanpham.Find(Id);
-                if (product == null)
-                {
-                    Messaging.isError = true;
-                    Messaging.messaging = "Sản phẩm không tồn tại.";
-                }
-                Messaging.Data = Mapper.Map<ProductSampleModel>(product);
-            }
-            catch
-            {
-                Messaging.isError = true;
-                Messaging.messaging = "Hiển thị sản phẩm không thành công!";
-            }
-            return Json(Messaging, JsonRequestBehavior.AllowGet);
-        }
-
         public JsonResult GetProductby(PagingInfo pageinfo)
         {
             var Messaging = new RenderMessaging();
@@ -546,105 +525,6 @@ namespace BBM.Controllers
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
 
-
-        [HttpPost]
-        public JsonResult GetPriceByChannel(int ProductId)
-        {
-            var Messaging = new RenderMessaging();
-            try
-            {
-                var rs = 0;
-                var priceChannel = _context.soft_Channel_Product_Price.FirstOrDefault(o => o.ProductId == ProductId && o.ChannelId == User.ChannelId);
-                if (priceChannel != null)
-                    rs = priceChannel.Price;
-                Messaging.Data = rs;
-            }
-            catch
-            {
-                Messaging.isError = true;
-                Messaging.messaging = "Hiển thị giá theo kênh không thành công!";
-            }
-            return Json(Messaging, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult Research(string keyword)
-        {
-            var Messaging = new RenderMessaging();
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(keyword))
-                {
-                    //  var lstTmp = from product in _context.shop_sanpham select product;
-
-                    var products = _context.shop_sanpham.Select(product => new ProductSampleModel
-                    {
-                        id = product.id,
-                        masp = product.masp,
-                        Barcode = product.Barcode,
-                        tensp = product.tensp,
-
-                        SuppliersName = product.soft_Suppliers.Name,
-                        Stock_Total = product.soft_Branches_Product_Stock.FirstOrDefault(o => o.BranchesId == User.BranchesId && o.ProductId == product.id) != null ? product.soft_Branches_Product_Stock.FirstOrDefault(o => o.BranchesId == User.BranchesId && o.ProductId == product.id).Stock_Total : 0,
-
-                        PriceCompare = product.PriceCompare.HasValue ? product.PriceCompare.Value : 0,
-                        PriceBase = product.PriceBase.HasValue ? product.PriceBase.Value : 0,
-                        PriceBase_Old = product.PriceBase_Old.HasValue ? product.PriceBase_Old.Value : 0,
-                        PriceInput = product.PriceInput.HasValue ? product.PriceInput.Value : 0,
-                        PriceChannel = product.soft_Channel_Product_Price.FirstOrDefault(o => o.ChannelId == User.ChannelId) != null ? product.soft_Channel_Product_Price.FirstOrDefault(o => o.ChannelId == User.ChannelId).Price : 0,
-
-
-
-
-                        // Mapper.Map<List<Channel_Product_PriceModel>>(product.soft_Channel_Product_Price.Where(o => o.ProductId == product.id).Select(o => o.Id).ToList())
-                    });
-
-
-
-                    //var products = lstTmp.ToList();// Mapper.Map<List<ProductSampleModel>>(lstTmp.ToList());
-                    #region Search
-                    if (!string.IsNullOrEmpty(keyword))
-                    {
-                        keyword = keyword.ToLower();
-                        products = products.Where(o =>
-                           (!string.IsNullOrEmpty(o.tensp) && o.tensp.ToLower().Contains(keyword))
-                         || (!string.IsNullOrEmpty(o.Barcode) && o.Barcode.ToLower().Contains(keyword))
-                         || (!string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Contains(keyword))
-                        );
-                    }
-
-
-                    #endregion
-                    var result = products.ToList();
-
-                    foreach (var item in result)
-                    {
-                        var channelprice = _context.soft_Channel_Product_Price.Where(o => o.ProductId == item.id).Select(a => new Order_PriceChannelsModel
-                        {
-
-                            Id = a.ChannelId,
-                            Price = a.Price,
-                            Channel = a.soft_Channel.Channel,
-                            Enddate_Discount = a.Enddate_Discount.HasValue ? a.Enddate_Discount.Value : default(DateTime),
-                            StartDate_Discount = a.StartDate_Discount.HasValue ? a.StartDate_Discount.Value : default(DateTime),
-                            Price_Discount = a.Price_Discount.HasValue ? a.Price_Discount.Value : 0
-                        }).ToList();
-
-                        item.PriceChannels = channelprice;
-                    }
-
-                    Messaging.Data = result;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Messaging.isError = true;
-                Messaging.messaging = "Tìm kiếm sản phẩm có lỗi!";
-            }
-            return Json(Messaging, JsonRequestBehavior.AllowGet);
-        }
-
         private RenderMessaging Validate_Product(ProductSampleModel model)
         {
             var Messaging = new RenderMessaging();
@@ -686,8 +566,8 @@ namespace BBM.Controllers
                 if (pricechannel != null)
                 {
                     if (pricechannel.Price != model.Price)
-                    {
-                        pricechannel.Price = model.Price;
+                    {                    
+                        pricechannel.Price = Convert.ToInt32(Helpers.Round_Double(model.Price, -3));;
                         pricechannel.DateUpdate = DateTime.Now;
                         pricechannel.EmployeeUpdate = User.UserId;
 
@@ -700,7 +580,7 @@ namespace BBM.Controllers
                 {
                     var data = new soft_Channel_Product_Price
                     {
-                        Price = model.Price,
+                        Price = pricechannel.Price = Convert.ToInt32(Helpers.Round_Double(model.Price, -3)),
                         ChannelId = User.ChannelId,
                         ProductId = model.ProductId,
                         DateCreate = DateTime.Now,
@@ -727,7 +607,6 @@ namespace BBM.Controllers
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
-
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Products_Price_Discount })]
         [HttpPost]
@@ -770,7 +649,7 @@ namespace BBM.Controllers
 
                 if (pricechannel != null)
                 {
-                    pricechannel.Price_Discount = item.Price_Discount;
+                    pricechannel.Price_Discount = Convert.ToInt32(Helpers.Round_Double(item.Price_Discount, -3));
                     pricechannel.StartDate_Discount = item.StartDate_Discount;
                     pricechannel.Enddate_Discount = item.Enddate_Discount;
                     pricechannel.DateUpdate = DateTime.Now;
@@ -792,7 +671,7 @@ namespace BBM.Controllers
                         ChannelId = item.ChannelId,
                         ProductId = item.ProductId,
 
-                        Price_Discount = item.Price_Discount,
+                        Price_Discount = Convert.ToInt32(Helpers.Round_Double(item.Price_Discount, -3)),
                         StartDate_Discount = item.StartDate_Discount,
                         Enddate_Discount = item.Enddate_Discount,
 
@@ -813,5 +692,200 @@ namespace BBM.Controllers
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
+
+        #region Search
+
+        public JsonResult GetProductbyId(int productId)
+        {
+            var note = string.Empty;
+            var Messaging = new RenderMessaging();
+
+            var product = _context.shop_sanpham.Find(productId);
+
+            if (product == null)
+            {
+                Messaging.Data = new { result = "Sản phẩm không tồn tại." };
+                Messaging.isError = true;
+                return Json(Messaging, JsonRequestBehavior.AllowGet);
+            }
+
+            var orderProduct = _context.soft_Order_Child.Where(o => o.ProductId == productId).ToList();
+
+            var orderedSup = orderProduct.FirstOrDefault(o =>
+                                                        o.soft_Order.TypeOrder == (int)TypeOrder.OrderProduct
+                                                        && o.Status == (int)StatusOrder_Suppliers.Process);
+            if (orderedSup != null)
+            {
+                var productcheck = _context.shop_sanpham.Find(orderedSup.ProductId);
+                if (productcheck != null)
+                    note += " Đơn hàng số " + orderedSup.OrderId + " đã đặt sản phẩm " + productcheck.tensp + " ngày " + orderedSup.soft_Order.DateCreate + ".";
+            }
+
+            var price = Mapper.Map<Product_PriceModel>(_context.soft_Channel_Product_Price.FirstOrDefault(o => o.ProductId == product.id && o.ChannelId == User.ChannelId));
+
+            var stocks = Mapper.Map<List<Product_StockModel>>(_context.soft_Branches_Product_Stock.Where(o => o.ProductId == product.id).ToList());
+            var stock = stocks.FirstOrDefault(o => o.BranchesId == User.BranchesId);
+
+            var productInfo = new Prodcut_Branches_PriceChannel
+            {
+                product_price = price ?? price,
+                product_stock = stock ?? stock,
+                product = Mapper.Map<ProductSampleModel>(product),
+                product_stocks = stocks
+            };
+            if (product.soft_Suppliers != null)
+                productInfo.product.SuppliersName = product.soft_Suppliers.Name;
+            if (product.soft_Branches_Product_Stock != null)
+            {
+                var stockbyBranches = product.soft_Branches_Product_Stock.FirstOrDefault(o => o.BranchesId == User.BranchesId);
+                if (stockbyBranches != null)
+                    productInfo.product.Stock_Total = stockbyBranches.Stock_Total;
+            }
+            Messaging.Data = new { result = productInfo, note = note };
+            Messaging.isError = false;
+            return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult Research(string keyword, string searchType)
+        {
+            var Messaging = new RenderMessaging();
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(keyword))
+                {
+                    keyword = keyword.ToLower();
+
+                    var data = new List<ProductSampleModel>();
+                    if (searchType == "All")
+                    {
+                        var products = _context.shop_sanpham
+                         .Where(o =>
+                            (!string.IsNullOrEmpty(o.tensp) && o.tensp.ToLower().Contains(keyword))
+                          || (!string.IsNullOrEmpty(o.Barcode) && o.Barcode.ToLower().Contains(keyword))
+                          || (!string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Contains(keyword))
+                         )
+                         .OrderBy(o => o.tensp).ThenBy(o => o.masp)
+                         .Select(product => new ProductSampleModel
+                         {
+                             id = product.id,
+                             masp = product.masp,
+                             Barcode = product.Barcode,
+                             tensp = product.tensp,
+                         });
+
+                        data = products.ToList();
+                    }
+                    else
+                    {
+                        var products = _context.shop_sanpham
+                         .Where(o => !string.IsNullOrEmpty(o.masp) && o.masp.ToLower().Equals(keyword))
+                         .OrderBy(o => o.tensp).ThenBy(o => o.masp)
+                         .Select(product => new ProductSampleModel
+                         {
+                             id = product.id,
+                             masp = product.masp,
+                             Barcode = product.Barcode,
+                             tensp = product.tensp,
+                         });
+                        data = products.ToList();
+                    }
+
+
+                    foreach (var item in data)
+                    {
+                        if (!string.IsNullOrEmpty(item.masp) && !string.IsNullOrEmpty(item.tensp))
+                        {
+                            var queryName = item.tensp.ToLower();
+                            if (queryName.Contains(keyword.ToLower()))
+                                item.tensp = queryName.Replace(keyword, "<strong>" + keyword + "</strong> ");
+
+                            var queryCode = item.masp.ToLower();
+                            if (queryCode.Contains(keyword.ToLower()))
+                                item.masp = queryCode.Replace(keyword, "<strong>" + keyword + "</strong> ");
+                        }
+                    }
+
+                    Messaging.Data = data;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Messaging.isError = true;
+                Messaging.messaging = "Tìm kiếm sản phẩm có lỗi!";
+            }
+            return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetProductbyIdForOrder(int productId)
+        {
+            var note = string.Empty;
+            var Messaging = new RenderMessaging();
+
+            var product = _context.shop_sanpham.Select(o => new ProductSampleModel
+            {
+                Barcode = o.Barcode,
+                tensp = o.tensp,
+                masp = o.masp,
+                id = o.id,
+
+            }).FirstOrDefault(o => o.id == productId);
+
+            if (product == null)
+            {
+                Messaging.Data = new { result = "Sản phẩm không tồn tại." };
+                Messaging.isError = true;
+                return Json(Messaging, JsonRequestBehavior.AllowGet);
+            }
+
+
+            var price = _context.soft_Channel_Product_Price.FirstOrDefault(o =>
+            o.ProductId == product.id
+            && o.ChannelId == User.ChannelId);
+
+            product.PriceChannel = 0;
+
+            if (price != null)
+            {
+                if (price.StartDate_Discount.HasValue
+                    && price.Enddate_Discount.HasValue
+                    && price.Price_Discount > 0)
+                {
+                    var dateNow = DateTime.Now;
+
+                    if (dateNow >= price.StartDate_Discount && dateNow < price.Enddate_Discount)
+                    {
+                        product.PriceChannel = price.Price_Discount.Value;
+                        product.Price = price.Price;
+                    }
+                    else
+                    {
+                        if (price.Price > 0)
+                            product.PriceChannel = price.Price;
+                    }
+                }
+                else
+                {
+                    if (price.Price > 0)
+                        product.PriceChannel = price.Price;
+                }
+            }
+
+            //if (price != null && price.Price > 0)
+            //    product.PriceChannel = price.Price;
+            //else
+            //    product.PriceChannel = 0;
+
+            var productInfo = new Prodcut_Branches_PriceChannel
+            {
+                product = product
+            };
+
+            Messaging.Data = new { result = productInfo };
+            Messaging.isError = false;
+            return Json(Messaging, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

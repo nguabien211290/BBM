@@ -36,6 +36,9 @@
                     </td>
                     <td class="text-center">
                         <input data-bind="moneyMaskWithSymbol: Price" class="input-mini" />
+                        <!--ko if: PriceFix() > 0 -->
+                        <p class="text-linethrough" data-bind="textMoneyDefaultSymbol: PriceFix"></p>
+                        <!--/ko-->
                     </td>
                     <!--ko if: $parents[0].IsDisscountbyMark() || Discount() > 0 -->
                     <td class="text-center">

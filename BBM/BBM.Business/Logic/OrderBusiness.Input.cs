@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BBM.Business.Infractstructure;
 using BBM.Business.Model.Entity;
 using BBM.Business.Model.Module;
 using BBM.Business.Models.Enum;
@@ -46,9 +47,7 @@ namespace BBM.Business.Logic
             {
                 UpdatePriceCompare(model);
             }
-
-            //UpdatePrice_Channel(model, User);
-
+            
             await unitOfWork.SaveChanges();
 
             return true;
@@ -107,39 +106,6 @@ namespace BBM.Business.Logic
                     unitOfWork.ProductRepository.Update(product, o => o.PriceCompare);
                 }
             }
-        }
-
-        private void UpdatePrice_Channel(OrderModel order, UserCurrent User)
-        {
-            foreach (var item in order.Detail)
-            {
-
-                var product = unitOfWork.ProductRepository.FindBy(o => o.id == item.ProductId).FirstOrDefault();
-
-                if (product != null)
-                {
-                    var hasprice = product.soft_Channel_Product_Price.FirstOrDefault(o => o.ChannelId == User.ChannelId && o.ProductId == item.ProductId);
-
-                    if (hasprice != null && hasprice.Price != item.Price)
-                    {
-                        hasprice.Price = item.Price;
-
-                        unitOfWork.ChanelPriceRepository.Update(hasprice, o => o.Price);
-                    }
-                    else
-                    {
-                        unitOfWork.ChanelPriceRepository.Add(new soft_Channel_Product_Price
-                        {
-                            ChannelId = User.ChannelId,
-                            Price = item.Price,
-                            ProductId = item.ProductId,
-                            DateCreate = DateTime.Now,
-                            EmployeeCreate = User.UserId
-                        });
-                    }
-                }
-            }
-
         }
     }
 }

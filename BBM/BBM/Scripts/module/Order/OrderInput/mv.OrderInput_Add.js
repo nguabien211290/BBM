@@ -49,7 +49,7 @@ Order.mvOrderInputAdd = function (Products, OrderSuppliersId) {
             CommonUtils.showWait(true, self.idelement());
             $.ajax({
                 type: "GET",
-                url: CommonUtils.url("/Partial/GetProductbyId"),
+                url: CommonUtils.url("/Product/GetProductbyId"),
                 cache: false,
                 data: { productId: val },
             }).done(function (data) {

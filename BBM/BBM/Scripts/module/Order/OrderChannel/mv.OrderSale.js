@@ -122,7 +122,8 @@ Order.mvOrderSale = function (OrderId) {
     });
 
     self.CustommerMoneyTake = ko.computed(function () {
-        var sum = (self.mOrderSale().TotalMoney() + self.mOrderSale().TotalOrther() + self.mOrderSale().phithuho());
+        var sum = (self.mOrderSale().TotalMoney() + self.mOrderSale().TotalOrther() + (self.mOrderSale().phithuho() ? self.mOrderSale().phithuho() : 0));
+
         if (self.DisscountType() == 'Code') {
             if (self.mOrderSale().DisscountType() == 1)
                 return sum - self.mOrderSale().DisscountValue();
@@ -176,7 +177,7 @@ Order.mvOrderSale = function (OrderId) {
         if (self.KeywordSearch().length > 0) {
             $.ajax({
                 type: "POST",
-                url: CommonUtils.url("/Partial/Research"),
+                url: CommonUtils.url("/Product/Research"),
                 cache: false,
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
@@ -213,7 +214,7 @@ Order.mvOrderSale = function (OrderId) {
             CommonUtils.showWait(true);
             $.ajax({
                 type: "GET",
-                url: CommonUtils.url("/Partial/GetProductbyIdForOrder"),
+                url: CommonUtils.url("/Product/GetProductbyIdForOrder"),
                 cache: false,
                 data: { productId: val.id() },
             }).done(function (data) {
@@ -226,7 +227,7 @@ Order.mvOrderSale = function (OrderId) {
                     newObj.ProductId(data.Data.result.product.id);
                     newObj.Code(data.Data.result.product.masp);
                     newObj.Price(data.Data.result.product.PriceChannel);
-                    newObj.PriceFix(data.Data.result.product.PriceChannel);
+                    newObj.PriceFix(data.Data.result.product.Price);
                     newObj.Keyword(self.KeywordSearch());
 
                     newObj.isFristLoad(true);
@@ -275,7 +276,7 @@ Order.mvOrderSale = function (OrderId) {
                         newObj.ProductId(pro.ProductId);
                         newObj.Code(pro.Product.masp);
                         newObj.Price(pro.Price);
-                        newObj.PriceFix(pro.Price);
+                        //newObj.PriceFix(pro.Price);
                         newObj.Total(pro.Total);
                         newObj.Discount(pro.Discount);
                         self.mOrderSale().Detail.push(newObj);

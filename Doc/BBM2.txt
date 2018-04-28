@@ -27,3 +27,7 @@ Report
 
 
 
+Theo quy định thì các sp đang KM giảm giá nếu khách đủ điểm cũng không được tính vào giảm 5% thành viên
+Nhưng trên hóa đơn tính tiền thì không thể bíêt sp KM vì chỉ hiện giá KM chứ không hiện giá gốc, nên các bạn tính tiền sẽ không biết và giảm thêm 5% cho khách.
+Vây làm cách nào mình thêm giá gốc vào hóa đơn đựơc không Giang? và thêm dấu gạch ngang cái giá đó
+Web thì mặc định không giảm 5% cho sp Km rồi

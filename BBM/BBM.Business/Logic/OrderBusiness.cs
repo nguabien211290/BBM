@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using BBM.Business.Infractstructure;
+
 namespace BBM.Business.Logic
 {
     public partial class OrderBusiness : IOrderBusiness
@@ -173,10 +175,10 @@ namespace BBM.Business.Logic
                                     total_stock = stockBraches.Stock_Total + item.Total;
                                     isUpdate = true;
                                     break;
-                                //case (int)StatusOrder_Sale.Done:
-                                //    total_stock = stockBraches.Stock_Total - item.Total;
-                                //    isUpdate = true;
-                                //    break;
+                                    //case (int)StatusOrder_Sale.Done:
+                                    //    total_stock = stockBraches.Stock_Total - item.Total;
+                                    //    isUpdate = true;
+                                    //    break;
                             }
                         }
 
@@ -235,6 +237,8 @@ namespace BBM.Business.Logic
 
             var channelOnline = unitOfWork.ChannelRepository.FindBy(o => o.Type == (int)TypeChannel.IsChannelOnline && o.Id == User.ChannelId).FirstOrDefault();
 
+            bool isChange = false;
+
             if (channelOnline != null)
             {
                 var priceOL = product.soft_Channel_Product_Price.FirstOrDefault(o => o.soft_Channel.Type == (int)TypeChannel.IsChannelOnline);
@@ -242,9 +246,19 @@ namespace BBM.Business.Logic
                 int? priceWholesale = 0;
 
                 if (priceOL != null)
-                    priceWholesale = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
+                {
+                    var total = (int)((priceOL.Price - product.PriceBase) / 5.3) + product.PriceBase;
+                    double round = Convert.ToDouble(total.Value);
+                    priceWholesale = Convert.ToInt32(Helpers.Round_Double(round, -3));
+                }
+
                 else
-                    priceWholesale = (int)((0 - product.PriceBase) / 5.3) + product.PriceBase;
+                {
+                    var total = (int)((0 - product.PriceBase) / 5.3) + product.PriceBase;
+                    double round = Convert.ToDouble(total.Value);
+                    priceWholesale = Convert.ToInt32(Helpers.Round_Double(round, -3));
+                }
+
 
                 var priceSi = unitOfWork.ChanelPriceRepository.Get(o => o.ProductId == product.id && o.soft_Channel.Type == (int)TypeChannel.IsChannelWholesale).FirstOrDefault();
 
@@ -253,6 +267,8 @@ namespace BBM.Business.Logic
                     priceSi.Price = (int)priceWholesale;
 
                     unitOfWork.ChanelPriceRepository.Update(priceSi, o => o.Price);
+
+                    isChange = true;
                 }
                 else
                 {
@@ -266,10 +282,12 @@ namespace BBM.Business.Logic
                         EmployeeCreate = User.UserId,
                         ProductId = product.id
                     });
+
+                    isChange = true;
                 }
             }
 
-            if (isCommit)
+            if (isCommit && isChange)
                 unitOfWork.SaveChanges();
 
             #endregion
