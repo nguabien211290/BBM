@@ -313,7 +313,7 @@ var CommonUtils = {
         CommonUtils.showWait(true);
         $.ajax({
             type: "GET",
-            url: "/Catalog/LoadLstCatalog"
+            url: "/Common/LoadLstCatalog"
         }).done(function (data) {
             CommonUtils.showWait(false);
             callback(data);
@@ -326,7 +326,7 @@ var CommonUtils = {
         CommonUtils.showWait(true);
         $.ajax({
             type: "GET",
-            url: "/Suppliers/LoadLstSuppliers"
+            url: "/Common/LoadLstSuppliers"
         }).done(function (data) {
             CommonUtils.showWait(false);
             callback(data);

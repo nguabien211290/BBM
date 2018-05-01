@@ -29,8 +29,8 @@ namespace BBM.Business.Repository
         private Repository<donhang_chuyenphat_tp> _cityRepository;
         private Repository<donhang_chuyenphat_tinh> _districtRepository;
         private Repository<soft_Config_PrintTem> _config_PrintTemRepository;
-
-    
+        private Repository<soft_Notification> _notificationRepository;
+        private Repository<soft_Employee_Title> _positionRepository;
         #region Product
         public IRepository<shop_sanpham> ProductRepository
         {
@@ -84,7 +84,7 @@ namespace BBM.Business.Repository
             {
                 if (_suppliersRepository == null)
                 {
-                    _suppliersRepository = new Repository<soft_Suppliers>(context);
+                    _suppliersRepository = new SupplieresRepository(context);
                 }
                 return _suppliersRepository;
             }
@@ -106,7 +106,7 @@ namespace BBM.Business.Repository
             {
                 if (_disscountRepository == null)
                 {
-                    _disscountRepository = new Repository<soft_Discount>(context);
+                    _disscountRepository = new DiscountRepository(context);
                 }
                 return _disscountRepository;
             }
@@ -124,6 +124,17 @@ namespace BBM.Business.Repository
                     _configRepository = new Repository<soft_Config>(context);
                 }
                 return _configRepository;
+            }
+        }
+        public IRepository<soft_Employee_Title> PositionRepository
+        {
+            get
+            {
+                if (_positionRepository == null)
+                {
+                    _positionRepository = new Repository<soft_Employee_Title>(context);
+                }
+                return _positionRepository;
             }
         }
         public IRepository<sys_Employee> EmployeeRepository
@@ -147,6 +158,18 @@ namespace BBM.Business.Repository
                 }
                 return _config_PrintTemRepository;
             }
+        }
+        public IRepository<soft_Notification> NotificationRepository
+        {
+            get
+            {
+                if (_notificationRepository == null)
+                {
+                    _notificationRepository = new Repository<soft_Notification>(context);
+                }
+                return _notificationRepository;
+            }
+
         }
         #endregion
 
@@ -234,7 +257,7 @@ namespace BBM.Business.Repository
         }
 
         #endregion
-     
+
         #region Order
         private Repository<donhang> _orderSaleRepository;
         private Repository<donhang_ct> _orderSale_DetailRepository;

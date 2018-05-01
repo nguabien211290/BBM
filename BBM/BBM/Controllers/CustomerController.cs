@@ -6,6 +6,7 @@ using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
 using BBM.Business.Models.View;
+using BBM.Business.Repository;
 using BBM.Infractstructure.Security;
 using System;
 using System.Collections.Generic;
@@ -18,22 +19,18 @@ namespace BBM.Controllers
 {
     public class CustomerController : BaseController
     {
-
-        private CRUD _crud;
-        private admin_softbbmEntities _context;
-        private IApiBusiness apiBus;
         private ICustomerBusiness _customerBus;
-        public CustomerController(IApiBusiness _apiBus, ICustomerBusiness customerBus)
+        private IUnitOfWork _unitOfWork;
+        public CustomerController(IApiBusiness _apiBus, ICustomerBusiness customerBus, IUnitOfWork unitOfWork)
         {
-            _crud = new CRUD();
-            _context = new admin_softbbmEntities();
             _customerBus = customerBus;
-            apiBus = _apiBus;
+            _unitOfWork = unitOfWork;
         }
         public ActionResult Index()
         {
             return View();
         }
+
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Customer })]
         public ActionResult RenderView()
         {
@@ -75,7 +72,7 @@ namespace BBM.Controllers
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Customer, RolesEnum.Create_Customer })]
         [HttpPost]
-        public JsonResult UpdateCustomer(CustomerModel model)
+        public async Task<JsonResult> UpdateCustomer(CustomerModel model)
         {
             var Messaging = new RenderMessaging();
             try
@@ -97,35 +94,25 @@ namespace BBM.Controllers
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
 
-                var objCustomer = Mapper.Map<khachhang>(model);
-                if (model.Id <= 0)
-                {
-                    objCustomer.matkhau = Helpers.GenerateToken(10);
-                    _crud.Add<khachhang>(objCustomer);
-                }
-                else
-                {
-                    _crud.Update<khachhang>(objCustomer);
-                }
+                Messaging.isError = !await _customerBus.UpdateCustomer(model);
 
-                _crud.SaveChanges();
-                Messaging.messaging = "Cập nhật khách hàng thành công!";
+                Messaging.messaging = !Messaging.isError ? "Cập nhật khách hàng thành công!" : "Cập nhật khách hàng không thành công!";
             }
-            catch
+            catch(Exception ex)
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Cập nhật khách hàng không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult Research(string keyword)
         {
             var Messaging = new RenderMessaging();
             try
             {
-                var customer = _context.khachhangs.FirstOrDefault(o => o.dienthoai.Contains(keyword));
-
+                var customer = _unitOfWork.CutomerRepository.FindBy(o => o.dienthoai.Contains(keyword)).FirstOrDefault();
 
                 if (customer != null)
                     Messaging.Data = Mapper.Map<CustomerModel>(customer);
@@ -139,13 +126,5 @@ namespace BBM.Controllers
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
-
-        public async Task<JsonResult> SyncCustomer()
-        {
-            await apiBus.SyncCustomer();
-
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
-
     }
 }

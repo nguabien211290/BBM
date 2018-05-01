@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BBM.Business.Repository
 {
-    public class CatalogRepository : Repository<soft_Catalog>
+    public class DiscountRepository : Repository<soft_Discount>
     {
-        public CatalogRepository(admin_softbbmEntities dbContext) : base(dbContext) { }
+        public DiscountRepository(admin_softbbmEntities dbContext) : base(dbContext) { }
 
-        public override List<soft_Catalog> SearchBy(PagingInfo pageinfo, out int count, out int min, out double totalMoney, int BranchesId = 0)
+        public override List<soft_Discount> SearchBy(PagingInfo pageinfo, out int count, out int min, out double totalMoney, int BranchesId = 0)
         {
             totalMoney = 0;
 
@@ -32,6 +32,12 @@ namespace BBM.Business.Repository
                         else
                             lstTmp = lstTmp.OrderBy(o => o.Name);
                         break;
+                    case "DateCreate":
+                        if (pageinfo.sortbydesc)
+                            lstTmp = lstTmp.OrderByDescending(o => o.DateCreate);
+                        else
+                            lstTmp = lstTmp.OrderBy(o => o.DateCreate);
+                        break;
                 }
             }
             #endregion
@@ -40,7 +46,7 @@ namespace BBM.Business.Repository
             {
                 pageinfo.keyword = pageinfo.keyword.ToLower();
 
-                lstTmp = lstTmp.Where(o => o.Name.Contains(pageinfo.keyword));
+                lstTmp = lstTmp.Where(o => o.Name.Contains(pageinfo.keyword) || o.Code.Contains(pageinfo.keyword));
             }
             #endregion
 
@@ -49,7 +55,7 @@ namespace BBM.Business.Repository
             count = lstTmp.Count();
 
             if (!isSort)
-                lstTmp = lstTmp.OrderByDescending(o => o.Name);
+                lstTmp = lstTmp.OrderByDescending(o => o.DateCreate);
 
             var result = lstTmp.Skip(min).Take(pageinfo.pagesize).ToList();
 

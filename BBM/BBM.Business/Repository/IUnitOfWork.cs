@@ -16,6 +16,7 @@ namespace BBM.Business.Repository
         IRepository<soft_Channel> ChannelRepository { get; }
         IRepository<soft_Channel_Product_Price> ChanelPriceRepository { get; }
         IRepository<sys_Employee> EmployeeRepository { get; }
+        IRepository<soft_Employee_Title> PositionRepository { get; }
         IRepository<khachhang> CutomerRepository { get; }
         IRepository<soft_Discount> DisscountRepository { get; }
         IRepository<shop_bienthe> VariantRepository { get; }
@@ -26,6 +27,8 @@ namespace BBM.Business.Repository
         IRepository<donhang_chuyenphat_tp> CityRepository { get; }
         IRepository<donhang_chuyenphat_tinh> DistrictRepository { get; }
         IRepository<soft_Config_PrintTem> Config_PrintTemRepository { get; }
+
+        IRepository<soft_Notification> NotificationRepository { get; }
         #region Order
         IRepository<soft_Order> OrderBranchesRepository { get; }
         IRepository<donhang> OrderSaleRepository { get; }

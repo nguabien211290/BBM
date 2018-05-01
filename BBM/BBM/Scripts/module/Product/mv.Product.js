@@ -36,7 +36,7 @@ Product.mvProduct = function () {
         if (self.CountFilter() > 0) {
             self.LoadListProduct()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
     self.LstStatusProduct = ko.observableArray(statusProducts);
     self.LoadListProduct = function () {
         self.listData([]);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BBM.Business.Infractstructure;
 using BBM.Business.Infractstructure.Security;
+using BBM.Business.Logic;
 using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
@@ -9,6 +10,7 @@ using BBM.Infractstructure.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -20,8 +22,11 @@ namespace BBM.Controllers
         // GET: /Discount/
         private CRUD _crud;
         private admin_softbbmEntities _context = new admin_softbbmEntities();
-        public DiscountController()
+
+        private IDiscountBusiness _IDiscountBusiness;
+        public DiscountController(IDiscountBusiness IDiscountBusiness)
         {
+            _IDiscountBusiness = IDiscountBusiness;
             _crud = new CRUD();
         }
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Disscount })]
@@ -32,7 +37,7 @@ namespace BBM.Controllers
 
         public JsonResult GetDiscountby(PagingInfo pageinfo)
         {
-            var Messaging = new RenderMessaging();
+            var Messaging = new RenderMessaging<Channel_Paging<DisscountModel>>();
             try
             {
                 if (User == null || User.ChannelId <= 0)
@@ -41,23 +46,17 @@ namespace BBM.Controllers
                     Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
-                var lstTmp = from disc in _context.soft_Discount orderby disc.Id descending select disc;
-
-                var discounts = Mapper.Map<List<DisscountModel>>(lstTmp.ToList());
-
                 Channel_Paging<DisscountModel> lstInfo = new Channel_Paging<DisscountModel>();
-                if (discounts != null && discounts.Count > 0)
-                {
-                    int min = Helpers.FindMin(pageinfo.pageindex, pageinfo.pagesize);
 
-                    lstInfo.totalItems = discounts.Count();
-                    int quantity = Helpers.GetQuantity(lstInfo.totalItems, pageinfo.pageindex, pageinfo.pagesize);
-                    if (pageinfo.pagesize < discounts.Count)
-                        if (quantity > 0)
-                            discounts = discounts.GetRange(min, quantity);
-                    lstInfo.listTable = discounts;
-                    lstInfo.startItem = min;
-                }
+                int count, min = 0;
+
+                var rs = _IDiscountBusiness.GetDisscount(pageinfo, out count, out min);
+
+                lstInfo.startItem = min;
+
+                lstInfo.totalItems = count;
+
+                lstInfo.listTable = rs;
 
                 Messaging.Data = lstInfo;
             }
@@ -71,7 +70,7 @@ namespace BBM.Controllers
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Disscount })]
         [HttpPost]
-        public JsonResult DisableDiscount(DisscountModel model)
+        public async Task<JsonResult> DisableDiscount(DisscountModel model)
         {
             var Messaging = new RenderMessaging();
             try
@@ -82,32 +81,24 @@ namespace BBM.Controllers
                     Messaging.messaging = "Vui lòng đăng nhập lại!";
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
-                var discount = _context.soft_Discount.Find(model.Id);
-                discount.Disable = true;
-                discount.DateUpdate = DateTime.Now;
-                discount.EmployeeUpdate = User.UserId;
 
+                Messaging.isError = !await _IDiscountBusiness.DisableDiscount(model, User.UserId);
 
-                _crud.Update<soft_Discount>(discount, o => o.Disable,
-                    o => o.DateUpdate, o => o.EmployeeUpdate);
+                Messaging.messaging = !Messaging.isError ? "Tắt khuyễn mãi thành công!" : "Tắt khuyễn mãi không thành công!";
 
-                _crud.SaveChanges();
-
-                Messaging.isError = false;
-                Messaging.messaging = "Cập nhật khuyễn mãi thành công!";
                 return Json(Messaging, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Hiển thị danh sách khuyến mãi không thành công!";
+                Messaging.messaging = "Tắt khuyễn mãi không thành công!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Create_Disscount })]
         [HttpPost]
-        public JsonResult CreateDiscount(DisscountModel model)
+        public async Task<JsonResult> CreateDiscount(DisscountModel model)
         {
             var Messaging = new RenderMessaging();
             try
@@ -131,35 +122,18 @@ namespace BBM.Controllers
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
 
-                var date = DateTime.Now;
+                Messaging.isError = !await _IDiscountBusiness.CreateDiscount(model, User.UserId);
 
+                Messaging.messaging = "Tạo khuyến mãi thành công!";
 
-                var discount = Mapper.Map<soft_Discount>(model);
-
-                discount.Startdate = new DateTime(discount.Startdate.Year, discount.Startdate.Month, discount.Startdate.Day, 0, 0, 0, 0);
-
-                if (discount.Enddate.HasValue)
-                    discount.Enddate = new DateTime(discount.Enddate.Value.Year, discount.Enddate.Value.Month, discount.Enddate.Value.Day, 23, 59, 59, 999);
-
-                var lstDisscount = _context.soft_Discount.Select(o => o.Code).ToList();
-                discount.Code = Helpers.GenerateToken(10, lstDisscount);
-                discount.EmployeeCreate = User.UserId;
-                discount.DateCreate = DateTime.Now;
-                discount.DateUpdate = null;
-                if (discount.IsNotExp)
-                    discount.Enddate = null;
-                _crud.Add<soft_Discount>(discount);
-                _crud.SaveChanges();
-
-                Messaging.isError = false;
-                Messaging.messaging = "Thêm khuyến mãi thành công!";
                 return Json(Messaging, JsonRequestBehavior.AllowGet);
             }
-            catch (Exception ex)
+            catch
             {
                 Messaging.isError = true;
                 Messaging.messaging = "Tạo khuyến mãi không thành công!";
             }
+
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
     }

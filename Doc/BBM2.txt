@@ -22,4 +22,8 @@ Report
 - Doanh thu theo ngày của 1 kênh = Tổng doanh thu của các hóa đơn trong ngày đó (tính từng kênh). Chuỗi ngày (từ ... đến...) cũng tương tự.
 
 
-
+-LoadEmployessTitles
+- Btn Refesh
+- EmployessController
+- Product controoler
+-Order

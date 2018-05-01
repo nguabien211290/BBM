@@ -6,10 +6,12 @@ using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
 using BBM.Business.Models.View;
+using BBM.Business.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -19,24 +21,19 @@ namespace BBM.Controllers
 {
     public class PartialController : BaseController
     {
-        private admin_softbbmEntities _context;
-        private CRUD _crud;
         private ExportExcelBusiness _exportBus;
-
-        public PartialController()
+        private IUnitOfWork _unitOW;
+        public PartialController(IUnitOfWork unitOW)
         {
-            _crud = new CRUD();
-            _context = new admin_softbbmEntities();
+            _unitOW = unitOW;
             _exportBus = new ExportExcelBusiness();
         }
-
 
         public ActionResult Menu()
         {
             ViewBag.UserName = User.UserName;
             return PartialView("~/Views/Shared/Partial/module/Partial/_menu.cshtml");
         }
-
 
         public JsonResult GroupRole()
         {
@@ -310,7 +307,7 @@ namespace BBM.Controllers
         }
 
 
-        public JsonResult SetChannel(int ChannelId = 0)
+        public async Task<JsonResult> SetChannel(int ChannelId = 0)
         {
             if (ChannelId > 0)
             {
@@ -318,12 +315,12 @@ namespace BBM.Controllers
                 if (authCookie != null)
                 {
 
-                    var Channel = _context.soft_Channel.Find(ChannelId);
+                    var Channel = _unitOW.ChannelRepository.GetById(ChannelId);
 
                     FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
                     CustomPrincipalSerializeModel serializeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<CustomPrincipalSerializeModel>(authTicket.UserData);
 
-                    var employee = _context.sys_Employee.Find(serializeModel.UserId);
+                    var employee = _unitOW.EmployeeRepository.GetById(serializeModel.UserId);
 
 
                     serializeModel.ChannelId = ChannelId;
@@ -344,14 +341,15 @@ namespace BBM.Controllers
                     employee.Channel_last = ChannelId;
                     employee.Branches_last = serializeModel.BranchesId;
 
-                    _crud.Update<sys_Employee>(employee, o => o.Channel_last, o => o.Branches_last);
-                    _crud.SaveChanges();
+                    _unitOW.EmployeeRepository.Update(employee, o => o.Channel_last, o => o.Branches_last);
+
+                    await _unitOW.SaveChanges();
                 }
 
             }
             return null;
         }
-        
+
         public void Excel(int type = 0)
         {
             _exportBus.ToExcel(Response, type);

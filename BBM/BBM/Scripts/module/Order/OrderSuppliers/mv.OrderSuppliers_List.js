@@ -6,7 +6,7 @@ Order.mvOrderSuppliersList = function () {
         if (self.Table().CountFilter() > 0) {
             self.GetListOrderSuppliers()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
     self.GetListOrderSuppliers = function () {
         CommonUtils.showWait(true);
         $.ajax({

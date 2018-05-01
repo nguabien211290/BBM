@@ -8,7 +8,7 @@ Order.mvOrderSaleList = function () {
         if (self.CountFilter() > 0) {
             self.GetListOrderSale()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
     self.FilterOrder = ko.observable(new Filter.mvFilter_Search_Control('Order_Channel'));
     self.FilterOrder().Fiterby.subscribe(function (val) {
         if (val && val.length > 0)

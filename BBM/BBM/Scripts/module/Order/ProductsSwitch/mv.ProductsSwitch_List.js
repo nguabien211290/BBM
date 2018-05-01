@@ -6,7 +6,7 @@ Order.mvProductsSwitchList = function () {
         if (self.CountFilter() > 0) {
             self.GetListOrderOutput()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
     self.FilterOrder = ko.observable(new Filter.mvFilter_Search_Control('Order_ProductSwitch'));
     self.FilterOrder().Fiterby.subscribe(function (val) {
         if (val && val.length > 0)

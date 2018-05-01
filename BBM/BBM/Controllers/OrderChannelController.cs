@@ -22,14 +22,10 @@ namespace BBM.Controllers
     {
         //
         // GET: /OrderChannel/
-        private CRUD _crud;
-        private admin_softbbmEntities _context;
         private IOrderBusiness _IOrderBus;
         private IUnitOfWork _unitOW;
         public OrderChannelController(IOrderBusiness IOrderBus, IUnitOfWork unitOW)
         {
-            _crud = new CRUD();
-            _context = new admin_softbbmEntities();
             _IOrderBus = IOrderBus;
             _unitOW = unitOW;
         }

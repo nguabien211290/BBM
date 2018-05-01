@@ -11,12 +11,18 @@
 
         <div class="text-right padding5px">
             <button class="btn btn-success" data-bind="click : AddSuppliers">Thêm NPP</button>
-            <button class="btn btn-primary" data-bind="click: function() {  suppliers.Start() }"><i class="icon-refresh"></i></button>
+            <button class="btn btn-primary" data-bind="click: Refesh"><i class="icon-refresh"></i></button>
         </div>
-
         <div class="row-fluid">
             <div class="table-header">
                 Nhà phân phối
+            </div>
+            <div class="row-fluid">
+                <div class="row-fluid">
+                    <div class="span11 m-10-px">
+                        <!--ko template: {name: 'Filter_Search', data: FilterProduct } --><!--/ko-->
+                    </div>
+                </div>
             </div>
             <!--ko template: {name: 'dataTables', data:suppliers.Table } --><!--/ko-->
         </div>
@@ -53,7 +59,7 @@
         </div>
     </div>
 </div>
-<script id="Suppliers" type="text/html">
+<script id="table_Suppliers" type="text/html">
     <thead>
         <tr>
 

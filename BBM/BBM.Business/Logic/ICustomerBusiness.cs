@@ -11,5 +11,6 @@ namespace BBM.Business.Logic
     public interface ICustomerBusiness
     {
         List<CustomerModel> GetCustomer(PagingInfo pageinfo, out int count, out int min);
+        Task<bool> UpdateCustomer(CustomerModel model);
     }
 }

@@ -6,7 +6,7 @@ Order.mvOrderOutputList = function () {
         if (self.Table().CountFilter() > 0) {
             self.GetListOrderOutput()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
 
     self.GetListOrderOutput = function () {
         CommonUtils.showWait(true);

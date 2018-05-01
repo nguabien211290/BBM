@@ -13,7 +13,7 @@ Customer.mvCustomer = function () {
         if (self.CountFilter() > 0) {
             self.LoadListCustomer()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
 
     self.TmpTable().CurrentPage.subscribe(function () {
         self.CountFilter(self.CountFilter() + 1);
@@ -28,6 +28,7 @@ Customer.mvCustomer = function () {
             self.CountFilter(self.CountFilter() + 1);
     });
     self.TmpTable().nameTemplate('table_Customer');
+
     self.LoadListCustomer = function () {
         self.TmpTable().listData([]);
         var model = {
@@ -37,7 +38,6 @@ Customer.mvCustomer = function () {
             sortby: self.TmpTable().Sortby(),
             sortbydesc: self.TmpTable().SortbyDesc()
         };
-        self.TmpTable().Sortby(undefined);
         CommonUtils.showWait(true);
         $.ajax({
             type: "POST",
@@ -88,7 +88,7 @@ Customer.mvCustomer = function () {
                 if (data == null)
                     return
                 if (!data.isError) {
-                    self.LoadListCustomer();
+                    self.CountFilter(self.CountFilter() + 1);
                     self.mCustomerUpdate(new Customer.mCustomer)
                 }
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
@@ -101,9 +101,11 @@ Customer.mvCustomer = function () {
         self.OpentModalUpdateCustomer(self.mCustomerUpdate(new Customer.mCustomer), true);
     };
 
+    self.Refesh = function () {
+        self.CountFilter(self.CountFilter() + 1);
+    };
 
     self.Start = function () {
         ko.applyBindings(self, document.getElementById('CustomerViewId'));
-        self.LoadListCustomer();
     };
 };

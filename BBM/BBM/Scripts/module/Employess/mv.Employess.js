@@ -6,7 +6,7 @@ Employess.mvEmployess = function () {
         if (self.Table().CountFilter() > 0) {
             self.LoadListEmployess()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
     self.IsReCreatePwd = ko.observable(false);
     self.LoadListEmployess = function () {
         CommonUtils.showWait(true);
@@ -104,7 +104,7 @@ Employess.mvEmployess = function () {
             if (data == null)
                 return
             if (!data.isError) {
-                self.LoadListEmployess();
+                self.Table().CountFilter(self.Table().CountFilter() + 1);
                 self.mNewCustomer(new Employess.mEmployess)
             }
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
@@ -160,13 +160,7 @@ Employess.mvEmployess = function () {
         val.Roles(ko.toJSON(rolesFull));
         self.UpdateEmloyess(val);
     };
-    self.Start = function () {
-        ko.applyBindings(self, document.getElementById('EmployessViewId'));
-        self.LoadListEmployess();
-        self.LoadRoles();
-        self.LoadEmployessTitles();
-    };
-
+   
 
     self.mEmployTitle = ko.observable(new Employess.mEmployessTitle);
     self.lstEmployTitle = ko.observableArray();
@@ -268,15 +262,26 @@ Employess.mvEmployess = function () {
                 if (data == null)
                     return
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
-                self.LoadListEmployess();
+                self.Table().CountFilter(self.Table().CountFilter() + 1);
             }).always(function () {
                 CommonUtils.showWait(false);
             });
         });
     };
+
+    self.Refesh = function () {
+        self.CountFilter(self.CountFilter() + 1);
+    };
+
     self.StartEmpinfo = function () {
         ko.applyBindings(self, document.getElementById('EmployessInfoViewId'));
         self.LoadEmployessInfo();
+    };
+
+    self.Start = function () {
+        ko.applyBindings(self, document.getElementById('EmployessViewId'));
+        self.LoadRoles();
+        self.LoadEmployessTitles();
     };
 
 };

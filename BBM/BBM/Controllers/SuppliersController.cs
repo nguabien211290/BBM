@@ -12,21 +12,19 @@ using AutoMapper;
 using BBM.Business.Models.View;
 using BBM.Business.Models.Enum;
 using BBM.Infractstructure.Security;
+using BBM.Business.Logic;
+using System.Threading.Tasks;
 
 namespace BBM.Controllers
 {
     public class SuppliersController : BaseController
     {
-        //
-        // GET: /NPP/
-
-        private CRUD _crud;
-        private admin_softbbmEntities _context;
-        public SuppliersController()
+        private ISuppliersBusiness suppliersBus;
+        public SuppliersController(ISuppliersBusiness _suppliersBus)
         {
-            _crud = new CRUD();
-            _context = new admin_softbbmEntities();
+            suppliersBus = _suppliersBus;
         }
+
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Suppliers })]
         public ActionResult RenderView()
         {
@@ -36,7 +34,7 @@ namespace BBM.Controllers
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Suppliers })]
         public JsonResult GetSuppliersby(PagingInfo pageinfo)
         {
-            var Messaging = new RenderMessaging();
+            var Messaging = new RenderMessaging<Channel_Paging<SuppliersModel>>();
             try
             {
                 if (User == null || User.ChannelId <= 0)
@@ -45,75 +43,17 @@ namespace BBM.Controllers
                     Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
-                var lstTmp = from supplier in _context.soft_Suppliers select supplier;
-
-                #region Sort
-                if (!string.IsNullOrEmpty(pageinfo.sortby))
-                {
-                    switch (pageinfo.sortby)
-                    {
-                        case "SuppliersId":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.SuppliersId);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.SuppliersId);
-                            break;
-                        case "Name":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Name);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Name);
-                            break;
-                        case "Email":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Email);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Email);
-                            break;
-                        case "Phone":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Phone);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Phone);
-                            break;
-                    }
-
-                }
-                #endregion
-
-                var suppliers = Mapper.Map<List<SuppliersModel>>(lstTmp.ToList());
-                #region Search
-                if (!string.IsNullOrEmpty(pageinfo.keyword))
-                {
-                    var lstcustomer = lstTmp.ToList();
-                    pageinfo.keyword = pageinfo.keyword.ToLower();
-                    suppliers = suppliers.Where(o =>
-                   (!string.IsNullOrEmpty(o.Name) && Helpers.convertToUnSign3(o.Name.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Phone) && Helpers.convertToUnSign3(o.Phone.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Email) && Helpers.convertToUnSign3(o.Email.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Address) && Helpers.convertToUnSign3(o.Address.ToLower()).Contains(pageinfo.keyword))).ToList();
-
-                }
-                #endregion
                 Channel_Paging<SuppliersModel> lstInfo = new Channel_Paging<SuppliersModel>();
-                if (suppliers != null && suppliers.Count > 0)
-                {
-                    int min = Helpers.FindMin(pageinfo.pageindex, pageinfo.pagesize);
 
-                    lstInfo.totalItems = suppliers.Count();
-                    int quantity = Helpers.GetQuantity(lstInfo.totalItems, pageinfo.pageindex, pageinfo.pagesize);
-                    if (pageinfo.pagesize < suppliers.Count)
-                        if (quantity > 0)
-                            suppliers = suppliers.GetRange(min, quantity);
-                    lstInfo.startItem = min;
-                    lstInfo.listTable = suppliers;
+                int count, min = 0;
 
-                    //foreach (var item in lstInfo.listTable)
-                    //{
-                    //    var orders = Mapper.Map<List<OrderModel>>(_context.soft_Order.Where(o => o.TypeOrder == (int)TypeOrder.OrderProduct && o.Id_To == item.SuppliersId).ToList());
-                    //    item.Orders = orders;
-                    //}
-                }
+                var rs = suppliersBus.GetSuppliers(pageinfo, out count, out min);
+
+                lstInfo.startItem = min;
+
+                lstInfo.totalItems = count;
+
+                lstInfo.listTable = rs;
 
                 Messaging.Data = lstInfo;
             }
@@ -125,10 +65,9 @@ namespace BBM.Controllers
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
 
-
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Update_Suppliers })]
         [HttpPost]
-        public JsonResult UpdateSuppliers(SuppliersModel model)
+        public async Task<JsonResult> UpdateSuppliers(SuppliersModel model)
         {
             var Messaging = new RenderMessaging();
             try
@@ -149,24 +88,9 @@ namespace BBM.Controllers
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
 
-                var objSuppliers = Mapper.Map<soft_Suppliers>(model);
+                Messaging.isError = !await suppliersBus.UpdateSuppliers(model, User.UserId);
 
-                if (model.SuppliersId <= 0)
-                {
-                    objSuppliers.DateCreate = DateTime.Now;
-                    objSuppliers.EmployeeCreate = User.UserId;
-                    objSuppliers.DateUpdate = null;
-                    _crud.Add<soft_Suppliers>(objSuppliers);
-                }
-                else
-                {
-                    objSuppliers.DateUpdate = DateTime.Now;
-                    objSuppliers.EmployeeUpdate = User.UserId;
-                    _crud.Update<soft_Suppliers>(objSuppliers, o => o.Address, o => o.Email, o => o.Name, o => o.Phone, o => o.EmployeeUpdate, o => o.DateUpdate);
-                }
-
-                _crud.SaveChanges();
-                Messaging.messaging = "Cập nhật thành công!";
+                Messaging.messaging = !Messaging.isError ? "Cập nhật nhà phân phối thành công!" : "Cập nhật nhà phân phối không thành công!";
             }
             catch
             {
@@ -176,17 +100,9 @@ namespace BBM.Controllers
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult LoadLstSuppliers()
-        {
-
-            var lstTmp = Mapper.Map<List<SuppliersModel>>(_context.soft_Suppliers.OrderBy(o=>o.Name).ToList());
-            return Json(lstTmp, JsonRequestBehavior.AllowGet);
-
-        }
-
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Delete_Suppliers })]
         [HttpPost]
-        public JsonResult DeleteSuppliers(int id)
+        public async Task<JsonResult> DeleteSuppliers(int id)
         {
             var Messaging = new RenderMessaging();
             try
@@ -203,20 +119,10 @@ namespace BBM.Controllers
                     Messaging.messaging = "Dữ liệu không hợp lệ vui lòng thử lại.";
                     return Json(Messaging, JsonRequestBehavior.AllowGet);
                 }
-                var Suppliers = _context.soft_Suppliers.Find(id);
 
-                if (Suppliers == null)
-                {
-                    Messaging.isError = true;
-                    Messaging.messaging = "Nhà phân phối này đã được xóa.";
-                    return Json(Messaging, JsonRequestBehavior.AllowGet);
-                }
+                Messaging.isError = !await suppliersBus.DeleteSuppliers(id);
 
-                _context.soft_Suppliers.Remove(Suppliers);
-
-                _context.SaveChanges();
-
-                Messaging.messaging = "Xóa nhầ phân phối thành công!";
+                Messaging.messaging = !Messaging.isError ? "Xóa nhà phân phối thành công!" : "Xóa nhà phân phối không thành công, vui lòng thử lại sau!";
             }
             catch
             {
@@ -224,6 +130,6 @@ namespace BBM.Controllers
                 Messaging.messaging = "Nhà phân phối này đang sử dụng không xóa được, vui lòng thử lại!";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
-        }      
+        }
     }
 }

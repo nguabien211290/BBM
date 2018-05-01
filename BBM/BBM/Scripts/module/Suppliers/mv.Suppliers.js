@@ -2,22 +2,54 @@
 Suppliers.mvSuppliers = function () {
     var self = this;
     self.mSuppliers = ko.observable(new Suppliers.mSuppliers);
-    self.provinces = ko.observable(new Common.mvProvince());
-    self.Table = ko.observable(new Paging_TmpControltool("Suppliers", true, true));
+
+    //---------Table Filter-----------------------
+    self.Table = ko.observable(new Paging_TmpControltool("Nhà phân phối"));
+    self.FilterProduct = ko.observable(new Filter.mvFilter_Search_Control('Suppliers', true));
+    self.FilterProduct().classNameTab('mvSuppliers');
+    self.CountFilter = ko.observable(0);
+    self.FilterProduct().KeywordSearch.subscribe(function () {
+        self.CountFilter(self.CountFilter() + 1);
+    });
+    self.Table().CurrentPage.subscribe(function () {
+        self.CountFilter(self.CountFilter() + 1);
+    });
+    self.Table().ItemPerPage.subscribe(function () {
+        self.Table().CurrentPage(1);
+        self.CountFilter(self.CountFilter() + 1);
+    });
+
+    self.Table().Sortby.subscribe(function (val) {
+        if (val)
+            self.CountFilter(self.CountFilter() + 1);
+    });
+    self.Table().nameTemplate('table_Suppliers');
     self.SearchReLoad = ko.computed(function () {
-        if (self.Table().CountFilter() > 0) {
+        if (self.CountFilter() > 0) {
             self.LoadListSuppliers()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
+    //---------Table Filter-----------------------
+
     self.LoadListSuppliers = function () {
         CommonUtils.showWait(true);
+
+        self.Table().listData([]);
+        var model = {
+            pageindex: self.Table().CurrentPage(),
+            pagesize: self.Table().ItemPerPage(),
+            keyword: self.FilterProduct().KeywordSearch(),
+            sortby: self.Table().Sortby(),
+            sortbydesc: self.Table().SortbyDesc()
+        };
+
         $.ajax({
             type: "POST",
             url: CommonUtils.url("/Suppliers/GetSuppliersby"),
             cache: false,
             dataType: 'json',
             contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON(self.Table().Model()),
+            data: ko.toJSON({ pageinfo: model }),
         }).done(function (data) {
             if (data == null)
                 return
@@ -56,7 +88,7 @@ Suppliers.mvSuppliers = function () {
             if (data == null)
                 return
             if (!data.isError) {
-                self.LoadListSuppliers();
+                self.Table().CountFilter(self.Table().CountFilter() + 1);
                 self.mSuppliers(new Suppliers.mSuppliers);
             }
             CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
@@ -75,7 +107,7 @@ Suppliers.mvSuppliers = function () {
             }).done(function (data) {
                 if (data == null)
                     return
-                self.LoadListSuppliers();
+                self.Table().CountFilter(self.Table().CountFilter() + 1);
                 CommonUtils.notify("Thông báo", data.messaging, !data.isError ? 'success' : 'error');
             }).always(function () {
                 CommonUtils.showWait(false);
@@ -83,8 +115,11 @@ Suppliers.mvSuppliers = function () {
         });
 
     };
+    self.Refesh = function () {
+        self.CountFilter(self.CountFilter() + 1);
+    };
+
     self.Start = function () {
         ko.applyBindings(self, document.getElementById('SuppliersViewId'));
-        self.LoadListSuppliers();
     };
 };

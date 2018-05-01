@@ -27,7 +27,7 @@ Order.mvOrderBranchList = function () {
         if (self.Table().CountFilter() > 0) {
             self.GetListOrderBranch()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
 
     self.GetListOrderBranch = function () {
         CommonUtils.showWait(true);

@@ -45,7 +45,7 @@ Filter.mvFilter_Search_Control = function (type, isNotFilter) {
         if (self.CountFilter() > 0) {
             self.LoadListProduct()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
     self.typeFilter = ko.observable(type);
     self.isNotFilter = ko.observable(isNotFilter);
     self.typeChildFilter = ko.observable();

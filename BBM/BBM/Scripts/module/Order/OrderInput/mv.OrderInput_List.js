@@ -6,7 +6,7 @@ Order.mvOrderInputList = function () {
         if (self.CountFilter() > 0) {
             self.GetListOrderInput()
         }
-    }).extend({ throttle: 1000 });
+    }).extend({ throttle: 500 });
     self.FilterOrder = ko.observable(new Filter.mvFilter_Search_Control('Order_Input'));
     self.FilterOrder().Fiterby.subscribe(function (val) {
         if (val && val.length > 0)

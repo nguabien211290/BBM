@@ -26,22 +26,18 @@ namespace BBM.Controllers
 {
     public class CommonController : BaseController
     {
-        private CRUD _crud;
-        private admin_softbbmEntities _context;
         private ImportExcelBusiness _importBus;
         private IImportBusiness _ImportBus;
         private IUnitOfWork _unitOW;
         public CommonController(ImportBusiness ImportBus, IUnitOfWork unitOW)
         {
-            _crud = new CRUD();
-            _context = new admin_softbbmEntities();
             _importBus = new ImportExcelBusiness();
             _ImportBus = ImportBus;
             _unitOW = unitOW;
         }
 
-
-        public async Task<JsonResult> GetConfigSys()
+        #region config
+        public JsonResult GetConfigSys()
         {
             var Messaging = new RenderMessaging();
             try
@@ -58,11 +54,11 @@ namespace BBM.Controllers
                 config.User.Channel = new List<ChannelModel>();
                 config.User.BranchesId = User.BranchesId;
                 config.User.ChannelId = User.ChannelId;
-                var lstBranches = Mapper.Map<List<BranchesModel>>(await _crud.GetAll<soft_Branches>());
-                var lstchannel = Mapper.Map<List<ChannelModel>>(await _crud.GetAll<soft_Channel>());
+                var lstBranches = Mapper.Map<List<BranchesModel>>(_unitOW.BrachesRepository.GetAll().ToList());
+                var lstchannel = Mapper.Map<List<ChannelModel>>(_unitOW.ChannelRepository.GetAll().ToList());
                 config.User.Channel = lstchannel;
                 config.User.Branches = lstBranches;
-                var emp = await _crud.GetAll<sys_Employee>();
+                var emp = _unitOW.EmployeeRepository.GetAll().ToList();
                 config.Employee = new List<EmployeeModel>();
                 foreach (var item in emp)
                 {
@@ -74,7 +70,7 @@ namespace BBM.Controllers
                     });
                 }
 
-                var configMain = await _crud.FindBy<soft_Config>(o => o.Type == (int)TypeConfig.Main);
+                var configMain = _unitOW.ConfigRepository.FindBy(o => o.Type == (int)TypeConfig.Main).FirstOrDefault();
                 if (configMain != null)
                     config.Config = Mapper.Map<Config>(configMain);
 
@@ -97,23 +93,57 @@ namespace BBM.Controllers
                 BranchesName = "Tất cả"
             });
 
-            branches.AddRange(Mapper.Map<List<BranchesModel>>(_context.soft_Branches.ToList()));
+            branches.AddRange(Mapper.Map<List<BranchesModel>>(_unitOW.BrachesRepository.GetAll().ToList()));
 
             return Json(branches, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult LoadLstChannel()
         {
-            var channel = Mapper.Map<List<ChannelModel>>(_context.soft_Channel.ToList());
+            var channel = Mapper.Map<List<ChannelModel>>(_unitOW.ChannelRepository.GetAll().ToList());
 
             return Json(channel, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult LoadEmployes()
         {
-            var rs = Mapper.Map<List<EmployeeModel>>(_context.sys_Employee.Where(o => !o.IsDelete).ToList());
+            var rs = Mapper.Map<List<EmployeeModel>>(_unitOW.EmployeeRepository.FindBy(o => !o.IsDelete).ToList());
             return Json(rs, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetCity_District()
+        {
+            var city = Mapper.Map<List<CityModel>>(_unitOW.CityRepository.GetAll().ToList());
+
+            var district = Mapper.Map<List<DistrictModel>>(_unitOW.DistrictRepository.GetAll().ToList());
+
+            return Json(new { city = city, district = district }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadLstSuppliers()
+        {
+            var rs = _unitOW.SuppliersRepository.GetAll().OrderBy(o => o.Name).ToList();
+
+            var lstTmp = Mapper.Map<List<SuppliersModel>>(rs);
+
+            return Json(lstTmp, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public JsonResult LoadLstCatalog()
+        {
+            var rs = _unitOW.CatalogRepository.GetAll().OrderBy(o => o.Name).ToList();
+
+            return Json(Mapper.Map<List<CatalogModel>>(rs), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult LoadEmployess_Position()
+        {
+            var rs = _unitOW.PositionRepository.GetAll().ToList();
+
+            return Json(Mapper.Map<List<Employee_TitleModel>>(rs), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         public async Task<JsonResult> Import_Excel(string name, HttpPostedFileBase file)
         {
@@ -176,14 +206,5 @@ namespace BBM.Controllers
 
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult GetCity_District()
-        {
-            var city = Mapper.Map<List<CityModel>>(_unitOW.CityRepository.GetAll());
-            var district = Mapper.Map<List<DistrictModel>>(_unitOW.DistrictRepository.GetAll());
-
-            return Json(new { city = city, district = district }, JsonRequestBehavior.AllowGet);
-        }
-
     }
 }
