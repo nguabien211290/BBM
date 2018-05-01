@@ -123,7 +123,7 @@
         init: function (element, valueAccessor) {
             $(element).on("keydown", function (event) {
                 // Allow: backspace, delete, tab, escape, and enter
-                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                if (event.keyCode == 189 || event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
                     // Allow: Ctrl+A
                     (event.keyCode == 65 && event.ctrlKey === true) ||
                     // Allow: . ,
@@ -215,6 +215,7 @@
         update: function (element, valueAccessor) {
             if (!$(element).is(":focus")) {
                 var value = ko.utils.unwrapObservable(valueAccessor());
+                debugger
                 $(element).val(Globalize.format(value, 'c'));
             }
         }

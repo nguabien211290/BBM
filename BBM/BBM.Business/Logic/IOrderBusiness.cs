@@ -25,7 +25,7 @@ namespace BBM.Business.Logic
 
         #endregion
         #region Order sale
-        List<donhang> GetOrder_Sale(PagingInfo pageinfo, int BranchesId, out int count, out int min);
+        List<donhang> GetOrder_Sale(PagingInfo pageinfo, int BranchesId, out int count, out int min, out double totalMoney);
 
         Task<Tuple<OrderModel, bool>> CreatOrder_Sale(OrderModel model, bool isDone, UserCurrent User);
 

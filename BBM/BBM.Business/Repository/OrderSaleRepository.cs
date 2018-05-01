@@ -111,7 +111,7 @@ namespace BBM.Business.Repository
 
             var result = lstTmp.Skip(min).Take(pageinfo.pagesize).ToList();
 
-            totalMoney = (double)result.Sum(o => o.tongtien);
+            totalMoney = (double)lstTmp.Sum(o => o.tongtien);
 
             return result;
         }

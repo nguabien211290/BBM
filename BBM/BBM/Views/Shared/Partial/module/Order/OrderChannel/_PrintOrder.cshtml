@@ -36,8 +36,8 @@
         </div>
         <!--/ko-->
         <div class="row-fluid">
-            <div class="span3 text-right">NV bán hàng: </div>
-            <div class="span9 text-left" data-bind="textEmployeeName: mOrderSale().EmployeeCreate"></div>
+            <div class="span3 text-right">PT Giao hàng: </div>
+            <div class="span9 text-left" data-bind="text: mOrderSale().tenptgh()?mOrderSale().tenptgh():'GH tại HCM'"></div>
         </div>
         <table class="table table-striped table-bordered table-hover dataTable">
             <thead>
@@ -111,7 +111,7 @@
                 </tr>
                 <!--ko if: mOrderSale().Note() && mOrderSale().Note().length >0 -->
                 <tr>
-                    <td class="text-right"><span class="font">Ghi chú</span></td>
+                    <td class="text-right"><span class="font">Lưu ý</span></td>
                     <td colspan="4">
                         <span class="font" data-bind="text: mOrderSale().Note"></span>
                     </td>

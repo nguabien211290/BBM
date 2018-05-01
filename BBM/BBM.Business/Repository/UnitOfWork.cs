@@ -28,40 +28,34 @@ namespace BBM.Business.Repository
         private Repository<soft_Config> _configRepository;
         private Repository<donhang_chuyenphat_tp> _cityRepository;
         private Repository<donhang_chuyenphat_tinh> _districtRepository;
+        private Repository<soft_Config_PrintTem> _config_PrintTemRepository;
 
-        public IRepository<donhang_chuyenphat_tp> CityRepository
+    
+        #region Product
+        public IRepository<shop_sanpham> ProductRepository
         {
             get
             {
-                if (_cityRepository == null)
+                if (_productRepository == null)
                 {
-                    _cityRepository = new Repository<donhang_chuyenphat_tp>(context);
+                    _productRepository = new ProductRepository(context);
                 }
-                return _cityRepository;
+                return _productRepository;
             }
         }
-        public IRepository<donhang_chuyenphat_tinh> DistrictRepository
+
+        public IRepository<shop_sanpham> ProductRepositoryV2
         {
             get
             {
-                if (_districtRepository == null)
+                if (_productRepositoryV2 == null)
                 {
-                    _districtRepository = new Repository<donhang_chuyenphat_tinh>(context);
+                    _productRepositoryV2 = new Repository<shop_sanpham>(context);
                 }
-                return _districtRepository;
+                return _productRepositoryV2;
             }
         }
-        public IRepository<soft_Config> ConfigRepository
-        {
-            get
-            {
-                if (_configRepository == null)
-                {
-                    _configRepository = new Repository<soft_Config>(context);
-                }
-                return _configRepository;
-            }
-        }
+
         public IRepository<soft_Catalog> CatalogRepository
         {
             get
@@ -117,40 +111,46 @@ namespace BBM.Business.Repository
                 return _disscountRepository;
             }
         }
-        public IRepository<khachhang> CutomerRepository
-        {
-            get
-            {
-                if (_customerRepository == null)
-                {
-                    _customerRepository = new CustomerRepository(context);
-                }
-                return _customerRepository;
-            }
-        }
-        public IRepository<shop_sanpham> ProductRepository
-        {
-            get
-            {
-                if (_productRepository == null)
-                {
-                    _productRepository = new ProductRepository(context);
-                }
-                return _productRepository;
-            }
-        }
 
-        public IRepository<shop_sanpham> ProductRepositoryV2
+        #endregion
+
+        #region Config
+        public IRepository<soft_Config> ConfigRepository
         {
             get
             {
-                if (_productRepositoryV2 == null)
+                if (_configRepository == null)
                 {
-                    _productRepositoryV2 = new Repository<shop_sanpham>(context);
+                    _configRepository = new Repository<soft_Config>(context);
                 }
-                return _productRepositoryV2;
+                return _configRepository;
             }
         }
+        public IRepository<sys_Employee> EmployeeRepository
+        {
+            get
+            {
+                if (_employeeRepository == null)
+                {
+                    _employeeRepository = new Repository<sys_Employee>(context);
+                }
+                return _employeeRepository;
+            }
+        }
+        public IRepository<soft_Config_PrintTem> Config_PrintTemRepository
+        {
+            get
+            {
+                if (_config_PrintTemRepository == null)
+                {
+                    _config_PrintTemRepository = new Repository<soft_Config_PrintTem>(context);
+                }
+                return _config_PrintTemRepository;
+            }
+        }
+        #endregion
+
+        #region Braches Channel
         public IRepository<soft_Branches> BrachesRepository
         {
             get
@@ -195,18 +195,46 @@ namespace BBM.Business.Repository
                 return _channelPriceRepository;
             }
         }
-        public IRepository<sys_Employee> EmployeeRepository
+
+        #endregion
+
+        #region Customer
+        public IRepository<khachhang> CutomerRepository
         {
             get
             {
-                if (_employeeRepository == null)
+                if (_customerRepository == null)
                 {
-                    _employeeRepository = new Repository<sys_Employee>(context);
+                    _customerRepository = new CustomerRepository(context);
                 }
-                return _employeeRepository;
+                return _customerRepository;
+            }
+        }
+        public IRepository<donhang_chuyenphat_tp> CityRepository
+        {
+            get
+            {
+                if (_cityRepository == null)
+                {
+                    _cityRepository = new Repository<donhang_chuyenphat_tp>(context);
+                }
+                return _cityRepository;
+            }
+        }
+        public IRepository<donhang_chuyenphat_tinh> DistrictRepository
+        {
+            get
+            {
+                if (_districtRepository == null)
+                {
+                    _districtRepository = new Repository<donhang_chuyenphat_tinh>(context);
+                }
+                return _districtRepository;
             }
         }
 
+        #endregion
+     
         #region Order
         private Repository<donhang> _orderSaleRepository;
         private Repository<donhang_ct> _orderSale_DetailRepository;

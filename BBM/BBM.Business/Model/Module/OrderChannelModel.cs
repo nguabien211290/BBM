@@ -47,6 +47,8 @@ namespace BBM.Business.Models.Module
         public int phithuho { get; set; }
         public int pttt { get; set; }
         public string tenptgh { get; set; }
+        public string tinhtrang { get; set; }
+        public int idgiogiao { get; set; }
     }
     public class Order_InputTmpModel
     {

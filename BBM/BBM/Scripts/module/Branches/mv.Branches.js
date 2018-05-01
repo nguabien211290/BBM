@@ -67,8 +67,7 @@ Branches.mvBranches = function () {
         obj().Channel("Chi nhánh mới");
         obj().BranchesId(val.BranchesId());
         obj().IsUpdate(true);
-        val.soft_Channel.push(obj());
-        
+        val.soft_Channel.push(obj());     
     };
 
     self.SaveUpdateChannel = function (val) {
@@ -133,7 +132,7 @@ Branches.mvBranches = function () {
             CommonUtils.showWait(true,"BranchesViewId");
             $.ajax({
                 type: "POST",
-                url: CommonUtils.url("/Branches/UpdateBranches"),
+                url: CommonUtils.url("/Branches/CreateBranches"),
                 cache: false,
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',

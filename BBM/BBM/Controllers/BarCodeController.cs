@@ -1,12 +1,16 @@
 ﻿using AutoMapper;
 using BBM.Business.Infractstructure;
 using BBM.Business.Infractstructure.Security;
+using BBM.Business.Logic;
 using BBM.Business.Model.Entity;
+using BBM.Business.Model.Module;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
+using BBM.Business.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,11 +18,12 @@ namespace BBM.Controllers
 {
     public class BarCodeController : BaseController
     {
-        private CRUD _crud;
-        private admin_softbbmEntities _context = new admin_softbbmEntities();
-        public BarCodeController()
+        private IBarCodeBusiness _IBarCodeBusiness;
+        private IUnitOfWork _unitOW;
+        public BarCodeController(IBarCodeBusiness IBarCodeBusiness, IUnitOfWork unitOW)
         {
-            _crud = new CRUD();
+            _IBarCodeBusiness = IBarCodeBusiness;
+            _unitOW = unitOW;
         }
 
         public ActionResult RenderView(List<Order_DetialModel> products = null)
@@ -30,7 +35,7 @@ namespace BBM.Controllers
                 {
                     if (item.ProductId > 0)
                     {
-                        var product = _context.shop_sanpham.Find(item.ProductId);
+                        var product = _unitOW.ProductRepositoryV2.GetById(item.ProductId);
                         if (product != null)
                         {
                             var pro = Mapper.Map<ProductSampleModel>(product);
@@ -55,14 +60,15 @@ namespace BBM.Controllers
             return PartialView("~/Views/Shared/Partial/module/Barcode/Index.cshtml");
         }
 
+        [HttpGet]
         public ActionResult GetConfig()
         {
-            var Messaging = new RenderMessaging();
+            var Messaging = new RenderMessaging<BarcodeModel>();
             try
             {
-                var config = _context.soft_Config_PrintTem.FirstOrDefault(o => o.BranchId == User.BranchesId);
+                var config = _IBarCodeBusiness.GetConfig(User.BranchesId);
                 if (config == null)
-                    Messaging.Data = new soft_Config_PrintTem();
+                    Messaging.Data = new BarcodeModel();
                 else
                     Messaging.Data = config;
 
@@ -71,29 +77,22 @@ namespace BBM.Controllers
             catch
             {
                 Messaging.isError = true;
-                Messaging.messaging = "Không lưu được cấu hình, vui lòng thử lại.";
+                Messaging.messaging = "Không lấy được cấu hình, vui lòng thử lại.";
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult SaveConfig(soft_Config_PrintTem model)
+        public async Task<ActionResult> SaveConfig(BarcodeModel model)
         {
             var Messaging = new RenderMessaging();
             try
             {
                 model.BranchId = User.BranchesId;
-                if (model.Id <= 0)
-                {
-                    model.BranchId = User.BranchesId;
-                    _crud.Add(model);
-                }
-                else
-                    _crud.Update(model);
 
-                _crud.SaveChanges();
-                Messaging.isError = false;
-                Messaging.messaging = "Lưu cấu hình thành công.";
+                Messaging.isError = !await _IBarCodeBusiness.SaveConfig(model);
+
+                Messaging.messaging = !Messaging.isError ? "Lưu cấu hình thành công." : "Không lưu được cấu hình, vui lòng thử lại!";
             }
             catch
             {
@@ -102,6 +101,5 @@ namespace BBM.Controllers
             }
             return Json(Messaging, JsonRequestBehavior.AllowGet);
         }
-
     }
 }

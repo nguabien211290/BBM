@@ -12,6 +12,8 @@ namespace BBM.Business.Logic
     public interface IBrachesBusiness
     {
         List<BranchesModel> GetBranches();
-        Task CreateBranches(BranchesModel model, UserCurrent User);
+        Task<bool> CreateBranches(BranchesModel model, int UserId);
+        Task<bool> UpdateBranches(BranchesModel model, int UserId);
+        Task<bool> RemoveBranchs(int brachesId);
     }
 }

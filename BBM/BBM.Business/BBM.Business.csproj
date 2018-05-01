@@ -80,6 +80,7 @@
     <Compile Include="Infractstructure\RequestWrapperSync.cs" />
     <Compile Include="Infractstructure\Security\CustomPrincipal.cs" />
     <Compile Include="Logic\ApiBusiness.cs" />
+    <Compile Include="Logic\BarCodeBusiness.cs" />
     <Compile Include="Logic\BrachesBusiness.cs" />
     <Compile Include="Logic\CatalogBusiness.cs" />
     <Compile Include="Logic\ChannelBusiness.cs" />
@@ -87,6 +88,9 @@
     <Compile Include="Logic\DiscountBusiness.cs" />
     <Compile Include="Logic\IApiBusiness.cs">
       <DependentUpon>ApiBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\IBarCodeBusiness.cs">
+      <DependentUpon>BarCodeBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\IBrachesBusiness.cs">
       <DependentUpon>BrachesBusiness.cs</DependentUpon>
@@ -361,6 +365,7 @@
     <Compile Include="Model\Enum\TypeInput.cs" />
     <Compile Include="Model\Enum\TypeNotification.cs" />
     <Compile Include="Model\Enum\TypeOrder.cs" />
+    <Compile Include="Model\Module\BarcodeModel.cs" />
     <Compile Include="Model\Module\BranchesModel.cs" />
     <Compile Include="Model\Module\CatalogModel.cs" />
     <Compile Include="Model\Module\ChannelModel.cs" />

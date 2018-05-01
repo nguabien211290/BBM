@@ -24,41 +24,70 @@ namespace BBM.Business.Logic
         {
             return Mapper.Map<List<BranchesModel>>(unitOfWork.BrachesRepository.GetAll().ToList());
         }
-        public async Task CreateBranches(BranchesModel model, UserCurrent User)
+        public async Task<bool> CreateBranches(BranchesModel model, int UserId)
         {
             var objBraches = Mapper.Map<soft_Branches>(model);
 
             objBraches.DateCreate = DateTime.Now;
-            objBraches.EmployeeCreate = User.UserId;
+
+            objBraches.EmployeeCreate = UserId;
+
+            objBraches.Type = 1;
 
             unitOfWork.BrachesRepository.Add(objBraches);
 
-            foreach (var item in model.soft_Channel)
-            {
-                var objChannel = Mapper.Map<soft_Channel>(item);
-
-                objChannel.DateCreate = DateTime.Now;
-                objChannel.EmployeeCreate = User.UserId;
-
-                unitOfWork.ChannelRepository.Add(objChannel);
-            }
-
             await unitOfWork.SaveChanges();
+
+            return true;
         }
 
-        public async Task UpdateBranches(BranchesModel model, UserCurrent User)
+        public async Task<bool> UpdateBranches(BranchesModel model, int UserId)
         {
-            var objBraches = Mapper.Map<soft_Branches>(model);
-            objBraches.DateUpdate = DateTime.Now;
-            objBraches.EmployeeUpdate = User.UserId;
+            if (model.BranchesId <= 0)
+                return false;
 
-            unitOfWork.BrachesRepository.Update(objBraches, o => o.BranchesName,
+            var ob = unitOfWork.BrachesRepository.GetById(model.BranchesId);
+
+            if(ob==null)
+                return false;
+
+
+            ob.Code = model.Code;
+            ob.IsPrimary = model.IsPrimary;
+            ob.BranchesName = model.BranchesName;
+            ob.Phone = model.Phone;
+            ob.Address = model.Address;
+            ob.DateUpdate = DateTime.Now;
+            ob.EmployeeUpdate = UserId;
+
+            unitOfWork.BrachesRepository.Update(ob, o => o.BranchesName,
                 o => o.Code,
                 o => o.IsPrimary,
                 o => o.Phone, o => o.Address,
                 o => o.DateUpdate, o => o.EmployeeUpdate);
 
             await unitOfWork.SaveChanges();
+
+            return true;
+        }
+
+        public async Task<bool> RemoveBranchs(int brachesId)
+        {
+            var braches = unitOfWork.BrachesRepository.GetById(brachesId);
+
+            if (braches == null)
+                return false;
+
+            if (braches.soft_Channel.Count > 0)
+                foreach (var item in braches.soft_Channel.ToList())
+                {
+                    unitOfWork.ChannelRepository.Delete(item.Id);
+                }
+            unitOfWork.BrachesRepository.Delete(brachesId);
+
+            await unitOfWork.SaveChanges();
+
+            return true;
         }
     }
 }

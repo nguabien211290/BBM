@@ -38,7 +38,7 @@ Order.mCustomer = function () {
     self.DistrictName = ko.observable();
     self.ProvinceId.subscribe(function (val) {
         self.District_lst([]);
-         var city = ko.utils.arrayFirst(common.mvCity().City(), function (x) { return x.id == val })
+        var city = ko.utils.arrayFirst(common.mvCity().City(), function (x) { return x.id == val })
         if (city)
             self.ProvinceName(city.tentp);
         ko.utils.arrayForEach(common.mvCity().Districts(), function (x) {
@@ -124,6 +124,8 @@ Order.mOrder = function () {
 
     self.pttt = ko.observable();
     self.tenptgh = ko.observable();
+    self.tinhtrang = ko.observable();
+    self.idgiogiao = ko.observable();
 };
 Order.mOrderSaleDetail = function () {
     var self = this;
@@ -141,7 +143,7 @@ Order.mOrderSaleDetail = function () {
     self.Product = ko.observable();
     self.TotalMoney = ko.observable();
     self.TotalMoney_computed = ko.computed(function () {
-        if (self.Total() > 0 && self.Price() > 0)
+        if (self.Total() && self.Price())
             self.TotalMoney(self.Total() * self.Price());
         else
             self.TotalMoney(0);

@@ -103,6 +103,10 @@ namespace BBM.Business.Infractstructure
                 #endregion
 
                 #region khachhang
+
+                cfg.CreateMap<donhang_chuyenphat_tp, CityModel>();
+                cfg.CreateMap<donhang_chuyenphat_tinh, DistrictModel>();
+
                 cfg.CreateMap<khachhang, CustomerModel>()
                                 .ForMember(a => a.Id, b => b.MapFrom(c => c.MaKH))
                                 .ForMember(a => a.Code, b => b.MapFrom(c => c.MaKH))
@@ -148,7 +152,7 @@ namespace BBM.Business.Infractstructure
                 cfg.CreateMap<OrderModel, OrderModel>();
                 #endregion
 
-                #region product
+                #region Product
                 cfg.CreateMap<shop_sanpham, ProductSampleModel>()
                        .ForMember(a => a.Img, b => b.ResolveUsing(c =>
                                {
@@ -173,21 +177,20 @@ namespace BBM.Business.Infractstructure
                 cfg.CreateMap<soft_Channel_Product_Price, Product_PriceModel>();
                 cfg.CreateMap<soft_Branches_Product_Stock, Product_StockModel>()
                     .ForMember(a => a.BranchesName, b => b.MapFrom(c => c.soft_Branches.BranchesName));
-
-                #endregion
-
-                cfg.CreateMap<EmployeeModel, sys_Employee>();
-                cfg.CreateMap<sys_Employee, EmployeeModel>();
+                cfg.CreateMap<CatalogModel, soft_Catalog>();
+                cfg.CreateMap<soft_Catalog, CatalogModel>();
                 cfg.CreateMap<SuppliersModel, soft_Suppliers>();
                 cfg.CreateMap<soft_Suppliers, SuppliersModel>();
                 cfg.CreateMap<soft_Discount, DisscountModel>();
                 cfg.CreateMap<DisscountModel, soft_Discount>();
-                cfg.CreateMap<soft_Notification, NotificationModel>();
-                cfg.CreateMap<NotificationModel, soft_Notification>();
+
+                #endregion
+
+                #region Brach Channel Employee
                 cfg.CreateMap<EmployeeModel, sys_Employee>();
                 cfg.CreateMap<sys_Employee, EmployeeModel>();
-                cfg.CreateMap<CatalogModel, soft_Catalog>();
-                cfg.CreateMap<soft_Catalog, CatalogModel>();
+                cfg.CreateMap<soft_Notification, NotificationModel>();
+                cfg.CreateMap<NotificationModel, soft_Notification>();
                 cfg.CreateMap<soft_Employee_Title, Employee_TitleModel>();
                 cfg.CreateMap<Employee_TitleModel, soft_Employee_Title>();
                 cfg.CreateMap<soft_Config, Config>();
@@ -196,9 +199,10 @@ namespace BBM.Business.Infractstructure
                 cfg.CreateMap<soft_Branches, BranchesModel>();
                 cfg.CreateMap<BranchesModel, soft_Branches>();
                 cfg.CreateMap<CustomPrincipal, Config_UserModel>();
+                cfg.CreateMap<soft_Config_PrintTem, BarcodeModel>();
+                cfg.CreateMap<BarcodeModel, soft_Config_PrintTem>();
+                #endregion
 
-                cfg.CreateMap<donhang_chuyenphat_tp, CityModel>();
-                cfg.CreateMap<donhang_chuyenphat_tinh, DistrictModel>();
             });
         }
     }

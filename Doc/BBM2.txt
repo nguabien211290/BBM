@@ -1,12 +1,12 @@
 ﻿Đơn hàng trên web:
-- Theo quy định thì các sp đang KM giảm giá nếu khách đủ điểm cũng không được tính vào giảm 5% thành viên
-- Nhưng trên hóa đơn tính tiền thì không thể bíêt sp KM vì chỉ hiện giá KM chứ không hiện giá gốc, nên các bạn tính tiền sẽ không biết và giảm thêm 5% cho khách.
+R- Chữ "ghi chú" trong trang in hóa đơn em thay bằng "Lưu ý" để nó nằm trọn trong 1 hàng nhé.
+R- Theo quy định thì các sp đang KM giảm giá nếu khách đủ điểm cũng không được tính vào giảm 5% thành viên
+R- Nhưng trên hóa đơn tính tiền thì không thể bíêt sp KM vì chỉ hiện giá KM chứ không hiện giá gốc, nên các bạn tính tiền sẽ không biết và giảm thêm 5% cho khách.
   Vây làm cách nào mình thêm giá gốc vào hóa đơn đựơc không Giang? và thêm dấu gạch ngang cái giá đó
-
-Phiếu tra hang:
-Việc khách đổi trả nếu làm theo cách hủy hóa đơn và làm lại hđ khác sẽ káh lâu vì tìm hóa đơn, chưa kể hàng Shopee và Lazada trả về không biết trong hóa đơn nào, rất bất tiện nên tốt nhất em làm giùm anh chức năng là Phíêu trả hàng, tương tự như hóa đơn bán hàng thôi, nhưng ngược lại khi hòan thành:
-- Stock: hóa đơn trừ ra, trả hàng cộng vào
-- Doanh số/doanh thu + điểm tích lũy (nếu có): Hóa đơn cộng vào, trả hàng trừ ra
+R- Đơn hàng thanh tóan Trực tuyến không thành công thì mình có dấu hiệu gì để biết và hủy đơn đó không. Trong admin web thì thanh tóan thành công sẽ có chữ VNpay cuối đơn hàng.
+R- PT giao hàng: nếu ở TPHCM thì em cho hiện thời gian khách chọn nhé (giờ HC hay giao nhanh hay ngòai giờ HC hay giao ngày CN,...)
+R- Trong trang in hóa đơn online, chỗ NV bán hàng em thay bằng PT thanh tóan, và em chèn thêm 1 dòng PT giao hàng nữa  nhé. Hđ em chỉnh lại khỏang cách các hàng cho sát lại như anh nói lúc trước nhé chứ thưa quá, làm hđ dài.
+R-Phiếu tra hang
 
 Api Shoppe
 Do sku mình đăng lên các trang TMĐT ngày càng nhiều nên việc quản lý nhiều trang khác nhau sẽ rất tốn thời gian. Do đó anh cần đồng bộ dữ liệu của soft mình và các hệ thống đó để quản lý cho dễ. 
@@ -14,10 +14,6 @@ Các thông tin anh cần đồng bộ trên Shopee (SP) như sau:
 - Thông tin về giá bán, giá KM, ngày KM, tồn kho của các sp (ID là mã sp của mình hoặc mã SKU trên trang họ)
 - Thông tin về đơn hàng như mã đơn hàng, ngày tạo đơn, ngày giao, sp trong đơn hàng, số lượng bán, thành tiền (không cần lưu thông tin KH), trạng thái đơn hàng.
 - Khi mình cập nhật thông tin trên soft (vd chỉnh giá, chỉnh tồn kho,...) thì thông tin trên SP cũng sẽ cập thật theo và ngược lại?
-
-Sản pham
--và mấy giá kênh lúc trc a nói em làm tròn số hàng ngàn
-
 
 Report
 1. Tổng doanh số bán hàng các kênh (tính tổng thanh tóan trên các đơn hàng), lọc theo ngày, người bán, ngừơi giao hàng,...: 1
@@ -27,7 +23,3 @@ Report
 
 
 
-Theo quy định thì các sp đang KM giảm giá nếu khách đủ điểm cũng không được tính vào giảm 5% thành viên
-Nhưng trên hóa đơn tính tiền thì không thể bíêt sp KM vì chỉ hiện giá KM chứ không hiện giá gốc, nên các bạn tính tiền sẽ không biết và giảm thêm 5% cho khách.
-Vây làm cách nào mình thêm giá gốc vào hóa đơn đựơc không Giang? và thêm dấu gạch ngang cái giá đó
-Web thì mặc định không giảm 5% cho sp Km rồi

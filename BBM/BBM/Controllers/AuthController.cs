@@ -46,28 +46,6 @@ namespace BBM.Controllers
 
                             branchsDefault = roleObject[0].BrandId;
                         }
-                        //var role = new List<Role_Branches>();
-
-                        // var lstRole = EnumHelper<RolesEnum>.GetListValueEnum(typeof(RolesEnum));
-
-                        //  foreach (var item in roleObject)
-                        //{
-                        //var rolesName = new List<string>();
-                        //var fooArray = item.Roles.Value.Split(',');
-
-                        //string firstRate = fooArray[0];
-                        //if (!string.IsNullOrEmpty(firstRate))
-                        //{
-                        //    foreach (var ro in fooArray)
-                        //    {
-                        //        var nameRole = lstRole.FirstOrDefault(o => o.Key == int.Parse(ro));
-                        //        rolesName.Add(nameRole.Value);
-                        //    }
-                        //    role.Add(new Infractstructure.Security.Role_Branches { BranchesId = item.BrandId, Roles = rolesName });
-
-                        //}
-
-                        //}
 
                         var branchesId = user.Branches_last.HasValue ? user.Branches_last.Value : branchsDefault;
                         var branches = _context.soft_Branches.Find(branchesId);
@@ -80,39 +58,21 @@ namespace BBM.Controllers
                         serializeModel.IsPrimary = branches.IsPrimary;
                         serializeModel.ChannelId = user.Channel_last.HasValue ? user.Channel_last.Value : branches.soft_Channel.FirstOrDefault().Id;
 
-
-                        //serializeModel.role_branches = role;
-
                         string userData = JsonConvert.SerializeObject(serializeModel);
                         FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
                                  1,
                                  user.Email,
                                  DateTime.Now,
                                  DateTime.Now.AddDays(30),
-                                 // DateTime.Now.AddMinutes(15),
                                  false,
                                  userData);
 
                         string encTicket = FormsAuthentication.Encrypt(authTicket);
                         HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket);
-                        //faCookie.Expires = DateTime.Now.AddDays(30);
 
                         Response.Cookies.Add(faCookie);
 
                         return RedirectToAction("Index", "Home");
-
-                        //if (roles.Contains("Admin"))
-                        //{
-                        //    return RedirectToAction("Index", "Admin");
-                        //}
-                        //else if (roles.Contains("User"))
-                        //{
-                        //    return RedirectToAction("Index", "User");
-                        //}
-                        //else
-                        //{
-                        //    return RedirectToAction("Index", "Home");
-                        //}
                     }
 
                     ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
@@ -131,6 +91,5 @@ namespace BBM.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Auth", null);
         }
-
     }
 }

@@ -14,10 +14,10 @@ namespace BBM.Business.Logic
 {
     public partial class OrderBusiness
     {
-        public List<donhang> GetOrder_Sale(PagingInfo pageinfo, int BranchesId, out int count, out int min)
+        public List<donhang> GetOrder_Sale(PagingInfo pageinfo, int BranchesId, out int count, out int min, out double totalMoney)
         {
             var channel = unitOfWork.ChannelRepository.GetById(BranchesId);
-            double totalMoney = 0;
+
             return unitOfWork.OrderSaleRepository.SearchBy(pageinfo, out count, out min, out totalMoney, BranchesId);
         }
 

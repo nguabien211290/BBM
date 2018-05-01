@@ -25,6 +25,7 @@ namespace BBM.Business.Repository
         IRepository<soft_Config> ConfigRepository { get; }
         IRepository<donhang_chuyenphat_tp> CityRepository { get; }
         IRepository<donhang_chuyenphat_tinh> DistrictRepository { get; }
+        IRepository<soft_Config_PrintTem> Config_PrintTemRepository { get; }
         #region Order
         IRepository<soft_Order> OrderBranchesRepository { get; }
         IRepository<donhang> OrderSaleRepository { get; }

@@ -82,7 +82,9 @@ namespace BBM.Controllers
 
                 int count, min = 0;
 
-                var lstOrder = _IOrderBus.GetOrder_Sale(pageinfo, User.ChannelId, out count, out min);
+                double totalMoney = 0;
+
+                var lstOrder = _IOrderBus.GetOrder_Sale(pageinfo, User.ChannelId, out count, out min, out totalMoney);
 
                 var a = lstOrder.Select(o => o.id).ToList();
 
@@ -127,7 +129,7 @@ namespace BBM.Controllers
                     }
                 }
 
-                lstInfo.Total = lstInfo.listTable.Sum(o => o.Total);
+                lstInfo.Total = totalMoney;
 
                 Messaging.Data = lstInfo;
             }

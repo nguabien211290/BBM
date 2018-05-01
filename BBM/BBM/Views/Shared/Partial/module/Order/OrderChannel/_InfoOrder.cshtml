@@ -46,6 +46,31 @@
                         <select data-bind="options: lstEmployShip, optionsText: 'Name',optionsValue:'Id', value: mOrderSale().EmployeeShip" style="width:90%!important"></select>
                     </div>
                 </div>
+                <!--ko if: mOrderSale().tinhtrang() -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Thanh toán Online</div>
+                    <div class="profile-info-value">
+                        <!--ko if: mOrderSale().tinhtrang() == '00' -->
+                        <span>Thành công</span>
+                        <!--/ko-->
+                        <!--ko if: mOrderSale().tinhtrang() != '00' -->
+                        <span>Không thành công</span>
+                        <!--/ko-->
+                    </div>
+                </div>
+                <!--/ko-->
+                <!--ko if: mOrderSale().idgiogiao() -->
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Giờ giao hàng</div>
+                    <div class="profile-info-value">
+                        <!--ko foreach: typeTimeShiping -->
+                        <!--ko if:$data.Key == $parents[0].mOrderSale().idgiogiao() -->
+                        <span data-bind="text: $data.Value"></span>
+                        <!--/ko-->
+                        <!--/ko-->
+                    </div>
+                </div>
+                <!--/ko-->
                 <!--ko if: mOrderSale().Id() > 0 -->
                 <div class="profile-info-row">
                     <div class="profile-info-name">Trạng thái</div>
