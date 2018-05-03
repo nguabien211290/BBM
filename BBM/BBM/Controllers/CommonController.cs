@@ -174,7 +174,7 @@ namespace BBM.Controllers
 
                         reader.Close();
 
-                        var rs = await _ImportBus.ImportData2(result, User.UserId);
+                        var rs = await _ImportBus.ImportData(result, User.UserId);
 
                         if (rs == null)
                         {

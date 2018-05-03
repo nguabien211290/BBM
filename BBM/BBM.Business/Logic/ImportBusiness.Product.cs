@@ -24,11 +24,11 @@ namespace BBM.Business.Logic
 
             var perfixChannel = "Kenh_";
 
-            var perfixPriceChannel = "Kenh_KM_";
+            var perfixPriceChannel = "KM_Kenh_";
 
-            var perfixPriceChannel_StartDate = "Kenh_KM_NBD_";
+            var perfixPriceChannel_StartDate = "KM_Kenh_NBD_";
 
-            var perfixPriceChannel_EndDate = "Kenh_KM_NKT_";
+            var perfixPriceChannel_EndDate = "KM_NKenh_KT_";
 
             var lstError = new List<shop_sanpham>();
 
@@ -91,6 +91,7 @@ namespace BBM.Business.Logic
                             if (string.IsNullOrEmpty(value))
                                 continue;
 
+                            #region San phẩm
                             switch (columnName)
                             {
                                 case "ProductName":
@@ -176,6 +177,8 @@ namespace BBM.Business.Logic
                                     }
                                     break;
                             }
+                            #endregion
+                            #region Gia kenh
                             if (columnName.StartsWith(perfixChannel) && !isUpdatePriceChanle)
                             {
                                 var codeChannel = columnName.Substring(perfixChannel.Length);
@@ -270,6 +273,8 @@ namespace BBM.Business.Logic
                                     }
                                 }
                             }
+                            #endregion
+                            #region Giá khuyến mãi
                             if (columnName.StartsWith(perfixPriceChannel) && !isUpdatePriceChanle)
                             {
                                 var codeChannel = columnName.Substring(perfixPriceChannel.Length);
@@ -327,6 +332,8 @@ namespace BBM.Business.Logic
                                     }
                                 }
                             }
+                            #endregion
+                            #region Tồn kho
                             if (columnName.StartsWith(perfixBranches))
                             {
 
@@ -376,6 +383,7 @@ namespace BBM.Business.Logic
 
                                 }
                             }
+                            #endregion
                         }
                     }
                     catch (Exception ex)
@@ -397,6 +405,7 @@ namespace BBM.Business.Logic
                         if (product.id <= 0)
                         {
                             product.DateCreate = DateTime.Now;
+
                             product.FromCreate = (int)TypeFromCreate.Soft;
 
                             unitOfWork.ProductRepository.Add(product);
@@ -414,8 +423,7 @@ namespace BBM.Business.Logic
                                                          o => o.StatusVAT,
                                                          o => o.SuppliersId,
                                                          o => o.CatalogId,
-                                                         o => o.PriceWholesale
-                                                         );
+                                                         o => o.PriceWholesale);
                         }
 
                         await Update_is_import(true, null, percent);
@@ -487,7 +495,7 @@ namespace BBM.Business.Logic
             }
         }
 
-        public async Task<List<shop_sanpham>> ImportData2(DataSet data, int UserId)
+        public async Task<List<shop_sanpham>> ImportPriceDisscount(DataSet data, int UserId)
         {
             var masp = string.Empty;
 
@@ -518,10 +526,6 @@ namespace BBM.Business.Logic
                     percent = (int)Math.Round(100.0 * line / data.Tables[0].Rows.Count);
 
                     var product = new shop_sanpham();
-
-                    var imgage = new shop_image();
-                    
-
                     try
                     {
                         foreach (DataColumn col in data.Tables[0].Columns)
@@ -530,7 +534,7 @@ namespace BBM.Business.Logic
 
                             var value = row[col.ColumnName].ToString();
 
-                            if (columnName.Equals("Mã sp"))
+                            if (columnName.Equals("Code"))
                             {
                                 masp = value.Trim();
 
@@ -540,22 +544,14 @@ namespace BBM.Business.Logic
                                     break;
                                 }
 
-
                                 product = unitOfWork.ProductRepository.FindBy(o => o.masp.Equals(masp)).FirstOrDefault();
 
-                                if (product == null || product.id <= 0)
-                                {
-                                    product = new shop_sanpham();
-                                    product.masp = value.Trim();
-                                }
+                                if (product == null)
+                                    continue;
                             }
-
-                            if (string.IsNullOrEmpty(value))
-                                continue;
 
                             if (columnName.StartsWith("Giá KM"))
                             {
-
                                 var channelOL = unitOfWork.ChannelRepository.FindBy(o => o.Code == "OL").FirstOrDefault();// channel_lst.FirstOrDefault(o => o.Code.Equals(codeChannel));
 
                                 if (channelOL != null)
@@ -571,43 +567,8 @@ namespace BBM.Business.Logic
                                             if (channelPrice != null)
                                             {
                                                 channelPrice.Price_Discount = int.Parse(value);
-                                                
-                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
-                                                    o => o.Price_Discount);
-                                            }
-                                            else
-                                            {
 
-                                            }
-                                        }
-                                        else
-                                        {
-
-                                        }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                    }
-                                }
-
-                                var channelCH = unitOfWork.ChannelRepository.FindBy(o => o.Code == "CH").FirstOrDefault();// channel_lst.FirstOrDefault(o => o.Code.Equals(codeChannel));
-
-                                if (channelOL != null)
-                                {
-                                    try
-                                    {
-
-                                        if (product.id > 0)
-                                        {
-                                            var channelPrice = unitOfWork.ChanelPriceRepository.FindBy(o => o.ChannelId == channelCH.Id
-                                                                                            && o.ProductId == product.id).FirstOrDefault();
-
-                                            if (channelPrice != null)
-                                            {
-                                                channelPrice.Price_Discount = int.Parse(value);
-
-                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
-                                                    o => o.Price_Discount);
+                                                unitOfWork.ChanelPriceRepository.Update(channelPrice, o => o.Price_Discount);
                                             }
                                             else
                                             {
@@ -624,7 +585,6 @@ namespace BBM.Business.Logic
                                     }
                                 }
                             }
-
                         }
                     }
                     catch (Exception ex)
@@ -641,6 +601,8 @@ namespace BBM.Business.Logic
 
                     if (isError)
                         continue;
+
+
                     try
                     {
                         await unitOfWork.SaveChanges();
