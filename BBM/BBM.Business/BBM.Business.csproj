@@ -86,6 +86,7 @@
     <Compile Include="Logic\ChannelBusiness.cs" />
     <Compile Include="Logic\CustomerBusiness.cs" />
     <Compile Include="Logic\DiscountBusiness.cs" />
+    <Compile Include="Logic\EmployessBusiness.cs" />
     <Compile Include="Logic\IApiBusiness.cs">
       <DependentUpon>ApiBusiness.cs</DependentUpon>
     </Compile>
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Include="Logic\IDiscountBusiness.cs">
       <DependentUpon>DiscountBusiness.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\IEmployessBusiness.cs">
+      <DependentUpon>EmployessBusiness.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\IImportBusiness.cs">
       <DependentUpon>ImportBusiness.cs</DependentUpon>
@@ -388,6 +392,7 @@
     <Compile Include="Repository\CatalogRepository.cs" />
     <Compile Include="Repository\CustomerRepository.cs" />
     <Compile Include="Repository\DiscountRepository.cs" />
+    <Compile Include="Repository\EmployeeRepository.cs" />
     <Compile Include="Repository\OrderRepository.Branch.cs">
       <DependentUpon>OrderSaleRepository.cs</DependentUpon>
     </Compile>

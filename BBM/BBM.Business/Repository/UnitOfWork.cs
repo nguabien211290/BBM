@@ -143,7 +143,7 @@ namespace BBM.Business.Repository
             {
                 if (_employeeRepository == null)
                 {
-                    _employeeRepository = new Repository<sys_Employee>(context);
+                    _employeeRepository = new EmployeeRepository(context);
                 }
                 return _employeeRepository;
             }

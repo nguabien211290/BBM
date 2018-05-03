@@ -80,6 +80,7 @@ namespace BBM.App_Start
             kernel.Bind<INotificaitonBusiness>().To<NotificaitonBusiness>();
             kernel.Bind<IApiBusiness>().To<ApiBusiness>();
             kernel.Bind<IBarCodeBusiness>().To<BarCodeBusiness>();
+            kernel.Bind<IEmployessBusiness>().To<EmployessBusiness>();
             
             #endregion
 

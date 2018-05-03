@@ -12,6 +12,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BBM.Infractstructure.Security;
+using BBM.Business.Logic;
 
 namespace BBM.Controllers
 {
@@ -22,10 +23,13 @@ namespace BBM.Controllers
 
         private CRUD _crud;
         private admin_softbbmEntities _context;
-        public EmployessController()
+
+        private IEmployessBusiness _IEmployessBusiness;
+        public EmployessController(IEmployessBusiness IEmployessBusiness)
         {
             _crud = new CRUD();
             _context = new admin_softbbmEntities();
+            _IEmployessBusiness = IEmployessBusiness;
         }
 
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Employess })]
@@ -77,7 +81,7 @@ namespace BBM.Controllers
         [CustomAuthorize(RolesEnums = new RolesEnum[] { RolesEnum.Read_Employess })]
         public JsonResult GetEmployessby(PagingInfo pageinfo)
         {
-            var Messaging = new RenderMessaging();
+            var Messaging = new RenderMessaging<Channel_Paging<EmployeeModel>> ();
             try
             {
                 if (User == null || User.ChannelId <= 0)
@@ -86,122 +90,20 @@ namespace BBM.Controllers
                     Messaging.messaging = "Vui lòng đăng nhập lại!";
                 }
 
-                var lstTmp = from employ in _context.sys_Employee
-                             where employ.IsDelete == false
-                             select new EmployeeModel
-                             {
-                                 Name = employ.Name,
-                                 Email = employ.Email,
-                                 Titles = employ.Titles,
-                                 Phone = employ.Phone,
-                                 Address = employ.Address,
-                                 Id = employ.Id,
-                                 DateCreate = employ.DateCreate,
-                                 EmployeeCreate = employ.EmployeeCreate,
-                                 Roles = employ.Roles,
-                                 IsDisable = employ.IsDisable.HasValue ? employ.IsDisable.Value : false
-                             };
-
-                #region Sort
-                if (!string.IsNullOrEmpty(pageinfo.sortby))
-                {
-                    switch (pageinfo.sortby)
-                    {
-                        case "Name":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Name);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Name);
-                            break;
-                        case "Titles":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Titles);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Titles);
-                            break;
-                        case "Email":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Email);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Email);
-                            break;
-                        case "Phone":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Phone);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Phone);
-                            break;
-                        case "Address":
-                            if (pageinfo.sortbydesc)
-                                lstTmp = lstTmp.OrderByDescending(o => o.Address);
-                            else
-                                lstTmp = lstTmp.OrderBy(o => o.Address);
-                            break;
-
-                    }
-
-                }
-                #endregion
-                var employess = lstTmp.ToList();
-
-                foreach (var item in employess)
-                {
-                    if (!string.IsNullOrEmpty(item.Roles))
-                    {
-                        item.GroupRoles = new List<RolesObject>();
-
-                        var rol = JsonConvert.DeserializeObject<dynamic>(item.Roles);
-                        foreach (var o in rol)
-                        {
-                            var newobj = new RolesObject();
-                            newobj.BrandId = o.BrandId;
-                            newobj.Roles = new List<int>();
-
-
-                            var fooArray = o.Roles.Value.Split(',');
-
-                            string firstRate = fooArray[0];
-                            if (!string.IsNullOrEmpty(firstRate))
-                            {
-                                foreach (var ro in fooArray)
-                                {
-                                    newobj.Roles.Add(int.Parse(ro));
-                                }
-                                item.GroupRoles.Add(newobj);
-                            }
-                        }
-                    }
-                }
-
-
-                #region Search
-                if (!string.IsNullOrEmpty(pageinfo.keyword))
-                {
-                    var lstcustomer = lstTmp.ToList();
-                    pageinfo.keyword = pageinfo.keyword.ToLower();
-                    employess = employess.Where(o =>
-                    (!string.IsNullOrEmpty(o.Name) && Helpers.convertToUnSign3(o.Name.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Phone) && Helpers.convertToUnSign3(o.Phone.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Email) && Helpers.convertToUnSign3(o.Email.ToLower()).Contains(pageinfo.keyword))
-                   || (!string.IsNullOrEmpty(o.Address) && Helpers.convertToUnSign3(o.Address.ToLower()).Contains(pageinfo.keyword))).ToList();
-
-                }
-                #endregion
                 Channel_Paging<EmployeeModel> lstInfo = new Channel_Paging<EmployeeModel>();
-                if (employess != null && employess.Count > 0)
-                {
-                    int min = Helpers.FindMin(pageinfo.pageindex, pageinfo.pagesize);
 
-                    lstInfo.totalItems = employess.Count();
-                    int quantity = Helpers.GetQuantity(lstInfo.totalItems, pageinfo.pageindex, pageinfo.pagesize);
-                    if (pageinfo.pagesize < employess.Count)
-                        if (quantity > 0)
-                            employess = employess.GetRange(min, quantity);
-                    lstInfo.startItem = min;
-                    lstInfo.listTable = employess;
+                int count, min = 0;
 
-                }
+                var rs = _IEmployessBusiness.GetEmployessby(pageinfo, out count, out min);
 
+                lstInfo.startItem = min;
+
+                lstInfo.totalItems = count;
+
+                lstInfo.listTable = rs;
+
+                Messaging.Data = lstInfo;
+                
                 Messaging.Data = lstInfo;
             }
             catch (Exception ex)
@@ -392,6 +294,6 @@ namespace BBM.Controllers
             var rs = Mapper.Map<List<Employee_TitleModel>>(_context.soft_Employee_Title.ToList());
             return Json(rs, JsonRequestBehavior.AllowGet);
         }
-      
+
     }
 }
