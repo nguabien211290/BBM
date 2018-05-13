@@ -197,7 +197,7 @@ Order.mvOrderSale = function (OrderId) {
                     }
                 } else
                     CommonUtils.notify("Thông báo", data.messaging, 'error');
-            }).always(function () {
+            }).always(function () {z
             });
         }
 
@@ -209,7 +209,9 @@ Order.mvOrderSale = function (OrderId) {
             return val.id() == o.ProductId();
         });
         if (hasIt != null)
-            hasIt.Total(hasIt.Total() + 1);
+        {    hasIt.Total(hasIt.Total() + 1);
+			self.KeywordSearch('');
+		}
         else {
             CommonUtils.showWait(true);
             $.ajax({
