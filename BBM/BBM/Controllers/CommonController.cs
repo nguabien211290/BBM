@@ -1,22 +1,11 @@
 ﻿using AutoMapper;
-using BBM.Business.Model.Entity;
 using BBM.Business.Models.Enum;
 using BBM.Business.Models.Module;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using BBM.Business.Infractstructure;
-using BBM.Business.Infractstructure.Security;
-using System.Web.Security;
-using Newtonsoft.Json;
-using System.IO;
 using System.Data;
-using System.Web.Script.Serialization;
-using Excel;
-using System.Threading.Tasks;
-using System.Transactions;
 using BBM.Business;
 using BBM.Business.Logic;
 using BBM.Business.Repository;
@@ -26,13 +15,9 @@ namespace BBM.Controllers
 {
     public class CommonController : BaseController
     {
-        private ImportExcelBusiness _importBus;
-        private IImportBusiness _ImportBus;
         private IUnitOfWork _unitOW;
-        public CommonController(ImportBusiness ImportBus, IUnitOfWork unitOW)
-        {
-            _importBus = new ImportExcelBusiness();
-            _ImportBus = ImportBus;
+        public CommonController(IUnitOfWork unitOW)
+        { 
             _unitOW = unitOW;
         }
 
@@ -143,68 +128,6 @@ namespace BBM.Controllers
 
             return Json(Mapper.Map<List<Employee_TitleModel>>(rs), JsonRequestBehavior.AllowGet);
         }
-        #endregion
-
-        public async Task<JsonResult> Import_Excel(string name, HttpPostedFileBase file)
-        {
-            var Messaging = new RenderMessaging();
-
-            try
-            {
-                if (file != null && file.ContentLength > 0)
-                {
-                    if (file.FileName.EndsWith(".xls") || file.FileName.EndsWith(".xlsx"))
-                    {
-                        Stream stream = file.InputStream;
-
-                        IExcelDataReader reader = null;
-
-                        if (file.FileName.EndsWith(".xls"))
-                        {
-                            reader = ExcelReaderFactory.CreateBinaryReader(stream);
-                        }
-                        else if (file.FileName.EndsWith(".xlsx"))
-                        {
-                            reader = ExcelReaderFactory.CreateOpenXmlReader(stream);
-                        }
-
-                        reader.IsFirstRowAsColumnNames = true;
-
-                        DataSet result = reader.AsDataSet();
-
-                        reader.Close();
-
-                        var rs = await _ImportBus.ImportData(result, User.UserId);
-
-                        if (rs == null)
-                        {
-                            Messaging.isError = true;
-                            Messaging.messaging = "Do sự cố mạng, vui lòng thử lại!";
-                        }
-                        else
-                        {
-                            if (rs.Count > 0)
-                            {
-                                Messaging.isError = true;
-                                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại!";
-                                Messaging.Data = rs;
-                            }
-                            else
-                            {
-                                Messaging.isError = false;
-                                Messaging.messaging = "Import dữ liệu thành công";
-                            }
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                Messaging.isError = true;
-                Messaging.messaging = "Do sự cố mạng, vui lòng thử lại!";
-            }
-
-            return Json(Messaging, JsonRequestBehavior.AllowGet);
-        }
+        #endregion 
     }
 }

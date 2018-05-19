@@ -1,14 +1,4 @@
-﻿Đơn hàng trên web:
-R- Chữ "ghi chú" trong trang in hóa đơn em thay bằng "Lưu ý" để nó nằm trọn trong 1 hàng nhé.
-R- Theo quy định thì các sp đang KM giảm giá nếu khách đủ điểm cũng không được tính vào giảm 5% thành viên
-R- Nhưng trên hóa đơn tính tiền thì không thể bíêt sp KM vì chỉ hiện giá KM chứ không hiện giá gốc, nên các bạn tính tiền sẽ không biết và giảm thêm 5% cho khách.
-  Vây làm cách nào mình thêm giá gốc vào hóa đơn đựơc không Giang? và thêm dấu gạch ngang cái giá đó
-R- Đơn hàng thanh tóan Trực tuyến không thành công thì mình có dấu hiệu gì để biết và hủy đơn đó không. Trong admin web thì thanh tóan thành công sẽ có chữ VNpay cuối đơn hàng.
-R- PT giao hàng: nếu ở TPHCM thì em cho hiện thời gian khách chọn nhé (giờ HC hay giao nhanh hay ngòai giờ HC hay giao ngày CN,...)
-R- Trong trang in hóa đơn online, chỗ NV bán hàng em thay bằng PT thanh tóan, và em chèn thêm 1 dòng PT giao hàng nữa  nhé. Hđ em chỉnh lại khỏang cách các hàng cho sát lại như anh nói lúc trước nhé chứ thưa quá, làm hđ dài.
-R-Phiếu tra hang
-
-Api Shoppe
+﻿Api Shoppe
 Do sku mình đăng lên các trang TMĐT ngày càng nhiều nên việc quản lý nhiều trang khác nhau sẽ rất tốn thời gian. Do đó anh cần đồng bộ dữ liệu của soft mình và các hệ thống đó để quản lý cho dễ. 
 Các thông tin anh cần đồng bộ trên Shopee (SP) như sau:
 - Thông tin về giá bán, giá KM, ngày KM, tồn kho của các sp (ID là mã sp của mình hoặc mã SKU trên trang họ)
@@ -27,3 +17,17 @@ Report
 - EmployessController
 - Product controoler
 -Order
+
+Bug
+-Đơn hàng đặt lại,Gõ phí khác.Bám cập nhật,mất phí
+-KM là hết hạn ma a thấy vẫn còn
+-mấy đơn hàng e k tách ra riêng gộp số đơn hàng giờ thiếu số k bíêt nó nằm đâu
+
+- In: và lưu ý bị rớt dòng
+-cái tem chưa in sẽ bị mấtlà bị thay thế bởi cái mới
+- Cái đặt hàng nội bộ xác nhận xong rồi in xong mất tiêu k thấy lưu lại, bên kho kia cũn gk nhận đc
+- cái in hóa đơn nó lại ra 2 trang, e xem bỏ bớt 1 trang dùm a nhé
+
+-Còn hđ online nếu ở Tphcm thì e cho hiện thời gi gh,  ở tỉnh thì hiện pt gh Pt gh là viettel post tk hay nhanh hay ghtk....  E cho hiện trong phần in luôn nhé và pt thanh toán 
+-ở TPHCm thì em cho hiện thời gian giao hàng, e thay PTGH bằng thời gain gh nhé ở TPHCM còn tỉnh vẫn để PTGH và PT thanh toán
+- PT thanh tóan lúc nào cũng hiện nhé TPHCM và tỉnh đều hiện

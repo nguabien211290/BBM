@@ -183,9 +183,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Business\ExportExcelBusiness.cs" />
-    <Compile Include="Business\ImportExcelBusiness.cs" />
-    <Compile Include="Business\NotificaitonBusiness.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\BarCodeController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -197,6 +194,7 @@
     <Compile Include="Controllers\EmployessController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\NotificaitonController.cs" />
     <Compile Include="Controllers\OrderChannelController.cs" />
     <Compile Include="Controllers\Order_BranchController.cs">
@@ -640,6 +638,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Scripts\lib\plugin\datepicker\locales\" />
+    <Folder Include="Views\Import\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

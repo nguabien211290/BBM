@@ -22,7 +22,6 @@ namespace BBM.Controllers
         private CRUD _crud;
         private admin_softbbmEntities _context;
         private IUnitOfWork _unitOW;
-        private NotificaitonBusiness notiBus = new NotificaitonBusiness();
         public Order_OutputController(IUnitOfWork unitOW)
         {
             _crud = new CRUD();
@@ -324,19 +323,7 @@ namespace BBM.Controllers
                 _crud.SaveChanges();
                 objOrder.Code = "PX" + DateTime.Now.ToString("dd/MM/yy").Replace("/", "") + "-" + BrachesTo.Code + "-" + objOrder.Id;
 
-                //notiBus.Create((int)TypeNotification.OrderOut, User.BranchesId, User.ChannelId, User.UserId, objOrder.Code);
-                notiBus.Create(new soft_Notification
-                {
-                    Contents = "Đơn hàng xuất " + objOrder.Code + " từ kho " + Braches.FirstOrDefault(o => o.BranchesId == User.BranchesId).BranchesName + " đến kho " + BrachesTo.BranchesName + " cần được xử lý",
-                    Branch = model.Id_To,
-                    DateCreate = DateTime.Now,
-                    Type = (int)TypeNotification.OrderOut,
-                    Href = "/Order_Input/RenderView"
-                });
-
-                Messaging.messaging = "Đã tạo phiếu xuất hàng.";
-
-
+              
                 if (model.OrderFromId.HasValue)
                 {
                     var orderFromBranches = _unitOW.OrderBranchesRepository.FindBy(o => o.Id == model.OrderFromId.Value && o.TypeOrder == (int)TypeOrder.OrderBranches).FirstOrDefault();
@@ -348,6 +335,19 @@ namespace BBM.Controllers
                         await _unitOW.SaveChanges();
                     }
                 }
+
+                _unitOW.NotificationRepository.Add(new soft_Notification
+                {
+                    Contents = "Đơn hàng xuất " + objOrder.Code + " từ kho " + Braches.FirstOrDefault(o => o.BranchesId == User.BranchesId).BranchesName + " đến kho " + BrachesTo.BranchesName + " cần được xử lý",
+                    Branch = model.Id_To,
+                    DateCreate = DateTime.Now,
+                    Type = (int)TypeNotification.OrderOut,
+                    Href = "/Order_Input/RenderView"
+                });
+
+                await _unitOW.SaveChanges();
+
+                Messaging.messaging = "Đã tạo phiếu xuất hàng.";
             }
             catch
             {

@@ -21,12 +21,10 @@ namespace BBM.Controllers
 {
     public class PartialController : BaseController
     {
-        private ExportExcelBusiness _exportBus;
         private IUnitOfWork _unitOW;
         public PartialController(IUnitOfWork unitOW)
         {
             _unitOW = unitOW;
-            _exportBus = new ExportExcelBusiness();
         }
 
         public ActionResult Menu()
@@ -349,10 +347,6 @@ namespace BBM.Controllers
             }
             return null;
         }
-
-        public void Excel(int type = 0)
-        {
-            _exportBus.ToExcel(Response, type);
-        }
+        
     }
 }

@@ -87,6 +87,7 @@
     <Compile Include="Logic\CustomerBusiness.cs" />
     <Compile Include="Logic\DiscountBusiness.cs" />
     <Compile Include="Logic\EmployessBusiness.cs" />
+    <Compile Include="Logic\HttpResponseBase.cs" />
     <Compile Include="Logic\IApiBusiness.cs">
       <DependentUpon>ApiBusiness.cs</DependentUpon>
     </Compile>

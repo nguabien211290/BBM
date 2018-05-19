@@ -566,8 +566,8 @@ namespace BBM.Controllers
                 if (pricechannel != null)
                 {
                     if (pricechannel.Price != model.Price)
-                    {                    
-                        pricechannel.Price = Convert.ToInt32(Helpers.Round_Double(model.Price, -3));;
+                    {
+                        pricechannel.Price = Convert.ToInt32(Helpers.Round_Double(model.Price, -3)); ;
                         pricechannel.DateUpdate = DateTime.Now;
                         pricechannel.EmployeeUpdate = User.UserId;
 
@@ -580,7 +580,7 @@ namespace BBM.Controllers
                 {
                     var data = new soft_Channel_Product_Price
                     {
-                        Price = pricechannel.Price = Convert.ToInt32(Helpers.Round_Double(model.Price, -3)),
+                        Price = Convert.ToInt32(Helpers.Round_Double(model.Price, -3)),
                         ChannelId = User.ChannelId,
                         ProductId = model.ProductId,
                         DateCreate = DateTime.Now,

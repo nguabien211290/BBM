@@ -316,7 +316,7 @@ Product.mvProduct = function () {
         self.IsImport(true);
         CommonUtils.showWait(true);
         $.ajax({
-            url: CommonUtils.url("/Common/Import_Excel"),
+            url: CommonUtils.url("/Import/Import_Product"),
             type: "POST",
             data: formData,
             dataType: "json",

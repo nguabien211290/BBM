@@ -5,6 +5,7 @@ using BBM.Business.Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,9 +27,9 @@ namespace BBM.Business.Logic
 
             var perfixPriceChannel = "KM_Kenh_";
 
-            var perfixPriceChannel_StartDate = "KM_Kenh_NBD_";
+            var perfixPriceChannel_StartDate = "KM_NBD_Kenh_";
 
-            var perfixPriceChannel_EndDate = "KM_NKenh_KT_";
+            var perfixPriceChannel_EndDate = "KM_NKT_Kenh_";
 
             var lstError = new List<shop_sanpham>();
 
@@ -59,7 +60,9 @@ namespace BBM.Business.Logic
                     var imgage = new shop_image();
 
                     bool isUpdatePriceChanle = false;
-
+                    bool isUpdatePriceChanleDisscount = false;
+                    bool isUpdateProduct = false;
+                    bool isUpdateStock = false;
                     try
                     {
                         foreach (DataColumn col in data.Tables[0].Columns)
@@ -96,38 +99,47 @@ namespace BBM.Business.Logic
                             {
                                 case "ProductName":
                                     product.tensp = value;
+                                    isUpdateProduct = true;
                                     break;
                                 case "Img":
                                     imgage.url = value;
                                     imgage.RefId = product.id;
+                                    isUpdateProduct = true;
                                     break;
                                 case "PriceBase":
                                     var tmp_PriceBase = float.Parse(value);
                                     product.PriceBase = (int)tmp_PriceBase;
+                                    isUpdateProduct = true;
                                     break;
                                 case "PriceCompare":
                                     var tmp_PriceCompare = float.Parse(value);
                                     product.PriceCompare = (int)tmp_PriceCompare;
+                                    isUpdateProduct = true;
                                     break;
                                 case "PriceBase_Old":
                                     var tmp_PriceBase_Old = float.Parse(value);
                                     product.PriceBase_Old = (int)tmp_PriceBase_Old;
+                                    isUpdateProduct = true;
                                     break;
                                 case "PriceInput":
                                     var tmp_PriceInput = float.Parse(value);
                                     product.PriceInput = (int)tmp_PriceInput;
+                                    isUpdateProduct = true;
                                     break;
                                 case "PriceWholesale":
                                     var tmp_PriceWholesale = float.Parse(value);
                                     product.PriceWholesale = (int)tmp_PriceWholesale;
+                                    isUpdateProduct = true;
                                     break;
                                 case "Status":
                                     var statusE = EnumHelper<StatusProduct>.Parse(value);
                                     product.Status = (int)statusE;
+                                    isUpdateProduct = true;
                                     break;
                                 case "VAT":
                                     var vatE = EnumHelper<StatusVATProduct>.Parse(value);
                                     product.Status = (int)vatE;
+                                    isUpdateProduct = true;
                                     break;
                                 case "Suppliers":
 
@@ -152,6 +164,7 @@ namespace BBM.Business.Logic
 
                                         supplie_lst.Add(supplie);
                                     }
+                                    isUpdateProduct = true;
                                     break;
                                 case "Catalog":
                                     var nameCatalog = value.ToLower().Trim();
@@ -175,11 +188,12 @@ namespace BBM.Business.Logic
 
                                         catalog_lst.Add(catalog);
                                     }
+                                    isUpdateProduct = true;
                                     break;
                             }
                             #endregion
                             #region Gia kenh
-                            if (columnName.StartsWith(perfixChannel) && !isUpdatePriceChanle)
+                            if (columnName.StartsWith(perfixChannel))
                             {
                                 var codeChannel = columnName.Substring(perfixChannel.Length);
 
@@ -215,23 +229,7 @@ namespace BBM.Business.Logic
                                         isupdate_disscount = false;
                                     }
 
-                                    if (product.id <= 0)
-                                    {
-                                        var newobj = new soft_Channel_Product_Price
-                                        {
-                                            ProductId = product.id,
-                                            ChannelId = channel.Id,
-                                            Price = int.Parse(value),
-                                            DateCreate = DateTime.Now,
-                                            EmployeeCreate = UserId,
-                                            Price_Discount = priceDisscount_Value,
-                                            StartDate_Discount = priceDisscount_StarDate,
-                                            Enddate_Discount = priceDisscount_EndDate
-                                        };
-                                        isUpdatePriceChanle = true;
-                                        unitOfWork.ChanelPriceRepository.Add(newobj);
-                                    }
-                                    else
+                                    if (product.id > 0)
                                     {
                                         var channelPrice = unitOfWork.ChanelPriceRepository.FindBy(o => o.ChannelId == channel.Id && o.ProductId == product.id).FirstOrDefault();
 
@@ -250,6 +248,7 @@ namespace BBM.Business.Logic
                                             };
 
                                             isUpdatePriceChanle = true;
+
                                             unitOfWork.ChanelPriceRepository.Add(newobj);
                                         }
                                         else
@@ -260,6 +259,7 @@ namespace BBM.Business.Logic
                                             channelPrice.Enddate_Discount = priceDisscount_EndDate;
 
                                             isUpdatePriceChanle = true;
+
                                             if (isupdate_disscount)
                                                 unitOfWork.ChanelPriceRepository.Update(channelPrice,
                                                     o => o.Price,
@@ -316,11 +316,12 @@ namespace BBM.Business.Logic
                                                 channelPrice.StartDate_Discount = priceDisscount_StarDate;
                                                 channelPrice.Enddate_Discount = priceDisscount_EndDate;
 
-                                                isUpdatePriceChanle = true;
                                                 unitOfWork.ChanelPriceRepository.Update(channelPrice,
                                                     o => o.Price_Discount,
                                                     o => o.StartDate_Discount,
                                                     o => o.Enddate_Discount);
+
+                                                isUpdatePriceChanleDisscount = true;
                                             }
                                         }
                                     }
@@ -402,33 +403,39 @@ namespace BBM.Business.Logic
                         continue;
                     try
                     {
-                        if (product.id <= 0)
+                        if (isUpdateProduct)
                         {
-                            product.DateCreate = DateTime.Now;
+                            if (product.id <= 0)
+                            {
+                                product.DateCreate = DateTime.Now;
 
-                            product.FromCreate = (int)TypeFromCreate.Soft;
+                                product.FromCreate = (int)TypeFromCreate.Soft;
 
-                            unitOfWork.ProductRepository.Add(product);
+                                unitOfWork.ProductRepository.Add(product);
 
-                            unitOfWork.ImageRepository.Add(imgage);
+                                unitOfWork.ImageRepository.Add(imgage);
+                            }
+                            else
+                            {
+                                unitOfWork.ProductRepository.Update(product, o => o.tensp,
+                                                             o => o.PriceBase,
+                                                             o => o.PriceCompare,
+                                                             o => o.PriceBase_Old,
+                                                             o => o.PriceInput,
+                                                             o => o.Status,
+                                                             o => o.StatusVAT,
+                                                             o => o.SuppliersId,
+                                                             o => o.CatalogId,
+                                                             o => o.PriceWholesale);
+                            }
                         }
-                        else
-                        {
-                            unitOfWork.ProductRepository.Update(product, o => o.tensp,
-                                                         o => o.PriceBase,
-                                                         o => o.PriceCompare,
-                                                         o => o.PriceBase_Old,
-                                                         o => o.PriceInput,
-                                                         o => o.Status,
-                                                         o => o.StatusVAT,
-                                                         o => o.SuppliersId,
-                                                         o => o.CatalogId,
-                                                         o => o.PriceWholesale);
-                        }
-
                         await Update_is_import(true, null, percent);
 
-                        await unitOfWork.SaveChanges();
+                        if (isUpdateProduct
+                            ||isUpdatePriceChanle
+                            || isUpdateStock
+                            || isUpdatePriceChanleDisscount)
+                            await unitOfWork.SaveChanges();
                     }
                     catch (Exception ex)
                     {
@@ -643,6 +650,68 @@ namespace BBM.Business.Logic
 
                 return null;
             }
+        }
+
+        //public void ToExcel(HttpResponseBase Response, int type)
+        //{
+        //    var data = new DataTable();
+
+        //    var isWork = true;
+
+        //    switch (type)
+        //    {
+        //        case (int)TypeView.Product:
+        //            break;
+        //        default:
+        //            isWork = false;
+        //            break;
+        //    }
+
+        //    if (!isWork)
+        //        return;
+
+        //    var grid = new System.Web.UI.WebControls.GridView();
+        //    grid.DataSource = GetData();
+        //    grid.DataBind();
+        //    Response.ClearContent();
+        //    Response.AddHeader("content-disposition", "attachment; filename=FileName.xls");
+        //    Response.ContentType = "application/excel";
+        //    StringWriter sw = new StringWriter();
+        //    HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+        //    grid.RenderControl(htw);
+        //    Response.Write(sw.ToString());
+        //    Response.End();
+        //}
+
+        private DataTable GetData()
+        {
+            // Here we create a DataTable with four columns.
+            DataTable dtSample = new DataTable();
+            dtSample.Columns.Add("Dosage", typeof(int));
+            dtSample.Columns.Add("Drug", typeof(string));
+            dtSample.Columns.Add("Patient", typeof(string));
+            dtSample.Columns.Add("Date", typeof(DateTime));
+
+            // Here we add five DataRows.
+            dtSample.Rows.Add(25, "Indocin", "David", DateTime.Now);
+            dtSample.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
+            dtSample.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
+            dtSample.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
+            dtSample.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
+            dtSample.Rows.Add(25, "Indocin", "David", DateTime.Now);
+            dtSample.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
+            dtSample.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
+            dtSample.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
+            dtSample.Rows.Add(25, "Indocin", "David", DateTime.Now);
+            dtSample.Rows.Add(50, "Enebrel", "Sam", DateTime.Now);
+            dtSample.Rows.Add(10, "Hydralazine", "Christoff", DateTime.Now);
+            dtSample.Rows.Add(21, "Combivent", "Janet", DateTime.Now);
+            dtSample.Rows.Add(100, "Dilantin", "Melanie", DateTime.Now);
+            dtSample.Rows.Add(25, "Indocin", "David", DateTime.Now);
+
+            return dtSample;
+
         }
     }
 }
