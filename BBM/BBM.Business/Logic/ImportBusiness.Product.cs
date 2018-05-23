@@ -201,34 +201,6 @@ namespace BBM.Business.Logic
 
                                 if (channel != null)
                                 {
-                                    bool isupdate_disscount = true;
-
-                                    var priceDisscount_Value = 0;
-                                    DateTime? priceDisscount_StarDate = null;
-                                    DateTime? priceDisscount_EndDate = null;
-                                    try
-                                    {
-                                        DataRow dr = data.Tables[0].Select("Code='" + masp + "'").FirstOrDefault();
-
-                                        if (dr != null)
-                                        {
-                                            priceDisscount_Value = int.Parse(dr[perfixPriceChannel + channel.Code].ToString());
-
-                                            var StarDate = Convert.ToDateTime(dr[perfixPriceChannel_StartDate + channel.Code].ToString());
-                                            var EndDate = Convert.ToDateTime(dr[perfixPriceChannel_EndDate + channel.Code].ToString());
-
-                                            priceDisscount_StarDate = StarDate.AddHours(23).AddMinutes(59).AddSeconds(59).AddDays(-1);
-                                            priceDisscount_EndDate = EndDate.AddHours(23).AddMinutes(59).AddSeconds(59);
-                                        }
-                                    }
-                                    catch
-                                    {
-                                        priceDisscount_Value = 0;
-                                        priceDisscount_StarDate = null;
-                                        priceDisscount_EndDate = null;
-                                        isupdate_disscount = false;
-                                    }
-
                                     if (product.id > 0)
                                     {
                                         var channelPrice = unitOfWork.ChanelPriceRepository.FindBy(o => o.ChannelId == channel.Id && o.ProductId == product.id).FirstOrDefault();
@@ -241,10 +213,7 @@ namespace BBM.Business.Logic
                                                 ChannelId = channel.Id,
                                                 Price = int.Parse(value),
                                                 DateCreate = DateTime.Now,
-                                                EmployeeCreate = UserId,
-                                                Price_Discount = priceDisscount_Value,
-                                                StartDate_Discount = priceDisscount_StarDate,
-                                                Enddate_Discount = priceDisscount_EndDate
+                                                EmployeeCreate = UserId
                                             };
 
                                             isUpdatePriceChanle = true;
@@ -253,22 +222,13 @@ namespace BBM.Business.Logic
                                         }
                                         else
                                         {
-                                            channelPrice.Price = int.Parse(value);
-                                            channelPrice.Price_Discount = priceDisscount_Value;
-                                            channelPrice.StartDate_Discount = priceDisscount_StarDate;
-                                            channelPrice.Enddate_Discount = priceDisscount_EndDate;
+                                            var ab = double.Parse(value); 
+                                            channelPrice.Price = (int)ab;
 
                                             isUpdatePriceChanle = true;
 
-                                            if (isupdate_disscount)
-                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
-                                                    o => o.Price,
-                                                    o => o.Price_Discount,
-                                                    o => o.StartDate_Discount,
-                                                    o => o.Enddate_Discount);
-                                            else
-                                                unitOfWork.ChanelPriceRepository.Update(channelPrice,
-                                                  o => o.Price);
+                                            unitOfWork.ChanelPriceRepository.Update(channelPrice,
+                                              o => o.Price);
                                         }
                                     }
                                 }
@@ -432,7 +392,7 @@ namespace BBM.Business.Logic
                         await Update_is_import(true, null, percent);
 
                         if (isUpdateProduct
-                            ||isUpdatePriceChanle
+                            || isUpdatePriceChanle
                             || isUpdateStock
                             || isUpdatePriceChanleDisscount)
                             await unitOfWork.SaveChanges();
